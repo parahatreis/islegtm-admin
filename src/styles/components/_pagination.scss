@@ -1,0 +1,32 @@
+ul.pagination{
+    width: 100%;
+    text-align: center;
+    list-style: none;
+    margin-top: 2rem;
+ 
+    li{
+       display: inline-block;
+       margin: 6px;
+ 
+       
+       color: $text-second;
+       a{
+          display: block;
+          width: 35px;
+          height: 35px;
+          line-height: 35px;
+          cursor: pointer;
+          font-size: 1rem;
+ 
+          &:focus{
+             outline: none;
+          }
+ 
+       }
+    }
+    li.active{
+       color: white;
+       border-radius: 5px;
+       background-color: $primary-color;
+    }
+ }
