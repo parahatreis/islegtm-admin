@@ -1,0 +1,22 @@
+/* PRODUCTS */
+section.products-section{
+    header{
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        .btn{
+            font-size: 0.8rem;
+        }
+    }
+    .products-wrapper{
+        margin-top: 15px;
+    }
+}
+
+#transition-modal-title,
+#transition-modal-description{
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* ADD-PRODUCT */
