@@ -99,36 +99,35 @@ export const getCurrentCategorie = (id) => async dispatch => {
 
 
  // Edit Categorie
-export const editCategorie = (obj,image) => async dispatch => {
+export const editCategorie = (obj,image = null) => async dispatch => {
+
+   console.log(obj)
 
       const config = {
          headers: {
             'Content-Type': 'application/json'  
          }
       };
-
       const body = JSON.stringify(obj);
+
       try {
 
-         console.log('obj',obj);
-
+         let newObj = obj;
 
          await axios.patch(`/api/categories/${obj.categorie_id}`, body, config);
-         const resImage = await axios.post(`/api/categories/image/${obj.categorie_id}`,image);
 
-         let newObj = {
-            ...obj,
-            categorie_image : resImage.data
+         if(image){
+            const resImage = await axios.post(`/api/categories/image/${obj.categorie_id}`,image);
+            newObj = {
+               ...newObj,
+               categorie_image : resImage.data
+            }
          }
-
-         console.log(newObj)
 
          dispatch({
             type: UPDATE_CATEGORIE,
             payload : newObj
          });
-
-         console.log(resImage.data)
       }
       catch (error) {
          console.error(error)

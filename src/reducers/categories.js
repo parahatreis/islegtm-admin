@@ -45,15 +45,14 @@ import {
             loading : false
          }
          case UPDATE_CATEGORIE:
-            state.categories.forEach((categorie) => {
-               if(categorie.categorie_id === payload.categorie_id){
-                  categorie.categorie_name = payload.categorie_name;
-                  console.log(payload.categorie_image)
-                  categorie.categorie_image = payload.categorie_image;
-               }
-            })
+            let index = state.categories.findIndex((categorie) => {
+               return categorie.categorie_id === payload.categorie_id
+            });
+            let catArr = state.categories
+            catArr[index] = payload;
             return {
                ...state,
+               categories : catArr,
                loading: false
              };
          case DELETE_CATEGORIE:

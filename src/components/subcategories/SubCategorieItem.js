@@ -13,7 +13,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import TableRow from '@material-ui/core/TableRow';
 // 
-import { deleteCategorie } from '../../actions/categoriesAction';
+// import { deleteCategorie } from '../../actions/categoriesAction';
 import Placeholder from '../../img/BG.svg';
 import imgPath from '../../utils/imgPath'
 
@@ -54,10 +54,14 @@ const useStyles = makeStyles({
 
 
 
-const CategorieItem = ({deleteCategorie,categorie :{
-    categorie_id,
-    categorie_image,
-    categorie_name
+const SubCategorieItem = ({subcategorie :{
+    subcategorie_id,
+    subcategorie_image,
+    subcategorie_name,
+    categorie_name,
+    hasSize,
+    hasColor,
+    sizeType
 }}) => {
 
 
@@ -69,10 +73,10 @@ const CategorieItem = ({deleteCategorie,categorie :{
 
 
     useEffect(() => {
-      if(categorie_image){
-        setImage(imgPath(categorie_image))
+      if(subcategorie_image){
+        setImage(imgPath(subcategorie_image))
       }
-    }, [categorie_image])
+    }, [subcategorie_image])
 
 
     const handleOpen = (e) => {
@@ -85,23 +89,29 @@ const CategorieItem = ({deleteCategorie,categorie :{
 
     return (
         <> 
-            {/* Categorie-Item */}
+            {/* SubCategorie-Item */}
         <TableRow key="ID">
-            {/* Categorie ID */}
-            <TableCell align="left">{categorie_id.slice(0,5)} ...</TableCell>
-            {/* Categorie Image */}
+            {/* SubCategorie ID */}
+            <TableCell align="left">{subcategorie_id.slice(0,5)} ...</TableCell>
+            {/* SubCategorie Image */}
             <TableCell align="left">
                 <Avatar className={classes.image} src={image} variant="square"/>
             </TableCell>
+            {/* SubCategorie Name */}
+            <TableCell align="left">{subcategorie_name}</TableCell>
             {/* Categorie Name */}
             <TableCell align="left">{categorie_name}</TableCell>
             {/* Product Number */}
-            <TableCell align="left">1542</TableCell>
-            {/* Subcategorie Number */}
             <TableCell align="left">5</TableCell>
+            {/* hasSize */}
+            <TableCell align="left">true</TableCell>
+            {/* hasColor */}
+            <TableCell align="left">false</TableCell>
+            {/* sizeType */}
+            <TableCell align="left">number</TableCell>
             {/* Edit */}
             <TableCell align="center">
-              <Link to={`/categories/edit-categorie/${categorie_id}`}>
+              <Link to={`/subcategories/edit-subcategorie/${subcategorie_id}`}>
                 <Button 
                   color="primary"
                 >
@@ -118,7 +128,7 @@ const CategorieItem = ({deleteCategorie,categorie :{
                 >
                 <DeleteOutlineIcon />
                 </Button>
-                <div key={categorie_id}>
+                <div key={subcategorie_id}>
                       <Modal
                         open={open}
                         onClose={(e) => handleClose(e)}
@@ -132,7 +142,7 @@ const CategorieItem = ({deleteCategorie,categorie :{
                       <Fade in={open}
                       >
                         <div className={classes.paper}>
-                          <h3 id="transition-modal-title">Hakykatdanam shu <span style={{color : 'blue'}}>{categorie_name}</span> kategoriyany pozmak isleyanizmi?</h3>
+                          <h3 id="transition-modal-title">Hakykatdanam shu <span style={{color : 'blue'}}>{subcategorie_name}</span> kategoriyany pozmak isleyanizmi?</h3>
                           <p id="transition-modal-description">
                             Kategoriya pozulandan son yzyna gaydyp gelmeyar
                           </p>
@@ -142,7 +152,8 @@ const CategorieItem = ({deleteCategorie,categorie :{
                             </Button>
                             <Button variant="contained" color="secondary"
                               onClick={() => {
-                                deleteCategorie(categorie_id);
+                                // deleteCategorie(categorie_id);
+                                console.log(subcategorie_id)
                               }}
                             >
                               Delete
@@ -159,12 +170,11 @@ const CategorieItem = ({deleteCategorie,categorie :{
     )
 }
 
-CategorieItem.propTypes = {
+SubCategorieItem.propTypes = {
   deleteCategorie: PropTypes.func.isRequired,
+  subcategorie : PropTypes.object.isRequired,
 }
 
-export default connect(null, {
-  deleteCategorie,
-})(CategorieItem);
+export default SubCategorieItem
 
 

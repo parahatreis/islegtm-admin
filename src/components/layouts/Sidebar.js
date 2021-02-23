@@ -211,14 +211,17 @@ export default function MiniDrawer() {
                </List>
             </Link>
             {/* Subcategories */}
-            <List>
-               <ListItem button>
-                  <ListItemIcon>
-                     <ViewModuleIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Subcategories" />
-               </ListItem>
-            </List>
+            {/* Categories */}
+            <Link to="/subcategories">
+               <List>
+                  <ListItem button>
+                     <ListItemIcon>
+                        <ViewModuleIcon />
+                     </ListItemIcon>
+                     <ListItemText primary="Subcategories" className={classes.linkColor} />
+                  </ListItem>
+               </List>
+            </Link>
             {/* Users */}
             <List>
                <ListItem button>
