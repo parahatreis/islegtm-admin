@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {Link} from 'react-router-dom';
@@ -13,15 +13,14 @@ import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import TableRow from '@material-ui/core/TableRow';
 // 
-import { deleteCategorie } from '../../actions/categoriesAction';
-import Placeholder from '../../img/BG.svg';
-import imgPath from '../../utils/imgPath'
+import { deleteStore } from '../../actions/storesAction';
+import Spinner from '../layouts/Spinner';
 
 
 
 const useStyles = makeStyles({
     table: {
-      minWidth: 650
+      minWidth: 550
     },
     primaryText : {
       color : '#3f51b5'
@@ -54,27 +53,20 @@ const useStyles = makeStyles({
 
 
 
-const CategorieItem = ({deleteCategorie,categorie :{
-    categorie_id,
-    categorie_image,
-    categorie_name
+const BrandItem = ({deleteStore,store :{
+    store_id,
+    store_name,
+    store_number,
+    store_phone,
+    store_description,
+    store_floor,
+    store_currency
 }}) => {
 
 
     const classes = useStyles();
 
     const [open, setOpen] = useState(false);
-    const [imgUri,setImg] = useState({img : Placeholder})
-
-    useEffect(() => {
-      if(categorie_image){
-          let img  = imgPath(categorie_image);
-          setImg({img})
-      }
-      else{
-          setImg({img : Placeholder})
-      }
-  }, [categorie_image])
 
 
     const handleOpen = (e) => {
@@ -87,23 +79,25 @@ const CategorieItem = ({deleteCategorie,categorie :{
 
     return (
         <> 
-            {/* Categorie-Item */}
+            {/* Store-Item */}
         <TableRow key="ID">
-            {/* Categorie ID */}
-            <TableCell align="left">{categorie_id.slice(0,5)} ...</TableCell>
-            {/* Categorie Image */}
-            <TableCell align="left">
-                <Avatar className={classes.image} src={imgUri.img} variant="square"/>
-            </TableCell>
-            {/* Categorie Name */}
-            <TableCell align="left">{categorie_name}</TableCell>
-            {/* Product Number */}
-            <TableCell align="left">1542</TableCell>
-            {/* Subcategorie Number */}
-            <TableCell align="left">5</TableCell>
+            {/* Store ID */}
+            <TableCell align="left">{store_id.slice(0,5)} ...</TableCell>
+            {/* Store Name */}
+            <TableCell align="left">{store_name}</TableCell>
+            {/* Store Name */}
+            <TableCell align="left">{store_number && store_number}</TableCell>
+            {/* Store Name */}
+            <TableCell align="left">{store_phone && store_phone}</TableCell>
+            {/* Store Name */}
+            <TableCell align="left">{store_floor && store_floor}</TableCell>
+            {/* Store Name */}
+            <TableCell align="left">{store_currency && store_currency}</TableCell>
+            {/* Store Name */}
+            <TableCell align="left">{store_description && store_description}</TableCell>
             {/* Edit */}
             <TableCell align="center">
-              <Link to={`/categories/edit-categorie/${categorie_id}`}>
+              <Link to={`/stores/edit-store/${store_id}`}>
                 <Button 
                   color="primary"
                 >
@@ -116,11 +110,10 @@ const CategorieItem = ({deleteCategorie,categorie :{
                 <Button
                 onClick={handleOpen}
                 color="secondary"
-                href="#delete"
                 >
                 <DeleteOutlineIcon />
                 </Button>
-                <div key={categorie_id}>
+                <div key={store_id}>
                       <Modal
                         open={open}
                         onClose={(e) => handleClose(e)}
@@ -134,9 +127,9 @@ const CategorieItem = ({deleteCategorie,categorie :{
                       <Fade in={open}
                       >
                         <div className={classes.paper}>
-                          <h3 id="transition-modal-title">Hakykatdanam shu <span style={{color : 'blue'}}>{categorie_name}</span> kategoriyany pozmak isleyanizmi?</h3>
+                          <h3 id="transition-modal-title">Hakykatdanam shu <span style={{color : 'blue'}}>{store_name}</span> story pozmak isleyanizmi?</h3>
                           <p id="transition-modal-description">
-                            Kategoriya pozulandan son yzyna gaydyp gelmeyar
+                            Store pozulandan son yzyna gaydyp gelmeyar
                           </p>
                           <div className={classes.btnGroup}>
                             <Button onClick={handleClose}>
@@ -144,7 +137,7 @@ const CategorieItem = ({deleteCategorie,categorie :{
                             </Button>
                             <Button variant="contained" color="secondary"
                               onClick={() => {
-                                deleteCategorie(categorie_id);
+                                deleteStore(store_id);
                               }}
                             >
                               Delete
@@ -161,13 +154,13 @@ const CategorieItem = ({deleteCategorie,categorie :{
     )
 }
 
-CategorieItem.propTypes = {
-  deleteCategorie: PropTypes.func.isRequired,
-  categorie : PropTypes.object.isRequired,
+BrandItem.propTypes = {
+  deleteStore: PropTypes.func.isRequired,
+  store : PropTypes.object.isRequired,
 }
 
 export default connect(null, {
-  deleteCategorie,
-})(CategorieItem);
+    deleteStore,
+})(BrandItem);
 
 

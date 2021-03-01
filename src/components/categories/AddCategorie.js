@@ -46,39 +46,41 @@ const AddCategorie = ({createCategorie}) => {
     const classes = useStyles();
     const history = useHistory();
 
-    const onChange = (e) => {
-        setFormData({...formData, [e.target.name] : e.target.value})
-        console.log(formData)
-
-    }
+    const onChange = (e) => setFormData({...formData, [e.target.name] : e.target.value})
+    
 
     const onFileUpload = (e) => {
-        const file = e.target.files[0] 
-        setBuffer(file);
+        const file = e.target.files[0];
+        if(file.size < 1800000){
+            setBuffer(file);
 
-        const reader = new FileReader();
-        reader.addEventListener("load", function () {
-            // convert image file to base64 string
-            if(reader.readyState === 2){
-                setImg({img : reader.result})
+            const reader = new FileReader();
+            reader.addEventListener("load", function () {
+                // convert image file to base64 string
+                if(reader.readyState === 2){
+                    setImg({img : reader.result})
+                }
+            }, false);
+
+            if (file) {
+                reader.readAsDataURL(file);
             }
-        }, false);
-
-        if (file) {
-            reader.readAsDataURL(file);
+        }
+        else{
+            alert('2MB dan kan bolan surat yuklap bolmayar')
         }
     };
 
     const onSubmit = (e) => {
         e.preventDefault();
-        const fileData = new FormData(); 
+        const fileData = new FormData();        
      
         // Update the formData object 
         fileData.append( 
             "image", 
             buffer, 
         ); 
-        createCategorie(formData.categorie_name,fileData);
+        createCategorie(formData,fileData);
         return history.push('/categories')
     }
 

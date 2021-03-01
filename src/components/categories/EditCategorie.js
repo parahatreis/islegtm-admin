@@ -42,7 +42,7 @@ const EditCategorie = ({editCategorie, getCurrentCategorie, match, categories : 
     
     const [formData,setFormData] = useState({
         categorie_id : '',
-        categorie_name : ''
+        categorie_name : null
     })
     const [buffer,setBuffer] = useState(null)
     const [imgUri,setImg] = useState({img : Placeholder})
@@ -51,7 +51,10 @@ const EditCategorie = ({editCategorie, getCurrentCategorie, match, categories : 
     
 
     useEffect(() => {
+
         getCurrentCategorie(match.params.id);
+        window.scrollTo(0, 0);
+
     }, [getCurrentCategorie,match.params.id]);
 
     useEffect(() => {
@@ -92,6 +95,7 @@ const EditCategorie = ({editCategorie, getCurrentCategorie, match, categories : 
             "image", 
             buffer, 
         ); 
+        console.log(formData, fileData)
         editCategorie(formData,fileData);
         return history.push('/categories')
     }

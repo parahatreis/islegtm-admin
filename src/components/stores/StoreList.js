@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import TableHead from '@material-ui/core/TableHead';
 import TableCell from '@material-ui/core/TableCell';
@@ -9,7 +9,7 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import { makeStyles } from '@material-ui/core/styles';
 // 
-import CategorieItem from './CategorieItem';
+import StoreItem from './StoreItem';
 import Spinner from '../layouts/Spinner'
 
 
@@ -21,16 +21,9 @@ const useStyles = makeStyles({
   });
 
 
-const CategorieList = ({categories : {categories ,loading}}) => {
+const StoreList = ({stores : {stores ,loading}}) => {
 
     const classes = useStyles();
-
-    const [dataCategories,setDataCategories] = useState(null);
-
-    useEffect(() => {
-        setDataCategories(categories);
-    }, [categories])
-
 
     return (
         <div className="list-wrapper">
@@ -42,10 +35,12 @@ const CategorieList = ({categories : {categories ,loading}}) => {
                         <TableHead>
                         <TableRow>
                             <TableCell align="left">ID</TableCell>
-                            <TableCell align="left">Categorie Image</TableCell>
-                            <TableCell align="left">Categorie Name</TableCell>
-                            <TableCell align="left">Product Number</TableCell>
-                            <TableCell align="left">Subcategorie Number</TableCell>
+                            <TableCell align="left">Store Name</TableCell>
+                            <TableCell align="left">Store Number</TableCell>
+                            <TableCell align="left">Store Phone</TableCell>
+                            <TableCell align="left">Store Floor</TableCell>
+                            <TableCell align="left">Store Currency</TableCell>
+                            <TableCell align="left">Store Description</TableCell>
                             <TableCell align="center">Edit</TableCell>
                             <TableCell align="center">Delete</TableCell>
                         </TableRow>
@@ -53,11 +48,7 @@ const CategorieList = ({categories : {categories ,loading}}) => {
                         <TableBody>
                         {/* Categorie ITEM */}
 
-                        {
-                            dataCategories ? 
-                            categories.map((categorie,index) => <CategorieItem key={index} categorie={categorie} />) : 
-                            'Loading'
-                        }
+                        {stores.map((store,index) => <StoreItem key={index} store={store} />)}
 
                         </TableBody>
                     </Table>
@@ -70,8 +61,8 @@ const CategorieList = ({categories : {categories ,loading}}) => {
 }
 
 
-CategorieList.propTypes = {
-    categories : PropTypes.object.isRequired,
+StoreList.propTypes = {
+    stores : PropTypes.object.isRequired,
 }
 
-export default CategorieList
+export default StoreList

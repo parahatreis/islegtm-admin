@@ -5,13 +5,25 @@ import Register from './pages/Register'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import SideBar from './components/layouts/Sidebar'
-// 
+// products
 import Products from './pages/Products'
 import AddProduct from './components/products/AddProduct'
-// 
+// categories
 import Categories from './pages/Categories';
 import AddCategorie from './components/categories/AddCategorie'
 import EditCategorie from './components/categories/EditCategorie'
+// subcategories
+import SubCategories from './pages/SubCategories';
+import AddSubCategorie from './components/subcategories/AddSubCategorie'
+import EditSubCategorie from './components/subcategories/EditSubCategorie'
+// Brands
+import Brands from './pages/Brands';
+import AddBrand from './components/brands/AddBrand'
+import EditBrand from './components/brands/EditBrand'
+// Brands
+import Stores from './pages/Stores';
+import AddStore from './components/stores/AddStore'
+// import EditBrand from './components/brands/EditBrand'
 
 
 const publicRoutes = [
@@ -48,6 +60,7 @@ const publicRoutes = [
      component: AddProduct,
      exact: true
    },
+  //  categories
    {
       key: "categories",
       path: "/categories",
@@ -65,15 +78,83 @@ const publicRoutes = [
       path: "/categories/edit-categorie/:id",
       component: EditCategorie,
       exact: true
-    }
+    },
+    // Subca
+    {
+      key: "subcategories",
+      path: "/subcategories",
+      component: SubCategories,
+      exact: true
+    },
+    {
+      key: "add-subcategorie",
+      path: "/subcategories/add-subcategorie",
+      component: AddSubCategorie,
+      exact: true
+    },
+    {
+      key: "edit-subcategorie",
+      path: "/subcategories/edit-subcategorie/:id",
+      component: EditSubCategorie,
+      exact: true
+    },
+    // Brands
+    {
+      key: "brands",
+      path: "/brands",
+      component: Brands,
+      exact: true
+    },
+    {
+      key: "add-brand",
+      path: "/brands/add-brand",
+      component: AddBrand,
+      exact: true
+    },
+    {
+      key: "edit-brand",
+      path: "/brands/edit-brand/:id",
+      component: EditBrand,
+      exact: true
+    },
+    // Stores
+    {
+      key: "stores",
+      path: "/stores",
+      component: Stores,
+      exact: true
+    },
+    {
+      key: "add-store",
+      path: "/stores/add-store",
+      component: AddStore,
+      exact: true
+    },
+    // {
+    //   key: "edit-store",
+    //   path: "/stores/edit-store/:id",
+    //   component: EditBrand,
+    //   exact: true
+    // }
  ];
 
 
 const Routing = () => {
 
    const privateArray = [
+    //  product
       "/", "/products", "/products/add-product",
-      "/categories" , "/categories/add-categorie","/categories/edit-categorie/:id"
+      // categories
+      "/categories" , "/categories/add-categorie","/categories/edit-categorie/:id",
+      // subcatrgories
+      "/subcategories" , 
+      "/subcategories/add-subcategorie","/subcategories/edit-subcategorie/:id",
+      // brands
+      "/brands" , 
+      "/brands/add-brand","/brands/edit-brand/:id",
+      // stores
+      "/stores" , 
+      "/stores/add-store","/stores/edit-store/:id"
    ]
 
    return (

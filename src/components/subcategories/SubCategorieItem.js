@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {Link} from 'react-router-dom';
@@ -12,10 +12,12 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import TableRow from '@material-ui/core/TableRow';
+import axios from 'axios'
 // 
-import { deleteCategorie } from '../../actions/categoriesAction';
+import { deleteSubCategorie } from '../../actions/subcategoriesAction';
 import Placeholder from '../../img/BG.svg';
 import imgPath from '../../utils/imgPath'
+import Spinner from '../layouts/Spinner'
 
 
 
@@ -54,27 +56,47 @@ const useStyles = makeStyles({
 
 
 
-const CategorieItem = ({deleteCategorie,categorie :{
+const SubCategorieItem = ({deleteSubCategorie,subcategorie :{
+    subcategorie_id,
+    subcategorie_image,
+    subcategorie_name,
     categorie_id,
-    categorie_image,
-    categorie_name
+    hasSize,
+    hasColor,
+    sizeType
 }}) => {
 
 
     const classes = useStyles();
 
     const [open, setOpen] = useState(false);
-    const [imgUri,setImg] = useState({img : Placeholder})
+    const [image, setImage] = useState(Placeholder);
+    const [localLoading, setLocalLoading] = useState(true)
+    const [categorie,setCategorie] = useState(null);
+
+
 
     useEffect(() => {
-      if(categorie_image){
-          let img  = imgPath(categorie_image);
-          setImg({img})
+      if(subcategorie_image){
+        setImage(imgPath(subcategorie_image))
       }
-      else{
-          setImg({img : Placeholder})
+    }, [subcategorie_image])
+
+
+
+    // GET Categorie Name
+    useEffect(() => {
+      if(categorie_id){
+        axios.get(`api/categories/${categorie_id}`)
+          .then((res) => {
+             if (res.data) {
+                  setLocalLoading(false)
+                 setCategorie(res.data.categorie_name);
+             }
+          })
+          .catch((err) => console.error('Categories: ',err))
       }
-  }, [categorie_image])
+  }, [categorie_id])
 
 
     const handleOpen = (e) => {
@@ -87,23 +109,29 @@ const CategorieItem = ({deleteCategorie,categorie :{
 
     return (
         <> 
-            {/* Categorie-Item */}
+            {/* SubCategorie-Item */}
         <TableRow key="ID">
-            {/* Categorie ID */}
-            <TableCell align="left">{categorie_id.slice(0,5)} ...</TableCell>
-            {/* Categorie Image */}
+            {/* SubCategorie ID */}
+            <TableCell align="left">{subcategorie_id.slice(0,5)} ...</TableCell>
+            {/* SubCategorie Image */}
             <TableCell align="left">
-                <Avatar className={classes.image} src={imgUri.img} variant="square"/>
+                <Avatar className={classes.image} src={image} variant="square"/>
             </TableCell>
+            {/* SubCategorie Name */}
+            <TableCell align="left">{subcategorie_name}</TableCell>
             {/* Categorie Name */}
-            <TableCell align="left">{categorie_name}</TableCell>
+            <TableCell align="left">{localLoading ? <Spinner /> : categorie && categorie}</TableCell>
             {/* Product Number */}
-            <TableCell align="left">1542</TableCell>
-            {/* Subcategorie Number */}
             <TableCell align="left">5</TableCell>
+            {/* hasSize */}
+            <TableCell align="left">{ String(hasSize) }</TableCell>
+            {/* hasColor */}
+            <TableCell align="left">{ String(hasColor) }</TableCell>
+            {/* sizeType */}
+            <TableCell align="left">{ sizeType }</TableCell>
             {/* Edit */}
             <TableCell align="center">
-              <Link to={`/categories/edit-categorie/${categorie_id}`}>
+              <Link to={`/subcategories/edit-subcategorie/${subcategorie_id}`}>
                 <Button 
                   color="primary"
                 >
@@ -120,7 +148,7 @@ const CategorieItem = ({deleteCategorie,categorie :{
                 >
                 <DeleteOutlineIcon />
                 </Button>
-                <div key={categorie_id}>
+                <div key={subcategorie_id}>
                       <Modal
                         open={open}
                         onClose={(e) => handleClose(e)}
@@ -134,7 +162,7 @@ const CategorieItem = ({deleteCategorie,categorie :{
                       <Fade in={open}
                       >
                         <div className={classes.paper}>
-                          <h3 id="transition-modal-title">Hakykatdanam shu <span style={{color : 'blue'}}>{categorie_name}</span> kategoriyany pozmak isleyanizmi?</h3>
+                          <h3 id="transition-modal-title">Hakykatdanam shu <span style={{color : 'blue'}}>{subcategorie_name}</span> kategoriyany pozmak isleyanizmi?</h3>
                           <p id="transition-modal-description">
                             Kategoriya pozulandan son yzyna gaydyp gelmeyar
                           </p>
@@ -144,7 +172,8 @@ const CategorieItem = ({deleteCategorie,categorie :{
                             </Button>
                             <Button variant="contained" color="secondary"
                               onClick={() => {
-                                deleteCategorie(categorie_id);
+                                deleteSubCategorie(subcategorie_id);
+                                console.log(subcategorie_id)
                               }}
                             >
                               Delete
@@ -161,13 +190,13 @@ const CategorieItem = ({deleteCategorie,categorie :{
     )
 }
 
-CategorieItem.propTypes = {
-  deleteCategorie: PropTypes.func.isRequired,
-  categorie : PropTypes.object.isRequired,
+SubCategorieItem.propTypes = {
+  deleteSubCategorie: PropTypes.func.isRequired,
+  subcategorie : PropTypes.object.isRequired,
 }
 
 export default connect(null, {
-  deleteCategorie,
-})(CategorieItem);
+  deleteSubCategorie,
+})(SubCategorieItem);
 
 
