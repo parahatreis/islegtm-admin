@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import TableHead from '@material-ui/core/TableHead';
 import TableCell from '@material-ui/core/TableCell';
@@ -9,7 +9,7 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import { makeStyles } from '@material-ui/core/styles';
 // 
-import SubCategorieItem from './SubCategorieItem';
+import BrandItem from './BrandItem';
 import Spinner from '../layouts/Spinner'
 
 
@@ -21,13 +21,9 @@ const useStyles = makeStyles({
   });
 
 
-const SubCategorieList = ({subcategories : {subcategories ,loading}}) => {
+const BrandList = ({brands : {brands ,loading}}) => {
 
     const classes = useStyles();
-
-    useEffect(() => {
-        console.log(subcategories)
-    }, [subcategories])
 
     return (
         <div className="list-wrapper">
@@ -39,13 +35,9 @@ const SubCategorieList = ({subcategories : {subcategories ,loading}}) => {
                         <TableHead>
                         <TableRow>
                             <TableCell align="left">ID</TableCell>
-                            <TableCell align="left">SubCategorie Image</TableCell>
-                            <TableCell align="left">SubCategorie Name</TableCell>
-                            <TableCell align="left">Categorie</TableCell>
-                            <TableCell align="left">Product Number</TableCell>
-                            <TableCell align="left">Size</TableCell>
-                            <TableCell align="left">Renk</TableCell>
-                            <TableCell align="left">Size Type</TableCell>
+                            <TableCell align="left">Brand Image</TableCell>
+                            <TableCell align="left">Brand Name</TableCell>
+                            <TableCell align="left">Subcategories</TableCell>
                             <TableCell align="center">Edit</TableCell>
                             <TableCell align="center">Delete</TableCell>
                         </TableRow>
@@ -53,7 +45,7 @@ const SubCategorieList = ({subcategories : {subcategories ,loading}}) => {
                         <TableBody>
                         {/* Categorie ITEM */}
 
-                        {subcategories.map((subcategorie,index) => <SubCategorieItem key={index} subcategorie={subcategorie} />)}
+                        {brands.map((brand,index) => <BrandItem key={index} brand={brand} />)}
 
                         </TableBody>
                     </Table>
@@ -66,8 +58,8 @@ const SubCategorieList = ({subcategories : {subcategories ,loading}}) => {
 }
 
 
-SubCategorieList.propTypes = {
-    subcategories : PropTypes.object.isRequired,
+BrandList.propTypes = {
+    brands : PropTypes.object.isRequired,
 }
 
-export default SubCategorieList
+export default BrandList

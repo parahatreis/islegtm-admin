@@ -6,50 +6,49 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 // 
-import SubCategorieList from '../components/subcategories/SubCategorieList'
-import { getSubCategories } from '../actions/subcategoriesAction';
+import BrandList from '../components/brands/BrandList'
+import { getBrands } from '../actions/brandsActions';
 
 
 
-const SubCategories = ({subcategories, getSubCategories}) => {
+const Brands = ({brands, getBrands}) => {
 
     useEffect(() => {
      
-      getSubCategories();
-
+        getBrands();
   
-     }, [getSubCategories])
+     }, [getBrands])
 
     return (
         <section className="container products-section">
          <header>
             <Typography variant="h4" component="h2">
-            SubCategories
+            Brands
             </Typography>
-            <Link to="/subcategories/add-subcategorie">
+            <Link to="/brands/add-brand">
                <Button className="btn" variant="contained" color="primary">
                   <AddIcon />
-                  Add subcategorie
+                  Add Brand
                </Button>
             </Link>
          </header>
          <div className="products-wrapper">
-            {/* Product Pagination */}
-            <SubCategorieList subcategories={subcategories} />
+            {/* List */}
+            <BrandList brands={brands} />
 
          </div>
       </section>
     )
 }
 
-SubCategories.propTypes = {
-    subcategories: PropTypes.object.isRequired,
-    getSubCategories: PropTypes.func.isRequired,
+Brands.propTypes = {
+    brands: PropTypes.object.isRequired,
+    getBrands: PropTypes.func.isRequired,
  }
  const mapStateToProps = state => ({
-    subcategories: state.subcategories,
+    brands: state.brands,
  })
  
  export default connect(mapStateToProps,{
-   getSubCategories
- })(SubCategories)
+    getBrands
+ })(Brands)

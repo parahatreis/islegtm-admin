@@ -13,17 +13,18 @@ import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import TableRow from '@material-ui/core/TableRow';
 import axios from 'axios'
+import Chip from '@material-ui/core/Chip';
 // 
-import { deleteSubCategorie } from '../../actions/subcategoriesAction';
+import { deletBrand } from '../../actions/brandsActions';
 import Placeholder from '../../img/BG.svg';
 import imgPath from '../../utils/imgPath'
-import Spinner from '../layouts/Spinner'
+import Spinner from '../layouts/Spinner';
 
 
 
 const useStyles = makeStyles({
     table: {
-      minWidth: 650
+      minWidth: 550
     },
     primaryText : {
       color : '#3f51b5'
@@ -56,14 +57,11 @@ const useStyles = makeStyles({
 
 
 
-const SubCategorieItem = ({deleteSubCategorie,subcategorie :{
-    subcategorie_id,
-    subcategorie_image,
-    subcategorie_name,
-    categorie_id,
-    hasSize,
-    hasColor,
-    sizeType
+const BrandItem = ({deletBrand,brand :{
+    brand_id,
+    brand_name,
+    brand_image,
+    subcategories,
 }}) => {
 
 
@@ -72,31 +70,34 @@ const SubCategorieItem = ({deleteSubCategorie,subcategorie :{
     const [open, setOpen] = useState(false);
     const [image, setImage] = useState(Placeholder);
     const [localLoading, setLocalLoading] = useState(true)
-    const [categorie,setCategorie] = useState(null);
+    const [subcategorieData,setSubcategorieData] = useState(null);
 
 
 
     useEffect(() => {
-      if(subcategorie_image){
-        setImage(imgPath(subcategorie_image))
+      if(brand_image){
+        setImage(imgPath(brand_image))
       }
-    }, [subcategorie_image])
-
+    }, [brand_image])
 
 
     // GET Categorie Name
     useEffect(() => {
-      if(categorie_id){
-        axios.get(`api/categories/${categorie_id}`)
+      if(brand_id){
+        axios.get(`/api/subcategories`,{
+          params : {
+            getImage : false
+          }
+        })
           .then((res) => {
              if (res.data) {
-                  setLocalLoading(false)
-                 setCategorie(res.data.categorie_name);
+                setLocalLoading(false)
+                setSubcategorieData(res.data);
              }
           })
           .catch((err) => console.error('Categories: ',err))
       }
-  }, [categorie_id])
+  }, [brand_id])
 
 
     const handleOpen = (e) => {
@@ -109,29 +110,32 @@ const SubCategorieItem = ({deleteSubCategorie,subcategorie :{
 
     return (
         <> 
-            {/* SubCategorie-Item */}
+            {/* Brand-Item */}
         <TableRow key="ID">
-            {/* SubCategorie ID */}
-            <TableCell align="left">{subcategorie_id.slice(0,5)} ...</TableCell>
-            {/* SubCategorie Image */}
+            {/* Brand ID */}
+            <TableCell align="left">{brand_id.slice(0,5)} ...</TableCell>
+            {/* Brand Image */}
             <TableCell align="left">
                 <Avatar className={classes.image} src={image} variant="square"/>
             </TableCell>
-            {/* SubCategorie Name */}
-            <TableCell align="left">{subcategorie_name}</TableCell>
-            {/* Categorie Name */}
-            <TableCell align="left">{localLoading ? <Spinner /> : categorie && categorie}</TableCell>
-            {/* Product Number */}
-            <TableCell align="left">5</TableCell>
-            {/* hasSize */}
-            <TableCell align="left">{ String(hasSize) }</TableCell>
-            {/* hasColor */}
-            <TableCell align="left">{ String(hasColor) }</TableCell>
-            {/* sizeType */}
-            <TableCell align="left">{ sizeType }</TableCell>
+            {/* Brand Name */}
+            <TableCell align="left" >{brand_name}</TableCell>
+            {/* SubCategories */}
+            <TableCell align="left">
+              {
+                localLoading ? <Spinner/> : 
+                subcategories && subcategorieData ? 
+                subcategories.map((data,index) => {
+                    if(index < 3){
+                      const myData = subcategorieData.find((val) => val.subcategorie_id === data.subcategorie_id);
+                      return <Chip key={myData.subcategorie_id} label={myData.subcategorie_name} variant='outlined' />
+                    }
+                }) : ""
+              }
+            </TableCell>
             {/* Edit */}
             <TableCell align="center">
-              <Link to={`/subcategories/edit-subcategorie/${subcategorie_id}`}>
+              <Link to={`/brands/edit-brand/${brand_id}`}>
                 <Button 
                   color="primary"
                 >
@@ -144,11 +148,10 @@ const SubCategorieItem = ({deleteSubCategorie,subcategorie :{
                 <Button
                 onClick={handleOpen}
                 color="secondary"
-                href="#delete"
                 >
                 <DeleteOutlineIcon />
                 </Button>
-                <div key={subcategorie_id}>
+                <div key={brand_id}>
                       <Modal
                         open={open}
                         onClose={(e) => handleClose(e)}
@@ -162,9 +165,9 @@ const SubCategorieItem = ({deleteSubCategorie,subcategorie :{
                       <Fade in={open}
                       >
                         <div className={classes.paper}>
-                          <h3 id="transition-modal-title">Hakykatdanam shu <span style={{color : 'blue'}}>{subcategorie_name}</span> kategoriyany pozmak isleyanizmi?</h3>
+                          <h3 id="transition-modal-title">Hakykatdanam shu <span style={{color : 'blue'}}>{brand_name}</span> brendi pozmak isleyanizmi?</h3>
                           <p id="transition-modal-description">
-                            Kategoriya pozulandan son yzyna gaydyp gelmeyar
+                            Brend pozulandan son yzyna gaydyp gelmeyar
                           </p>
                           <div className={classes.btnGroup}>
                             <Button onClick={handleClose}>
@@ -172,8 +175,7 @@ const SubCategorieItem = ({deleteSubCategorie,subcategorie :{
                             </Button>
                             <Button variant="contained" color="secondary"
                               onClick={() => {
-                                deleteSubCategorie(subcategorie_id);
-                                console.log(subcategorie_id)
+                                deletBrand(brand_id);
                               }}
                             >
                               Delete
@@ -190,13 +192,13 @@ const SubCategorieItem = ({deleteSubCategorie,subcategorie :{
     )
 }
 
-SubCategorieItem.propTypes = {
-  deleteSubCategorie: PropTypes.func.isRequired,
-  subcategorie : PropTypes.object.isRequired,
+BrandItem.propTypes = {
+    deletBrand: PropTypes.func.isRequired,
+  brand : PropTypes.object.isRequired,
 }
 
 export default connect(null, {
-  deleteSubCategorie,
-})(SubCategorieItem);
+    deletBrand,
+})(BrandItem);
 
 

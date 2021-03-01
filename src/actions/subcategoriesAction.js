@@ -3,6 +3,7 @@ import {
     GET_SUBCATEGORIES,
     SET_LOADING_SUBCATEGORIES,
     CREATE_SUBCATEGORIE,
+    SET_SUB_IMAGE,
     DELETE_SUBCATEGORIE,
     GET_CURRENT_SUBCATEGORIE,
     UPDATE_SUBCATEGORIE
@@ -28,108 +29,121 @@ export const getSubCategories = () => async dispatch => {
 }
 
 
-// // GET ALL Categories
-// export const createCategorie = (categorie_name,image) => async dispatch => {
+// Create SubCategorie
+// GET ALL Categories
+export const createSubCategorie = (obj,image) => async dispatch => {
 
-//     dispatch({ type: SET_LOADING_SUBCATEGORIES });
+   dispatch({ type: SET_LOADING_SUBCATEGORIES });
 
-//     const config = {
-//         headers: {
-//            'Content-Type': 'application/json'  
-//         }
-//      };
+   const config = {
+      headers: {
+         'Content-Type': 'application/json'  
+      }
+   };
 
-//      const body = JSON.stringify({ categorie_name });
-//     try {
+   const body = JSON.stringify(obj);
 
-//       let obj = {}
-//         const res = await axios.post('/api/categories', body, config);
-//         const resImage = await axios.post(`/api/categories/image/${res.data.categorie_id}`,image);
-//         obj = res.data
-//         obj = {
-//            ...obj,
-//            categorie_image : resImage.data
-//         }
-//          dispatch({
-//             type: CREATE_CATEGORIE,
-//             payload : obj
-//          });
-//     }
-//     catch (error) {
-//        console.error(error)
-//     }
-//  }
+   try {
+
+      let newObj = {}
+
+      const res = await axios.post('/api/subcategories', body, config);
+      newObj = res.data
+
+      dispatch({
+         type: CREATE_SUBCATEGORIE,
+         payload : newObj
+      });
+
+      // Check image
+      const hasImage = image.get('image').name ? true : false;
+
+      if(hasImage){
+         const resImage = await axios.post(`/api/subcategories/image/${newObj.subcategorie_id}`,image);
+         dispatch({
+            type: SET_SUB_IMAGE,
+            payload : {
+               id : newObj.subcategorie_id,
+               image : resImage.data
+            }
+         })
+      }
+
+
+   }
+   catch (error) {
+      console.error(error)
+   }
+ }
  
 
 
-//  // DELETE Categorie
-// export const deleteCategorie = (id) => async dispatch => {
+ // DELETE SubCategorie
+export const deleteSubCategorie = (id) => async dispatch => {
    
-//     dispatch({ type: SET_LOADING_SUBCATEGORIES });
+    dispatch({ type: SET_LOADING_SUBCATEGORIES });
 
-//     try {
-//          await axios.delete(`/api/categories/${id}`);
+    try {
+         await axios.delete(`/api/subcategories/${id}`);
          
-//          dispatch({
-//              type: DELETE_CATEGORIE,
-//              payload: id
-//          });
+         dispatch({
+             type: DELETE_SUBCATEGORIE,
+             payload: id
+         });
  
-//     } catch (error) {
-//        console.error(error)
-//     }
-//  }
+    } catch (error) {
+       console.error(error)
+    }
+ }
 
-// // Get Current Categorie
-// export const getCurrentCategorie = (id) => async dispatch => {
+// Get Current SubCategorie
+export const getCurrentSubCategorie = (id) => async dispatch => {
    
-//    dispatch({ type: SET_LOADING_SUBCATEGORIES });
+   dispatch({ type: SET_LOADING_SUBCATEGORIES });
 
-//    try {
-//         const res = await axios.get(`/api/categories/${id}`);
-//         dispatch({
-//             type: GET_CURRENT_CATEGORIE,
-//             payload: res.data
-//         });
+   try {
+        const res = await axios.get(`/api/subcategories/${id}`);
+        dispatch({
+            type: GET_CURRENT_SUBCATEGORIE,
+            payload: res.data
+        });
 
-//    } catch (error) {
-//       console.error(error)
-//    }
-// }
+   } catch (error) {
+      console.error(error)
+   }
+}
 
 
-//  // Edit Categorie
-// export const editCategorie = (obj,image = null) => async dispatch => {
+ // Edit SubCategorie
+export const editSubCategorie = (obj,image = null) => async dispatch => {
 
-//    console.log(obj)
+   const config = {
+      headers: {
+         'Content-Type': 'application/json'  
+      }
+   };
+   const body = JSON.stringify(obj);
 
-//       const config = {
-//          headers: {
-//             'Content-Type': 'application/json'  
-//          }
-//       };
-//       const body = JSON.stringify(obj);
+   try {
 
-//       try {
+      let newObj = obj;
 
-//          let newObj = obj;
+      await axios.patch(`/api/subcategories/${obj.subcategorie_id}`, body, config);
 
-//          await axios.patch(`/api/categories/${obj.categorie_id}`, body, config);
+      if(image){
+         const resImage = await axios.post(`/api/subcategories/image/${obj.subcategorie_id}`,image);
+         newObj = {
+            ...newObj,
+            subcategorie_image : resImage.data
+         }
+      }
 
-//          if(image){
-//             const resImage = await axios.post(`/api/categories/image/${obj.categorie_id}`,image);
-//             newObj = {
-//                ...newObj,
-//                categorie_image : resImage.data
-//             }
-//          }
-
-//          dispatch({
-//             type: UPDATE_CATEGORIE,
-//             payload : newObj
-//          });
-//       }
-//       catch (error) {
-//          console.error(error)
-//       }
-//  }
+      dispatch({
+         type: UPDATE_SUBCATEGORIE,
+         payload : newObj
+      });
+   }
+   catch (error) {
+      console.error(error)
+   }
+ }

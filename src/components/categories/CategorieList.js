@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import ReactPaginate from 'react-paginate';
 import TableHead from '@material-ui/core/TableHead';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
@@ -27,6 +25,12 @@ const CategorieList = ({categories : {categories ,loading}}) => {
 
     const classes = useStyles();
 
+    const [dataCategories,setDataCategories] = useState(null);
+
+    useEffect(() => {
+        setDataCategories(categories);
+    }, [categories])
+
 
     return (
         <div className="list-wrapper">
@@ -49,7 +53,11 @@ const CategorieList = ({categories : {categories ,loading}}) => {
                         <TableBody>
                         {/* Categorie ITEM */}
 
-                        {categories.map((categorie,index) => <CategorieItem key={index} categorie={categorie} />)}
+                        {
+                            dataCategories ? 
+                            categories.map((categorie,index) => <CategorieItem key={index} categorie={categorie} />) : 
+                            'Loading'
+                        }
 
                         </TableBody>
                     </Table>

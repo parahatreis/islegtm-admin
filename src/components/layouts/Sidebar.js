@@ -23,9 +23,11 @@ import ViewModuleIcon from '@material-ui/icons/ViewModule';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import GroupIcon from '@material-ui/icons/Group'
 import ListAltIcon from '@material-ui/icons/ListAlt';
+import BrandingWatermarkIcon from '@material-ui/icons/BrandingWatermark';
+import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
+import StoreIcon from '@material-ui/icons/Store';
 //Components
 import Dropdown from './Dropdown';
-import AdminPanel from '../../pages/AdminRoutes';
 
 
 
@@ -211,7 +213,6 @@ export default function MiniDrawer() {
                </List>
             </Link>
             {/* Subcategories */}
-            {/* Categories */}
             <Link to="/subcategories">
                <List>
                   <ListItem button>
@@ -219,6 +220,39 @@ export default function MiniDrawer() {
                         <ViewModuleIcon />
                      </ListItemIcon>
                      <ListItemText primary="Subcategories" className={classes.linkColor} />
+                  </ListItem>
+               </List>
+            </Link>
+            {/* Brands */}
+            <Link to="/brands">
+               <List>
+                  <ListItem button>
+                     <ListItemIcon>
+                        <BrandingWatermarkIcon />
+                     </ListItemIcon>
+                     <ListItemText primary="Brands" className={classes.linkColor} />
+                  </ListItem>
+               </List>
+            </Link>
+            {/* Stores */}
+            <Link to="/stores">
+               <List>
+                  <ListItem button>
+                     <ListItemIcon>
+                        <StoreIcon />
+                     </ListItemIcon>
+                     <ListItemText primary="Stores" className={classes.linkColor} />
+                  </ListItem>
+               </List>
+            </Link>
+            {/* StoreAdmins */}
+            <Link to="/store-admin">
+               <List>
+                  <ListItem button>
+                     <ListItemIcon>
+                        <SupervisedUserCircleIcon />
+                     </ListItemIcon>
+                     <ListItemText primary="Store Admins" className={classes.linkColor} />
                   </ListItem>
                </List>
             </Link>

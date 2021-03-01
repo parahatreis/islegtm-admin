@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {Link} from 'react-router-dom';
@@ -63,16 +63,18 @@ const CategorieItem = ({deleteCategorie,categorie :{
 
     const classes = useStyles();
 
-    const [open, setOpen] = React.useState(false);
-    const [image, setImage] = React.useState(Placeholder);
-
-
+    const [open, setOpen] = useState(false);
+    const [imgUri,setImg] = useState({img : Placeholder})
 
     useEffect(() => {
       if(categorie_image){
-        setImage(imgPath(categorie_image))
+          let img  = imgPath(categorie_image);
+          setImg({img})
       }
-    }, [categorie_image])
+      else{
+          setImg({img : Placeholder})
+      }
+  }, [categorie_image])
 
 
     const handleOpen = (e) => {
@@ -91,7 +93,7 @@ const CategorieItem = ({deleteCategorie,categorie :{
             <TableCell align="left">{categorie_id.slice(0,5)} ...</TableCell>
             {/* Categorie Image */}
             <TableCell align="left">
-                <Avatar className={classes.image} src={image} variant="square"/>
+                <Avatar className={classes.image} src={imgUri.img} variant="square"/>
             </TableCell>
             {/* Categorie Name */}
             <TableCell align="left">{categorie_name}</TableCell>
@@ -137,7 +139,7 @@ const CategorieItem = ({deleteCategorie,categorie :{
                             Kategoriya pozulandan son yzyna gaydyp gelmeyar
                           </p>
                           <div className={classes.btnGroup}>
-                            <Button>
+                            <Button onClick={handleClose}>
                               Cancel
                             </Button>
                             <Button variant="contained" color="secondary"
@@ -161,6 +163,7 @@ const CategorieItem = ({deleteCategorie,categorie :{
 
 CategorieItem.propTypes = {
   deleteCategorie: PropTypes.func.isRequired,
+  categorie : PropTypes.object.isRequired,
 }
 
 export default connect(null, {
