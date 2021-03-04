@@ -1,22 +1,11 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState} from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import { InputLabel } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-import Avatar from '@material-ui/core/Avatar';
-import MenuItem from '@material-ui/core/MenuItem';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 // 
 import { createStore } from '../../actions/storesAction';
 
@@ -92,18 +81,18 @@ const AddStore = ({createStore}) => {
                     <TextField 
                         className={classes.input}
                         id="outlined-basic" 
-                        label="Store Number" 
+                        label="Store Number (Magazin nomer)" 
                         variant="outlined"
                         value={formData.store_number}
                         required
                         name="store_number"
                         onChange={(e) => onChange(e)}
                         /><br />
-                    {/* Store Phone */}
+                    {/* Store Phone Number */}
                     <TextField 
                         className={classes.input}
                         id="outlined-basic" 
-                        label="Store Phone" 
+                        label="Store Phone Number" 
                         variant="outlined"
                         value={formData.store_phone}
                         required
@@ -114,7 +103,7 @@ const AddStore = ({createStore}) => {
                     <TextField 
                         className={classes.input}
                         id="outlined-basic" 
-                        label="Store Floor" 
+                        label="Store Floor (etazh)" 
                         variant="outlined"
                         value={formData.store_floor}
                         required

@@ -5,6 +5,7 @@ import categories from './categories';
 import subcategories from './subcategories';
 import brands from './brands';
 import stores from './stores';
+import store_admins from './store_admins';
 
 export default combineReducers({
    admins,
@@ -12,5 +13,6 @@ export default combineReducers({
    categories,
    subcategories,
    brands,
-   stores
+   stores,
+   store_admins
 })

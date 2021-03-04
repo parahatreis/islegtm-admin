@@ -15,8 +15,6 @@ export const getStores = () => async dispatch => {
  
     try {
        const res = await axios.get('/api/stores');
-
-       console.log(res.data)
  
        dispatch({
           type: GET_STORES,
