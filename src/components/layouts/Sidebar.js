@@ -246,7 +246,7 @@ export default function MiniDrawer() {
                </List>
             </Link>
             {/* StoreAdmins */}
-            <Link to="/store-admin">
+            <Link to="/store-admins">
                <List>
                   <ListItem button>
                      <ListItemIcon>

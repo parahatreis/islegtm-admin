@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {Link} from 'react-router-dom';
@@ -11,13 +11,10 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import TableRow from '@material-ui/core/TableRow';
-import axios from 'axios';
-import Chip from '@material-ui/core/Chip';
-
+import axios from 'axios'
 // 
-import { deleteStore } from '../../actions/storesAction';
-import Spinner from '../layouts/Spinner';
-
+import { deleteStoreAdmin } from '../../actions/storeAdminsAction';
+import Spinner from '../layouts/Spinner'
 
 
 
@@ -56,33 +53,39 @@ const useStyles = makeStyles({
 
 
 
-const StoreItem = ({deleteStore,store :{
-    store_id,
-    store_name,
-    store_number,
-    store_phone,
-    store_description,
-    store_floor,
-    store_currency
+const StoreAdminItem = ({deleteStoreAdmin,store_admin :{
+    store_admin_id,
+    store_admin_name,
+    store_admin_phone,
+    store_admin_password,
+    store_admin_username,
+    store_id
 }}) => {
+
 
     const classes = useStyles();
     const [open, setOpen] = useState(false);
-    const [admins,setAdmins] = useState(null);
-    const [localLoading, setLocalLoading] = useState(true)
+    const [store,setStore] = useState('');
+    const [localLoading,setLocalLoading] = useState(true);
 
 
+    // check store_id
     useEffect(() => {
-      axios.get(`/api/store_admins/stores/${store_id}`)
+      axios.get(`/api/stores/${store_id}`)
             .then((res) => {
-                if (res.data) {
-                  setAdmins(res.data);
-                  setLocalLoading(false)
+                if (res.data.store_name) {
+                    setStore(res.data.store_name);
                 }
+                else if (res.data.store_name) {
+                    setStore(res.data.store_number);
+                }
+                setLocalLoading(false)
+
             })
             .catch((err) => console.error('Stores : ',err))
 
     }, [store_id])
+
 
 
     const handleOpen = (e) => {
@@ -98,25 +101,22 @@ const StoreItem = ({deleteStore,store :{
             {/* Store-Item */}
         <TableRow key="ID">
             {/* Store ID */}
-            <TableCell align="left">{store_id.slice(0,5)} ...</TableCell>
-            <TableCell align="left">{store_name}</TableCell>
-            <TableCell align="left">{store_number && store_number}</TableCell>
-            <TableCell align="left">
-            {
-                localLoading ? <Spinner/> : 
-                admins ? 
-                admins.map((data,index) => {
-                    return <Chip key={data.store_admin_id} label={data.store_admin_name} variant='outlined' />
-                }) : ""
-              }
-            </TableCell>
-            <TableCell align="left">{store_phone && store_phone}</TableCell>
-            <TableCell align="left">{store_floor && store_floor}</TableCell>
-            <TableCell align="left">{store_currency && store_currency}</TableCell>
-            <TableCell align="left">{store_description && store_description}</TableCell>
+            <TableCell align="left">{store_admin_id.slice(0,5)} ...</TableCell>
+            {/* Store Admin Name */}
+            <TableCell align="left">{store_admin_name}</TableCell>
+            {/* Store Admin UserName */}
+            <TableCell align="left">{store_admin_username && store_admin_username}</TableCell>
+            {/* Store */}
+            <TableCell align="left">{
+              localLoading ? <Spinner /> : store
+            }</TableCell>
+            {/* Store Admin Phone */}
+            <TableCell align="left">{store_admin_phone && store_admin_phone}</TableCell>
+            {/* Store Admin Password */}
+            <TableCell align="left">{store_admin_password && store_admin_password}</TableCell>
             {/* Edit */}
             <TableCell align="center">
-              <Link to={`/stores/edit-store/${store_id}`}>
+              <Link to={`/store-admins/edit-store-admin/${store_admin_id}`}>
                 <Button 
                   color="primary"
                 >
@@ -132,7 +132,7 @@ const StoreItem = ({deleteStore,store :{
                 >
                 <DeleteOutlineIcon />
                 </Button>
-                <div key={store_id}>
+                <div key={store_admin_id}>
                       <Modal
                         open={open}
                         onClose={(e) => handleClose(e)}
@@ -146,9 +146,9 @@ const StoreItem = ({deleteStore,store :{
                       <Fade in={open}
                       >
                         <div className={classes.paper}>
-                          <h3 id="transition-modal-title">Hakykatdanam shu <span style={{color : 'blue'}}>{store_name}</span> story pozmak isleyanizmi?</h3>
+                          <h3 id="transition-modal-title">Hakykatdanam shu <span style={{color : 'blue'}}>{store_admin_name}</span> store adminy pozmak isleyanizmi?</h3>
                           <p id="transition-modal-description">
-                            Store pozulandan son yzyna gaydyp gelmeyar
+                            Store Admin pozulandan son yzyna gaydyp gelmeyar
                           </p>
                           <div className={classes.btnGroup}>
                             <Button onClick={handleClose}>
@@ -156,7 +156,7 @@ const StoreItem = ({deleteStore,store :{
                             </Button>
                             <Button variant="contained" color="secondary"
                               onClick={() => {
-                                deleteStore(store_id);
+                                deleteStoreAdmin(store_admin_id);
                               }}
                             >
                               Delete
@@ -173,13 +173,13 @@ const StoreItem = ({deleteStore,store :{
     )
 }
 
-StoreItem.propTypes = {
-  deleteStore: PropTypes.func.isRequired,
-  store : PropTypes.object.isRequired,
+StoreAdminItem.propTypes = {
+  deleteStoreAdmin: PropTypes.func.isRequired,
+  store_admin : PropTypes.object.isRequired,
 }
 
 export default connect(null, {
-    deleteStore,
-})(StoreItem);
+  deleteStoreAdmin,
+})(StoreAdminItem);
 
 

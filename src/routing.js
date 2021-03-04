@@ -20,10 +20,14 @@ import EditSubCategorie from './components/subcategories/EditSubCategorie'
 import Brands from './pages/Brands';
 import AddBrand from './components/brands/AddBrand'
 import EditBrand from './components/brands/EditBrand'
-// Brands
+// Stores
 import Stores from './pages/Stores';
 import AddStore from './components/stores/AddStore'
-// import EditBrand from './components/brands/EditBrand'
+import EditStore from './components/stores/EditStore'
+// Stores
+import StoreAdmins from './pages/StoreAdmins';
+import AddStoreAdmin from './components/store-admins/AddStoreAdmin'
+import EditStoreAdmin from './components/store-admins/EditStoreAdmin'
 
 
 const publicRoutes = [
@@ -130,12 +134,31 @@ const publicRoutes = [
       component: AddStore,
       exact: true
     },
-    // {
-    //   key: "edit-store",
-    //   path: "/stores/edit-store/:id",
-    //   component: EditBrand,
-    //   exact: true
-    // }
+    {
+      key: "edit-store",
+      path: "/stores/edit-store/:id",
+      component: EditStore,
+      exact: true
+    },
+    // Store Admins
+    {
+      key: "store-admins",
+      path: "/store-admins",
+      component: StoreAdmins,
+      exact: true
+    },
+    {
+      key: "add-store-admin",
+      path: "/store-admins/add-store-admin",
+      component: AddStoreAdmin,
+      exact: true
+    },
+    {
+      key: "edit-store-admin",
+      path: "/store-admins/edit-store-admin/:id",
+      component: EditStoreAdmin,
+      exact: true
+    }
  ];
 
 
@@ -154,7 +177,10 @@ const Routing = () => {
       "/brands/add-brand","/brands/edit-brand/:id",
       // stores
       "/stores" , 
-      "/stores/add-store","/stores/edit-store/:id"
+      "/stores/add-store","/stores/edit-store/:id",
+      // stores
+      "/store-admins" , 
+      "/store-admins/add-store-admin","/store-admins/edit-store-admin/:id"
    ]
 
    return (

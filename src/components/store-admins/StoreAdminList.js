@@ -9,7 +9,7 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import { makeStyles } from '@material-ui/core/styles';
 // 
-import StoreItem from './StoreItem';
+import StoreAdminItem from './StoreAdminItem';
 import Spinner from '../layouts/Spinner'
 
 
@@ -21,7 +21,7 @@ const useStyles = makeStyles({
   });
 
 
-const StoreList = ({stores : {stores ,loading}}) => {
+const StoreAdminList = ({store_admins : {store_admins ,loading}}) => {
 
     const classes = useStyles();
 
@@ -35,13 +35,11 @@ const StoreList = ({stores : {stores ,loading}}) => {
                         <TableHead>
                         <TableRow>
                             <TableCell align="left">ID</TableCell>
-                            <TableCell align="left">Store Name</TableCell>
-                            <TableCell align="left">Store Number</TableCell>
-                            <TableCell align="left">Store Admin</TableCell>
-                            <TableCell align="left">Store Phone</TableCell>
-                            <TableCell align="left">Store Floor</TableCell>
-                            <TableCell align="left">Store Currency</TableCell>
-                            <TableCell align="left">Store Description</TableCell>
+                            <TableCell align="left">S.Admin Name</TableCell>
+                            <TableCell align="left">S.Admin Username</TableCell>
+                            <TableCell align="left">Store</TableCell>
+                            <TableCell align="left">S.Admin Phone</TableCell>
+                            <TableCell align="left">S.Admin Password</TableCell>
                             <TableCell align="center">Edit</TableCell>
                             <TableCell align="center">Delete</TableCell>
                         </TableRow>
@@ -49,7 +47,7 @@ const StoreList = ({stores : {stores ,loading}}) => {
                         <TableBody>
                         {/* Categorie ITEM */}
 
-                        {stores.map((store,index) => <StoreItem key={index} store={store} />)}
+                        {store_admins.map((store_admin,index) => <StoreAdminItem key={index} store_admin={store_admin} />)}
 
                         </TableBody>
                     </Table>
@@ -62,8 +60,8 @@ const StoreList = ({stores : {stores ,loading}}) => {
 }
 
 
-StoreList.propTypes = {
-    stores : PropTypes.object.isRequired,
+StoreAdminList.propTypes = {
+    store_admins : PropTypes.object.isRequired,
 }
 
-export default StoreList
+export default StoreAdminList
