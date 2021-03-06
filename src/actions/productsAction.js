@@ -5,7 +5,12 @@ import {
    SET_LOADING_PRODUCTS,
    PAGE_NUMBER,
    SET_SORTBY,
-   DELETE_PRODUCT
+   CREATE_PRODUCT,
+   GET_CURRENT_PRODUCT,
+   UPDATE_PRODUCT,
+   DELETE_PRODUCT,
+   SET_PRODUCT_IMAGES,
+   CHANGE_PRODUCT_STATUS
 } from './types';
 
 
@@ -41,6 +46,93 @@ export const getProducts = (page = 0, order = null ) => async dispatch => {
       console.log(error)
    }
 }
+
+
+// Create createProduct
+export const createProduct = (obj,image) => async dispatch => {
+
+   dispatch({ type: SET_LOADING_PRODUCTS });
+
+   const config = {
+      headers: {
+         'Content-Type': 'application/json'  
+      }
+   };
+   const body = JSON.stringify(obj);
+
+   try {
+
+      let newObj = {}
+
+
+      const res = await axios.post('/api/products', body, config);
+      newObj = res.data
+
+      console.log(newObj)
+
+      dispatch({
+         type: CREATE_PRODUCT,
+         payload : newObj
+      });
+
+      // Check image
+      const hasImage = image.getAll('images')[0].name ? true : false;
+
+      if(hasImage){
+         const resImage = await axios.post(`/api/products/image/${newObj.product_id}`,image);
+         dispatch({
+            type: SET_PRODUCT_IMAGES,
+            payload : {
+               id : newObj.product_id,
+               images : resImage.data
+            }
+         })
+      }
+
+
+   }
+   catch (error) {
+      console.error(error)
+   }
+ }
+
+ export const changeStatus = (id,status) => async dispatch => {
+
+   let obj = {
+      product_status : ''
+   }
+
+   dispatch({ type: SET_LOADING_PRODUCTS });
+
+   const config = {
+      headers: {
+         'Content-Type': 'application/json'  
+      }
+   };
+   
+   if(status) obj.product_status = 'true'
+   if(!status) obj.product_status = 'false'
+
+   console.log(obj)
+
+   const body = JSON.stringify(obj);
+
+   try {
+        await axios.patch(`/api/products/change_status/${id}`,body,config);
+        dispatch({
+            type: CHANGE_PRODUCT_STATUS,
+            payload: {
+               id,
+               status
+            },
+        });
+
+   } catch (error) {
+      console.error(error)
+   }
+ }
+ 
+
 
 
 // Get Products By subcategorie_id for HomeProducts

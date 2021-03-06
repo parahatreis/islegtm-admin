@@ -52,9 +52,7 @@ const AddStoreAdmin = ({createStoreAdmin}) => {
     })
     const classes = useStyles();
     const history = useHistory();
-    const [stores,setStore] = useState([{
-        store_id : '123'
-    }]);
+    const [stores,setStore] = useState(null);
 
     const onChange = (e) => setFormData({...formData, [e.target.name] : e.target.value});
 

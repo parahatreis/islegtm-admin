@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect,useState,useRef} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import TableCell from '@material-ui/core/TableCell';
@@ -13,8 +13,11 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import TableRow from '@material-ui/core/TableRow';
+import axios from 'axios';
 // 
-import { deleteProduct } from '../../actions/productsAction';
+import { deleteProduct, changeStatus } from '../../actions/productsAction';
+import Placeholder from '../../img/BG.svg';
+import imgPath from '../../utils/imgPath'
 
 
 
@@ -61,16 +64,83 @@ const ProductItem = ({product :
         price_usd,
         product_status,
         store_id,
-        subcategorie_id
+        subcategorie_id,
+        brand_id,
+        product_images
     },
-    deleteProduct
+    deleteProduct,changeStatus
 }) => {
 
 
     const classes = useStyles();
 
-    const [open, setOpen] = React.useState(false);
-    const nodeRef = React.useRef(null);
+    const [open, setOpen] = useState(false);
+    const nodeRef = useRef(null);
+    const [brand,setBrand] = useState(null);
+    const [subcategorie,setSubcategorie] = useState(null);
+    const [store,setStore] = useState(null);
+    const [image,setImage] = useState(Placeholder);
+    const [status,setStatus] = useState(false);
+
+    const changeProductStatus = () => {
+      setStatus(!status);
+      changeStatus(product_id,!product_status)
+    };
+
+    useEffect(() => {
+      setStatus(product_status);
+    }, [product_status])
+
+
+    // GET Brand
+    useEffect(() => {
+      if(brand_id){
+        axios.get(`/api/brands/${brand_id}`,{
+          params : {
+            getImage : false
+          }
+        })
+          .then((res) => {
+              if (res.data) {
+                console.log(res.data)
+                setBrand(res.data.brand_name);
+              }
+          })
+          .catch((err) => console.error('Brand: ',err))
+      }
+    }, [brand_id]);
+
+    // GET Subcategorie
+    useEffect(() => {
+      if(subcategorie_id){
+        axios.get(`/api/subcategories/${subcategorie_id}`,{
+          params : {
+            getImage : false
+          }
+        })
+          .then((res) => {
+              if (res.data) {
+                setSubcategorie(res.data.subcategorie_name);
+              }
+          })
+          .catch((err) => console.error('SubCategories: ',err))
+      }
+    }, [subcategorie_id]);
+
+    // GET Store
+    useEffect(() => {
+      if(store_id){
+        axios.get(`/api/stores/${store_id}`)
+          .then((res) => {
+              if (res.data) {
+                setStore(res.data.store_name);
+              }
+          })
+          .catch((err) => console.error('Stores: ',err))
+      }
+    }, [store_id])
+
+
 
     const handleOpen = (e) => {
         setOpen(true);
@@ -91,7 +161,7 @@ const ProductItem = ({product :
             <TableCell align="left">
                 <Avatar 
                 className={classes.image}
-                // src="/broken-image.jpg"
+                src={image}
                 variant="square" 
                 />
             </TableCell>
@@ -102,16 +172,17 @@ const ProductItem = ({product :
             {/* Price(USD) */}
             <TableCell align="left">{price_usd}</TableCell>
             {/* Brand */}
-            <TableCell align="left">Zara</TableCell>
+            <TableCell align="left">{brand && brand}</TableCell>
             {/* Subcategorie */}
-            <TableCell align="left">T-shirts</TableCell>
+            <TableCell align="left">{subcategorie && subcategorie}</TableCell>
             {/* Store No */}
-            <TableCell align="left">135</TableCell>
+            <TableCell align="left">{store && store}</TableCell>
             {/* Status */}
             <TableCell align="left">
                 <FormControlLabel
-                value="status"
-                control={<Switch color="primary" />}
+                    value="status"
+                    control={<Switch checked={status && status} color="primary" onChange={(e) => changeProductStatus()} />
+                  }
                 />
             </TableCell>
                 {/* Edit */}
@@ -179,8 +250,10 @@ const ProductItem = ({product :
 
 ProductItem.propTypes = {
   deleteProduct: PropTypes.func.isRequired,
+  changeStatus: PropTypes.func.isRequired,
 }
 
 export default connect(null, {
-  deleteProduct
+  deleteProduct,
+  changeStatus
 })(ProductItem);

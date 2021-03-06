@@ -95,7 +95,6 @@ const ProductList = ({products : {products, loading, count_products}, setPageNum
             marginPagesDisplayed={2}
             pageRangeDisplayed={5}
             initialPage={0}
-          //  forcePage = {page_number / 5}
             containerClassName={'pagination'}
             subContainerClassName={'pages pagination'}
             activeClassName={'active'}
