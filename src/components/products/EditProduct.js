@@ -15,7 +15,8 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 // 
 import Placeholder from '../../img/BG.svg'
-import { createProduct } from '../../actions/productsAction';
+import { editProduct, getCurrentProduct } from '../../actions/productsAction';
+import Spinner from '../layouts/Spinner';
 
 
 
@@ -43,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const AddProduct = ({createProduct}) => {
+const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_product,loading}}) => {
 
     const classes = useStyles();
 
@@ -58,6 +59,7 @@ const AddProduct = ({createProduct}) => {
     const [subcategories,setSubcategories] = useState(null);
     const [buffers,setBuffers] = useState([]);
     const [formData,setFormData] = useState({
+        product_id : '',
         product_name : '',
         price_tmt : '',
         price_usd : '',
@@ -68,7 +70,21 @@ const AddProduct = ({createProduct}) => {
     });
     const history = useHistory();
 
+
     const onChange = (e) => setFormData({...formData, [e.target.name] : e.target.value});
+
+    // Get current product
+    useEffect(() => {
+        getCurrentProduct(match.params.id)
+    }, [getCurrentProduct,match.params.id])
+
+
+    // Set current Product
+    useEffect(() => {
+        if(current_product){
+            setFormData(current_product)
+        }
+    }, [current_product])
 
 
     // Get all subcategories
@@ -179,14 +195,16 @@ const AddProduct = ({createProduct}) => {
             ); 
         })
         console.log(formData,fileData)
-        createProduct(formData,fileData);
+        editProduct(formData,fileData);
         return history.push('/products')
     }
 
 
 
     return (
-        <section className="add-product-section container">
+        <>
+        {loading ? <Spinner /> : 
+            <section className="add-product-section container">
             <Typography variant="h4" component="h2">
                Add Product
             </Typography>
@@ -341,14 +359,24 @@ const AddProduct = ({createProduct}) => {
                 </form>
             </div>
         </section>
+        }
+        </>
     )
 }
 
 
-AddProduct.propTypes = {
-    createProduct: PropTypes.func.isRequired,
+EditProduct.propTypes = {
+    getCurrentProduct: PropTypes.func.isRequired,
+    editProduct: PropTypes.func.isRequired,
+    products : PropTypes.object.isRequired,
 }
 
-export default connect(null, {
-    createProduct
-  })(AddProduct);
+
+const mapStateToProps = (state) => ({
+    products : state.products
+})
+
+export default connect(mapStateToProps, {
+    getCurrentProduct,
+    editProduct
+  })(EditProduct);

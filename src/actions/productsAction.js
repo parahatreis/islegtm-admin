@@ -18,20 +18,24 @@ import {
 // Get Products
 export const getProducts = (page = 0, order = null ) => async dispatch => {
 
-   let sortBy = 'createdAt:desc';
+   let sortBy = 'updatedAt:DESC';
 
-   if (order) sortBy = order
+   if (order !== null) sortBy = order
+
+   console.log(sortBy)
 
    
    dispatch({ type: SET_LOADING_PRODUCTS });
    try {
         const res = await axios.get(`/api/products`, {
             params: {
-            page,
-            limit: 10,
-            sortBy,
+               page,
+               limit: 10,
+               sortBy,
             }
         });
+
+        console.log(res.data)
 
         dispatch({
             type: COUNT_PRODUCTS,
@@ -43,7 +47,7 @@ export const getProducts = (page = 0, order = null ) => async dispatch => {
         });
 
    } catch (error) {
-      console.log(error)
+      console.error('PRODUCTS',error)
    }
 }
 
@@ -96,7 +100,78 @@ export const createProduct = (obj,image) => async dispatch => {
    }
  }
 
- export const changeStatus = (id,status) => async dispatch => {
+// Get Current Product
+export const getCurrentProduct = (id) => async dispatch => {
+   
+   dispatch({ type: SET_LOADING_PRODUCTS });
+
+   try {
+        const res = await axios.get(`/api/products/${id}`);
+
+        dispatch({
+            type: GET_CURRENT_PRODUCT,
+            payload: res.data
+        });
+
+   } catch (error) {
+      console.error(error)
+   }
+}
+
+
+// Update Product
+export const editProduct = (obj,image) => async dispatch => {
+
+   dispatch({ type: SET_LOADING_PRODUCTS });
+
+   const config = {
+      headers: {
+         'Content-Type': 'application/json'  
+      }
+   };
+   const body = JSON.stringify(obj);
+
+   console.log(obj,image)
+
+   try {
+
+
+      await axios.patch(`/api/products/${obj.product_id}`, body, config);
+
+
+      dispatch({
+         type: UPDATE_PRODUCT,
+         payload : obj
+      });
+
+      // Check image
+      const hasImage = image.getAll('images')[0].name ? true : false;
+
+      if(hasImage){
+         const resImage = await axios.post(`/api/products/image/${obj.product_id}`,image);
+
+         console.log(resImage.data)
+
+         dispatch({
+            type: SET_PRODUCT_IMAGES,
+            payload : {
+               id : obj.product_id,
+               images : resImage.data
+            }
+         })
+      }
+
+
+   }
+   catch (error) {
+      console.error('UPDATE PRODUCTS --',error)
+   }
+ }
+
+
+
+//  Change Product Status
+export const changeStatus = (id,status) => async dispatch => {
 
    let obj = {
       product_status : ''

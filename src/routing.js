@@ -8,6 +8,7 @@ import SideBar from './components/layouts/Sidebar'
 // products
 import Products from './pages/Products'
 import AddProduct from './components/products/AddProduct'
+import EditProduct from './components/products/EditProduct'
 // categories
 import Categories from './pages/Categories';
 import AddCategorie from './components/categories/AddCategorie'
@@ -64,6 +65,12 @@ const publicRoutes = [
      component: AddProduct,
      exact: true
    },
+   {
+    key: "edit-product",
+    path: "/products/edit-product/:id",
+    component: EditProduct,
+    exact: true
+  },
   //  categories
    {
       key: "categories",
@@ -166,7 +173,7 @@ const Routing = () => {
 
    const privateArray = [
     //  product
-      "/", "/products", "/products/add-product",
+      "/", "/products", "/products/add-product","/products/edit-product/:id",
       // categories
       "/categories" , "/categories/add-categorie","/categories/edit-categorie/:id",
       // subcatrgories

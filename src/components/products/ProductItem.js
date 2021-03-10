@@ -82,6 +82,14 @@ const ProductItem = ({product :
     const [image,setImage] = useState(Placeholder);
     const [status,setStatus] = useState(false);
 
+    useEffect(() => {
+      if(product_images){
+        if(product_images[0]){
+          setImage(imgPath(product_images[0]))
+        }
+      }
+    }, [product_images])
+
     const changeProductStatus = () => {
       setStatus(!status);
       changeStatus(product_id,!product_status)
@@ -102,7 +110,6 @@ const ProductItem = ({product :
         })
           .then((res) => {
               if (res.data) {
-                console.log(res.data)
                 setBrand(res.data.brand_name);
               }
           })
@@ -189,7 +196,7 @@ const ProductItem = ({product :
                 <TableCell align="left">
                 <Button 
                 color="primary"
-                href="#edit"
+                href={`/products/edit-product/${product_id}`}
                 >
                 <EditIcon />
                 </Button>
