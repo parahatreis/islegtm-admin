@@ -57,7 +57,8 @@ const useStyles = makeStyles({
 const CategorieItem = ({deleteCategorie,categorie :{
     categorie_id,
     categorie_image,
-    categorie_name
+    categorie_name,
+    subcategories
 }}) => {
 
 
@@ -100,7 +101,7 @@ const CategorieItem = ({deleteCategorie,categorie :{
             {/* Product Number */}
             <TableCell align="left">1542</TableCell>
             {/* Subcategorie Number */}
-            <TableCell align="left">5</TableCell>
+            <TableCell align="left">{subcategories && subcategories.length}</TableCell>
             {/* Edit */}
             <TableCell align="center">
               <Link to={`/categories/edit-categorie/${categorie_id}`}>

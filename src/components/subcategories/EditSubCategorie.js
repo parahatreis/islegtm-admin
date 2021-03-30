@@ -59,7 +59,7 @@ const EditSubCategorie = ({getCurrentSubCategorie,match,subcategories : {current
     
     const [formData,setFormData] = useState({
         subcategorie_name : '',
-        categorie_id : '',
+        categorieId : '',
         hasSize : false,
         hasColor : false,
         sizeType : '',
@@ -73,11 +73,7 @@ const EditSubCategorie = ({getCurrentSubCategorie,match,subcategories : {current
 
     // GET ALL Categories
     useEffect(() => {
-        axios.get(`/api/categories`, {
-            params: {
-               getImage: 0
-            }
-         })
+        axios.get('/v1/categories')
             .then((res) => {
                 if (res.data) {
                     setCategories(res.data);
@@ -94,13 +90,20 @@ const EditSubCategorie = ({getCurrentSubCategorie,match,subcategories : {current
     }, [getCurrentSubCategorie,match.params.id])
 
     useEffect(() => {
-        setFormData(current_subcategorie)
-        if(current_subcategorie.subcategorie_image){
-            let img  = imgPath(current_subcategorie.subcategorie_image);
-            setImg({img})
-        }
-        else{
-            setImg({img : Placeholder})
+        if(current_subcategorie){
+            console.log(current_subcategorie);
+            console.log(current_subcategorie.categorie)
+            setFormData({
+                ...current_subcategorie,
+                categorieId: current_subcategorie.categorie.categorie_id
+            })
+            if(current_subcategorie.subcategorie_image){
+                let img  = imgPath(current_subcategorie.subcategorie_image);
+                setImg({img})
+            }
+            else{
+                setImg({img : Placeholder})
+            }
         }
     }, [current_subcategorie])
 
@@ -141,7 +144,7 @@ const EditSubCategorie = ({getCurrentSubCategorie,match,subcategories : {current
             buffer, 
         ); 
         editSubCategorie(formData,fileData);
-        return history.push('/subcategories')
+        // return history.push('/subcategories')
     }
 
     return (
@@ -170,10 +173,10 @@ const EditSubCategorie = ({getCurrentSubCategorie,match,subcategories : {current
                                 id="outlined-select-currency"
                                 select
                                 label="Categorie Name"
-                                value={formData.categorie_id}
+                                value={formData.categorieId}
                                 onChange={(e) => onChange(e)}
                                 variant="outlined"
-                                name="categorie_id"
+                                name="categorieId"
                             >
                                 {
                                     categories && 

@@ -3,10 +3,10 @@ import {
     GET_SUBCATEGORIES,
     SET_LOADING_SUBCATEGORIES,
     CREATE_SUBCATEGORIE,
-    SET_SUB_IMAGE,
+   //  SET_SUB_IMAGE,
     DELETE_SUBCATEGORIE,
     GET_CURRENT_SUBCATEGORIE,
-    UPDATE_SUBCATEGORIE
+   //  UPDATE_SUBCATEGORIE
 } from './types';
 
 
@@ -16,7 +16,7 @@ export const getSubCategories = () => async dispatch => {
    dispatch({ type: SET_LOADING_SUBCATEGORIES });
 
    try {
-      const res = await axios.get('/api/subcategories');
+      const res = await axios.get('/v1/subcategories');
 
       dispatch({
          type: GET_SUBCATEGORIES,
@@ -47,7 +47,7 @@ export const createSubCategorie = (obj,image) => async dispatch => {
 
       let newObj = {}
 
-      const res = await axios.post('/api/subcategories', body, config);
+      const res = await axios.post('/v1/subcategories', body, config);
       newObj = res.data
 
       dispatch({
@@ -59,16 +59,10 @@ export const createSubCategorie = (obj,image) => async dispatch => {
       const hasImage = image.get('image').name ? true : false;
 
       if(hasImage){
-         const resImage = await axios.post(`/api/subcategories/image/${newObj.subcategorie_id}`,image);
-         dispatch({
-            type: SET_SUB_IMAGE,
-            payload : {
-               id : newObj.subcategorie_id,
-               image : resImage.data
-            }
-         })
+         await axios.post(`/v1/subcategories/image/${newObj.subcategorie_id}`,image);
       }
 
+      return window.location.href = '/subcategories'
 
    }
    catch (error) {
@@ -84,7 +78,7 @@ export const deleteSubCategorie = (id) => async dispatch => {
     dispatch({ type: SET_LOADING_SUBCATEGORIES });
 
     try {
-         await axios.delete(`/api/subcategories/${id}`);
+         await axios.delete(`/v1/subcategories/${id}`);
          
          dispatch({
              type: DELETE_SUBCATEGORIE,
@@ -102,7 +96,7 @@ export const getCurrentSubCategorie = (id) => async dispatch => {
    dispatch({ type: SET_LOADING_SUBCATEGORIES });
 
    try {
-        const res = await axios.get(`/api/subcategories/${id}`);
+        const res = await axios.get(`/v1/subcategories/${id}`);
         dispatch({
             type: GET_CURRENT_SUBCATEGORIE,
             payload: res.data
@@ -128,20 +122,16 @@ export const editSubCategorie = (obj,image = null) => async dispatch => {
 
       let newObj = obj;
 
-      await axios.patch(`/api/subcategories/${obj.subcategorie_id}`, body, config);
+      await axios.patch(`/v1/subcategories/${obj.subcategorie_id}`, body, config);
 
-      if(image){
-         const resImage = await axios.post(`/api/subcategories/image/${obj.subcategorie_id}`,image);
-         newObj = {
-            ...newObj,
-            subcategorie_image : resImage.data
-         }
+      // Check image
+      const hasImage = image.get('image').name ? true : false;
+
+      if(hasImage){
+         await axios.post(`/v1/subcategories/image/${newObj.subcategorie_id}`,image);
       }
+      return window.location.href = '/subcategories'
 
-      dispatch({
-         type: UPDATE_SUBCATEGORIE,
-         payload : newObj
-      });
    }
    catch (error) {
       console.error(error)

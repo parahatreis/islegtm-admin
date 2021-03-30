@@ -57,7 +57,7 @@ const AddSubCategorie = ({createSubCategorie}) => {
     
     const [formData,setFormData] = useState({
         subcategorie_name : '',
-        categorie_id : '',
+        categorieId : '',
         hasSize : false,
         hasColor : false,
         sizeType : '',
@@ -71,7 +71,7 @@ const AddSubCategorie = ({createSubCategorie}) => {
 
     // GET ALL Categories
     useEffect(() => {
-        axios.get(`/api/categories`, {
+        axios.get(`/v1/categories`, {
             params: {
                getImage: 0
             }
@@ -86,7 +86,10 @@ const AddSubCategorie = ({createSubCategorie}) => {
     }, [])
 
 
-    const onChange = (e) => setFormData({...formData, [e.target.name] : e.target.value});
+    const onChange = (e) => {
+        setFormData({...formData, [e.target.name] : e.target.value});
+        console.log(formData)
+    };
 
     const changeCheckbox = (e) => setFormData({...formData, [e.target.name] : e.target.checked})
 
@@ -122,7 +125,7 @@ const AddSubCategorie = ({createSubCategorie}) => {
             buffer, 
         ); 
         createSubCategorie(formData,fileData);
-        return history.push('/subcategories')
+        // return history.push('/subcategories')
     }
 
     return (
@@ -152,7 +155,7 @@ const AddSubCategorie = ({createSubCategorie}) => {
                             value={formData.categorie_name}
                             onChange={(e) => onChange(e)}
                             variant="outlined"
-                            name="categorie_id"
+                            name="categorieId"
                         >
                             {
                                 categories && 

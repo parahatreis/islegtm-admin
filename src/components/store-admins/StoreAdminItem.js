@@ -57,36 +57,13 @@ const StoreAdminItem = ({deleteStoreAdmin,store_admin :{
     store_admin_id,
     store_admin_name,
     store_admin_phone,
-    store_admin_password,
     store_admin_username,
-    store_id
+    store
 }}) => {
 
 
     const classes = useStyles();
     const [open, setOpen] = useState(false);
-    const [store,setStore] = useState('');
-    const [localLoading,setLocalLoading] = useState(true);
-
-
-    // check store_id
-    useEffect(() => {
-      axios.get(`/api/stores/${store_id}`)
-            .then((res) => {
-                if (res.data.store_name) {
-                    setStore(res.data.store_name);
-                }
-                else if (res.data.store_name) {
-                    setStore(res.data.store_number);
-                }
-                setLocalLoading(false)
-
-            })
-            .catch((err) => console.error('Stores : ',err))
-
-    }, [store_id])
-
-
 
     const handleOpen = (e) => {
         setOpen(true);
@@ -101,19 +78,19 @@ const StoreAdminItem = ({deleteStoreAdmin,store_admin :{
             {/* Store-Item */}
         <TableRow key="ID">
             {/* Store ID */}
-            <TableCell align="left">{store_admin_id.slice(0,5)} ...</TableCell>
+            <TableCell align="left">{store_admin_id && store_admin_id.slice(0,5)} ...</TableCell>
             {/* Store Admin Name */}
             <TableCell align="left">{store_admin_name}</TableCell>
             {/* Store Admin UserName */}
             <TableCell align="left">{store_admin_username && store_admin_username}</TableCell>
             {/* Store */}
             <TableCell align="left">{
-              localLoading ? <Spinner /> : store
+              store && store.store_name
             }</TableCell>
             {/* Store Admin Phone */}
             <TableCell align="left">{store_admin_phone && store_admin_phone}</TableCell>
             {/* Store Admin Password */}
-            <TableCell align="left">{store_admin_password && store_admin_password}</TableCell>
+            {/* <TableCell align="left">{store_admin_password && store_admin_password}</TableCell> */}
             {/* Edit */}
             <TableCell align="center">
               <Link to={`/store-admins/edit-store-admin/${store_admin_id}`}>

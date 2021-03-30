@@ -60,10 +60,11 @@ const SubCategorieItem = ({deleteSubCategorie,subcategorie :{
     subcategorie_id,
     subcategorie_image,
     subcategorie_name,
-    categorie_id,
     hasSize,
     hasColor,
-    sizeType
+    sizeType,
+    categorie,
+    products
 }}) => {
 
 
@@ -71,32 +72,12 @@ const SubCategorieItem = ({deleteSubCategorie,subcategorie :{
 
     const [open, setOpen] = useState(false);
     const [image, setImage] = useState(Placeholder);
-    const [localLoading, setLocalLoading] = useState(true)
-    const [categorie,setCategorie] = useState(null);
-
-
 
     useEffect(() => {
       if(subcategorie_image){
-        setImage(imgPath(subcategorie_image))
+        setImage(subcategorie_image)
       }
     }, [subcategorie_image])
-
-
-
-    // GET Categorie Name
-    useEffect(() => {
-      if(categorie_id){
-        axios.get(`api/categories/${categorie_id}`)
-          .then((res) => {
-             if (res.data) {
-                  setLocalLoading(false)
-                 setCategorie(res.data.categorie_name);
-             }
-          })
-          .catch((err) => console.error('Categories: ',err))
-      }
-  }, [categorie_id])
 
 
     const handleOpen = (e) => {
@@ -120,9 +101,9 @@ const SubCategorieItem = ({deleteSubCategorie,subcategorie :{
             {/* SubCategorie Name */}
             <TableCell align="left">{subcategorie_name}</TableCell>
             {/* Categorie Name */}
-            <TableCell align="left">{localLoading ? <Spinner /> : categorie && categorie}</TableCell>
+            <TableCell align="left">{categorie && categorie.categorie_name}</TableCell>
             {/* Product Number */}
-            <TableCell align="left">5</TableCell>
+            <TableCell align="left">{products && products.length } </TableCell>
             {/* hasSize */}
             <TableCell align="left">{ String(hasSize) }</TableCell>
             {/* hasColor */}

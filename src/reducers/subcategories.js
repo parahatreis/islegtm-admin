@@ -11,7 +11,7 @@ import {
  
  const initialState = {
     subcategories: [],
-    current_subcategorie : {},
+    current_subcategorie : null,
     loading : false
  }
  

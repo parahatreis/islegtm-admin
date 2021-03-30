@@ -39,7 +39,7 @@ const StoreAdminList = ({store_admins : {store_admins ,loading}}) => {
                             <TableCell align="left">S.Admin Username</TableCell>
                             <TableCell align="left">Store</TableCell>
                             <TableCell align="left">S.Admin Phone</TableCell>
-                            <TableCell align="left">S.Admin Password</TableCell>
+                            {/* <TableCell align="left">S.Admin Password</TableCell> */}
                             <TableCell align="center">Edit</TableCell>
                             <TableCell align="center">Delete</TableCell>
                         </TableRow>

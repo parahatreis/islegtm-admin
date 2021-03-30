@@ -27,7 +27,7 @@ export const getProducts = (page = 0, order = null ) => async dispatch => {
    
    dispatch({ type: SET_LOADING_PRODUCTS });
    try {
-        const res = await axios.get(`/api/products`, {
+        const res = await axios.get(`/v1/products`, {
             params: {
                page,
                limit: 10,
@@ -69,7 +69,7 @@ export const createProduct = (obj,image) => async dispatch => {
       let newObj = {}
 
 
-      const res = await axios.post('/api/products', body, config);
+      const res = await axios.post('/v1/products', body, config);
       newObj = res.data
 
       console.log(newObj)
@@ -83,7 +83,7 @@ export const createProduct = (obj,image) => async dispatch => {
       const hasImage = image.getAll('images')[0].name ? true : false;
 
       if(hasImage){
-         const resImage = await axios.post(`/api/products/image/${newObj.product_id}`,image);
+         const resImage = await axios.post(`/v1/products/image/${newObj.product_id}`,image);
          dispatch({
             type: SET_PRODUCT_IMAGES,
             payload : {
@@ -106,7 +106,7 @@ export const getCurrentProduct = (id) => async dispatch => {
    dispatch({ type: SET_LOADING_PRODUCTS });
 
    try {
-        const res = await axios.get(`/api/products/${id}`);
+        const res = await axios.get(`/v1/products/${id}`);
 
         dispatch({
             type: GET_CURRENT_PRODUCT,
@@ -136,7 +136,7 @@ export const editProduct = (obj,image) => async dispatch => {
    try {
 
 
-      await axios.patch(`/api/products/${obj.product_id}`, body, config);
+      await axios.patch(`/v1/products/${obj.product_id}`, body, config);
 
 
       dispatch({
@@ -148,7 +148,7 @@ export const editProduct = (obj,image) => async dispatch => {
       const hasImage = image.getAll('images')[0].name ? true : false;
 
       if(hasImage){
-         const resImage = await axios.post(`/api/products/image/${obj.product_id}`,image);
+         const resImage = await axios.post(`/v1/products/image/${obj.product_id}`,image);
 
          console.log(resImage.data)
 
@@ -193,7 +193,7 @@ export const changeStatus = (id,status) => async dispatch => {
    const body = JSON.stringify(obj);
 
    try {
-        await axios.patch(`/api/products/change_status/${id}`,body,config);
+        await axios.patch(`/v1/products/change_status/${id}`,body,config);
         dispatch({
             type: CHANGE_PRODUCT_STATUS,
             payload: {
@@ -222,7 +222,7 @@ export const changeStatus = (id,status) => async dispatch => {
 //    });
 
 //    try {
-//       const res = await axios.get(`/api/products/search`, {
+//       const res = await axios.get(`/v1/products/search`, {
 //          params: {
 //             search: data,
 //             page,
@@ -254,7 +254,7 @@ export const changeStatus = (id,status) => async dispatch => {
 
 
 //    try {
-//       const res = await axios.get(`/api/products/${id}`);
+//       const res = await axios.get(`/v1/products/${id}`);
 
 //       dispatch({
 //          type: CURRENT_PRODUCT,
@@ -272,7 +272,7 @@ export const deleteProduct = (id) => async dispatch => {
    
    dispatch({ type: SET_LOADING_PRODUCTS });
    try {
-        await axios.delete(`/api/products/${id}`);
+        await axios.delete(`/v1/products/${id}`);
         dispatch({
             type: DELETE_PRODUCT,
             payload: id

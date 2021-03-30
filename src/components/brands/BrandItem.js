@@ -69,35 +69,14 @@ const BrandItem = ({deletBrand,brand :{
 
     const [open, setOpen] = useState(false);
     const [image, setImage] = useState(Placeholder);
-    const [localLoading, setLocalLoading] = useState(true)
-    const [subcategorieData,setSubcategorieData] = useState(null);
 
 
 
     useEffect(() => {
       if(brand_image){
-        setImage(imgPath(brand_image))
+        setImage(brand_image)
       }
     }, [brand_image])
-
-
-    // GET Categorie Name
-    useEffect(() => {
-      if(brand_id){
-        axios.get(`/api/subcategories`,{
-          params : {
-            getImage : false
-          }
-        })
-          .then((res) => {
-             if (res.data) {
-                setLocalLoading(false)
-                setSubcategorieData(res.data);
-             }
-          })
-          .catch((err) => console.error('Categories: ',err))
-      }
-  }, [brand_id])
 
 
     const handleOpen = (e) => {
@@ -123,12 +102,10 @@ const BrandItem = ({deletBrand,brand :{
             {/* SubCategories */}
             <TableCell align="left">
               {
-                localLoading ? <Spinner/> : 
-                subcategories && subcategorieData ? 
+                subcategories && subcategories.length > 0 ? 
                 subcategories.map((data,index) => {
                     if(index < 3){
-                      const myData = subcategorieData.find((val) => val.subcategorie_id === data.subcategorie_id);
-                      return <Chip key={myData.subcategorie_id} label={myData.subcategorie_name} variant='outlined' />
+                      return <Chip key={data.subcategorie_id} label={data.subcategorie_name} variant='outlined' />
                     }
                 }) : ""
               }

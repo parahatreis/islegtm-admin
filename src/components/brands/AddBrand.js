@@ -66,13 +66,14 @@ const AddBrand = ({createBrand}) => {
 
     // GET ALL SubCategories
     useEffect(() => {
-        axios.get(`/api/subcategories`, {
+        axios.get(`/v1/subcategories`, {
             params: {
                getImage: false
             }
          })
             .then((res) => {
                 if (res.data) {
+                    console.log(res.data)
                     setSubCategories(res.data);
                 }
             })
@@ -131,7 +132,7 @@ const AddBrand = ({createBrand}) => {
         ); 
         console.log(formData,fileData)
         createBrand(formData,fileData);
-        return history.push('/brands')
+        // return history.push('/brands')
     }
 
     return (

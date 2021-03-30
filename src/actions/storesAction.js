@@ -5,7 +5,7 @@ import {
     DELETE_STORE,
     CREATE_STORE,
     GET_CURRENT_STORE,
-    UPDATE_STORE,
+   //  UPDATE_STORE,
 } from './types';
 
 // GET ALL Stores
@@ -14,12 +14,14 @@ export const getStores = () => async dispatch => {
     dispatch({ type: SET_LOADING_STORES });
  
     try {
-       const res = await axios.get('/api/stores');
+       const res = await axios.get('/v1/stores');
  
        dispatch({
           type: GET_STORES,
           payload : res.data
        })
+
+       console.log(res.data)
     }
     catch (error) {
        console.error(error)
@@ -40,12 +42,13 @@ export const createStore = (obj) => async dispatch => {
     const body = JSON.stringify(obj);
  
     try {
-       const res = await axios.post('/api/stores', body, config);
+       const res = await axios.post('/v1/stores', body, config);
  
        dispatch({
           type: CREATE_STORE,
           payload : res.data
        });
+       return window.location.href = '/stores'
     }
     catch (error) {
        console.error(error)
@@ -58,7 +61,7 @@ export const deleteStore = (id) => async dispatch => {
     dispatch({ type: SET_LOADING_STORES });
 
     try {
-         await axios.delete(`/api/stores/${id}`);
+         await axios.delete(`/v1/stores/${id}`);
          
          dispatch({
              type: DELETE_STORE,
@@ -77,7 +80,7 @@ export const getCurrentStore = (id) => async dispatch => {
     dispatch({ type: SET_LOADING_STORES });
  
     try {
-         const res = await axios.get(`/api/stores/${id}`);
+         const res = await axios.get(`/v1/stores/${id}`);
  
          dispatch({
              type: GET_CURRENT_STORE,
@@ -102,12 +105,10 @@ export const getCurrentStore = (id) => async dispatch => {
  
      try {
 
-         await axios.patch(`/api/stores/${obj.store_id}`, body, config);
+         await axios.patch(`/v1/stores/${obj.store_id}`, body, config);
  
-         dispatch({
-         type: UPDATE_STORE,
-         payload : obj
-         });
+         return window.location.href = '/stores'
+
      }
      catch (error) {
          console.error(error)

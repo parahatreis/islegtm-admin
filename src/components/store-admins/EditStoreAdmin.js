@@ -50,19 +50,16 @@ const EditStoreAdmin = ({editStoreAdmin,getCurrentStoreAdmin, store_admins : {cu
         store_admin_phone : '',
         store_admin_password : '',
         store_admin_username : '',
-        store_id : '',
+        storeId : '',
     })
     const classes = useStyles();
-    const history = useHistory();
-    const [stores,setStore] = useState([{
-        store_id : '123'
-    }]);
+    const [stores,setStore] = useState([]);
 
     const onChange = (e) => setFormData({...formData, [e.target.name] : e.target.value});
 
 
     useEffect(() => {
-        axios.get(`/api/stores`)
+        axios.get(`/v1/stores`)
             .then((res) => {
                 if (res.data) {
                     setStore(res.data);
@@ -75,12 +72,17 @@ const EditStoreAdmin = ({editStoreAdmin,getCurrentStoreAdmin, store_admins : {cu
 
     // GET current
     useEffect(() => {
-        getCurrentStoreAdmin(match.params.id)
-    }, [getCurrentStoreAdmin,match])
+        getCurrentStoreAdmin(match.params.id);
+        window.scrollTo(0, 0);
+
+    }, [getCurrentStoreAdmin,match.params.id])
 
     useEffect(() => {
         if(current_store_admin){
-            setFormData(current_store_admin)
+            setFormData({
+                ...current_store_admin,
+                storeId : current_store_admin.store.store_id
+            });
         }
     }, [current_store_admin])
 
@@ -88,7 +90,6 @@ const EditStoreAdmin = ({editStoreAdmin,getCurrentStoreAdmin, store_admins : {cu
     const onSubmit = (e) => {
         e.preventDefault();
         editStoreAdmin(formData);
-        return history.push('/store-admins')
     }
 
     return (
@@ -96,7 +97,7 @@ const EditStoreAdmin = ({editStoreAdmin,getCurrentStoreAdmin, store_admins : {cu
             {loading ? <Spinner /> : 
                 <section className="add-product-section container">
                 <Typography variant="h4" component="h2">
-                Add Store
+                Edit Store Admin
                 </Typography>
                 <div className="form-block"> 
                     <form className={classes.root} noValidate autoComplete="off" onSubmit={(e) => onSubmit(e)}>
@@ -140,10 +141,10 @@ const EditStoreAdmin = ({editStoreAdmin,getCurrentStoreAdmin, store_admins : {cu
                                 id="outlined-select-currency"
                                 select
                                 label="Store"
-                                value={formData.store_id}
+                                value={formData.storeId}
                                 onChange={(e) => onChange(e)}
                                 variant="outlined"
-                                name="store_id"
+                                name="storeId"
                             >
                                 {
                                     stores && stores.length > 0 ?
@@ -167,7 +168,7 @@ const EditStoreAdmin = ({editStoreAdmin,getCurrentStoreAdmin, store_admins : {cu
                             /><br />
                             
                         <Button variant="contained" color="primary" type='submit'>
-                            Create Store
+                            Update Store
                         </Button>
                     </form>
                 </div>

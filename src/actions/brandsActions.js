@@ -3,10 +3,8 @@ import {
     GET_BRANDS,
     SET_LOADING_BRANDS,
     CREATE_BRAND,
-    SET_BRN_IMAGE,
     DELETE_BRAND,
     GET_CURRENT_BRAND,
-    UPDATE_BRAND
 } from './types';
 
 
@@ -16,7 +14,11 @@ export const getBrands = () => async dispatch => {
    dispatch({ type: SET_LOADING_BRANDS });
 
    try {
-      const res = await axios.get('/api/brands');
+      const res = await axios.get('/v1/brands',{
+         params : {
+            subcategories : true
+         }
+      });
 
       dispatch({
          type: GET_BRANDS,
@@ -34,23 +36,28 @@ export const createBrand = (obj,image) => async dispatch => {
 
    dispatch({ type: SET_LOADING_BRANDS });
 
+   let subcats = [];
+
    const config = {
       headers: {
          'Content-Type': 'application/json'  
       }
    };
 
-   // obj.subcategories.forEach((sub) => {
-   //    return delete sub.subcategorie_name
-   // });
+   if(obj.subcategories && obj.subcategories.length > 0){
+      obj.subcategories.forEach((sub) => subcats.push(sub.subcategorie_id));
+   } 
 
-   const body = JSON.stringify(obj);
+   const body = JSON.stringify({
+      brand_name : obj.brand_name,
+      subcategories : subcats
+   });
 
    try {
 
       let newObj = {}
 
-      const res = await axios.post('/api/brands', body, config);
+      const res = await axios.post('/v1/brands', body, config);
       newObj = res.data
 
       dispatch({
@@ -62,16 +69,10 @@ export const createBrand = (obj,image) => async dispatch => {
       const hasImage = image.get('image').name ? true : false;
 
       if(hasImage){
-         const resImage = await axios.post(`/api/brands/image/${newObj.brand_id}`,image);
-         dispatch({
-            type: SET_BRN_IMAGE,
-            payload : {
-               id : newObj.brand_id,
-               image : resImage.data
-            }
-         })
+         await axios.post(`/v1/brands/image/${newObj.brand_id}`,image);
       }
 
+      return window.location.href = '/brands'
 
    }
    catch (error) {
@@ -87,7 +88,7 @@ export const deletBrand = (id) => async dispatch => {
     dispatch({ type: SET_LOADING_BRANDS });
 
     try {
-         await axios.delete(`/api/brands/${id}`);
+         await axios.delete(`/v1/brands/${id}`);
          
          dispatch({
              type: DELETE_BRAND,
@@ -105,7 +106,7 @@ export const getCurrentBrand = (id) => async dispatch => {
    dispatch({ type: SET_LOADING_BRANDS });
 
    try {
-        const res = await axios.get(`/api/brands/${id}`);
+        const res = await axios.get(`/v1/brands/${id}`);
 
         dispatch({
             type: GET_CURRENT_BRAND,
@@ -121,33 +122,36 @@ export const getCurrentBrand = (id) => async dispatch => {
  // Edit Brand
 export const editBrand = (obj,image = null) => async dispatch => {
 
-    const config = {
-        headers: {
-        'Content-Type': 'application/json'  
-        }
-    };
-    const body = JSON.stringify(obj);
+   let subcats = []; 
+   const config = {
+      headers: {
+      'Content-Type': 'application/json'  
+      }
+   };
 
-    try {
+   if(obj.subcategories && obj.subcategories.length > 0){
+      obj.subcategories.forEach((sub) => subcats.push(sub.subcategorie_id));
+   } 
 
-        let newObj = obj;
+   const body = JSON.stringify({
+      brand_name : obj.brand_name,
+      subcategories : subcats
+   });
 
-        await axios.patch(`/api/brands/${obj.brand_id}`, body, config);
+   try {
+      await axios.patch(`/v1/brands/${obj.brand_id}`, body, config);
 
-        if(image){
-        const resImage = await axios.post(`/api/brands/image/${obj.brand_id}`,image);
-        newObj = {
-            ...newObj,
-            brand_image : resImage.data
-        }
-        }
+      // Check image
+      const hasImage = image.get('image').name ? true : false;
 
-        dispatch({
-            type: UPDATE_BRAND,
-            payload : newObj
-        });
-    }
-    catch (error) {
-        console.error(error)
-    }
+      if(hasImage){
+         await axios.post(`/v1/brands/image/${obj.brand_id}`,image);
+      }
+
+      return window.location.href = '/brands'
+
+   }
+   catch (error) {
+      console.error(error)
+   }
  }

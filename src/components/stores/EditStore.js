@@ -50,7 +50,6 @@ const EditStore = ({editStore,getCurrentStore,match, stores : {current_store, lo
         store_currency : '',
     })
     const classes = useStyles();
-    const history = useHistory();
 
     const onChange = (e) => setFormData({...formData, [e.target.name] : e.target.value});
 
@@ -69,7 +68,6 @@ const EditStore = ({editStore,getCurrentStore,match, stores : {current_store, lo
     const onSubmit = (e) => {
         e.preventDefault();
         editStore(formData);
-        return history.push('/stores')
     }
 
     return (

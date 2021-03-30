@@ -5,7 +5,7 @@ import {
     DELETE_STORE_ADMIN,
     CREATE_STORE_ADMIN,
     GET_CURRENT_STORE_ADMIN,
-    UPDATE_STORE_ADMIN,
+   //  UPDATE_STORE_ADMIN,
 } from './types';
 
 // GET ALL StoreAdmins
@@ -14,7 +14,7 @@ export const getStoreAdmins = () => async dispatch => {
     dispatch({ type: SET_LOADING_STORE_ADMINS });
  
     try {
-       const res = await axios.get('/api/store_admins');
+       const res = await axios.get('/v1/store_admins');
  
        dispatch({
           type: GET_STORE_ADMINS,
@@ -36,16 +36,17 @@ export const createStoreAdmin = (obj) => async dispatch => {
           'Content-Type': 'application/json'  
        }
     };
- 
+
     const body = JSON.stringify(obj);
  
     try {
-       const res = await axios.post('/api/store_admins', body, config);
+       const res = await axios.post('/v1/store_admins', body, config);
  
        dispatch({
           type: CREATE_STORE_ADMIN,
           payload : res.data
        });
+       return window.location.href = '/store-admins'
     }
     catch (error) {
        console.error(error)
@@ -58,7 +59,7 @@ export const deleteStoreAdmin = (id) => async dispatch => {
     dispatch({ type: SET_LOADING_STORE_ADMINS });
 
     try {
-         await axios.delete(`/api/store_admins/${id}`);
+         await axios.delete(`/v1/store_admins/${id}`);
          
          dispatch({
              type: DELETE_STORE_ADMIN,
@@ -77,7 +78,7 @@ export const getCurrentStoreAdmin = (id) => async dispatch => {
     dispatch({ type: SET_LOADING_STORE_ADMINS });
  
     try {
-         const res = await axios.get(`/api/store_admins/${id}`);
+         const res = await axios.get(`/v1/store_admins/${id}`);
  
          dispatch({
              type: GET_CURRENT_STORE_ADMIN,
@@ -98,16 +99,17 @@ export const getCurrentStoreAdmin = (id) => async dispatch => {
          'Content-Type': 'application/json'  
          }
      };
+
+     delete obj.store;
      const body = JSON.stringify(obj);
+
  
      try {
 
-         await axios.patch(`/api/store_admins/${obj.store_admin_id}`, body, config);
+         await axios.patch(`/v1/store_admins/${obj.store_admin_id}`, body, config);
  
-         dispatch({
-            type: UPDATE_STORE_ADMIN,
-            payload : obj
-         });
+         return window.location.href = '/store-admins'
+
      }
      catch (error) {
          console.error(error)

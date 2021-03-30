@@ -68,7 +68,6 @@ const EditBrand = ({
     const [imgUri,setImg] = useState({img : Placeholder})
     const [buffer,setBuffer] = useState(null)
     const [subcategories,setSubCategories] = useState(null);
-    const [localLoading, setLocalLoading] = useState(true)
     const classes = useStyles();
     const history = useHistory();
 
@@ -96,11 +95,7 @@ const EditBrand = ({
     useEffect(() => {
         if(current_brand){
             // Get all subcategories
-            axios.get(`/api/subcategories`, {
-                params: {
-                    getImage: false
-                }
-                })
+            axios.get(`/v1/subcategories`)
                 .then((res) => {
                     if (res.data) {
                         if(formData.subcategories){
@@ -175,9 +170,8 @@ const EditBrand = ({
             "image", 
             buffer, 
         ); 
-        console.log(formData,fileData)
         editBrand(formData,fileData);
-        return history.push('/brands')
+        // return history.push('/brands')
     }
 
     return (

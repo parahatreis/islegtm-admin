@@ -63,114 +63,99 @@ const StoreItem = ({deleteStore,store :{
     store_phone,
     store_description,
     store_floor,
-    store_currency
+    store_currency,
+    store_admins
 }}) => {
 
-    const classes = useStyles();
-    const [open, setOpen] = useState(false);
-    const [admins,setAdmins] = useState(null);
-    const [localLoading, setLocalLoading] = useState(true)
+  const classes = useStyles();
+  const [open, setOpen] = useState(false);  
 
 
-    useEffect(() => {
-      axios.get(`/api/store_admins/stores/${store_id}`)
-            .then((res) => {
-                if (res.data) {
-                  setAdmins(res.data);
-                  setLocalLoading(false)
-                }
-            })
-            .catch((err) => console.error('Stores : ',err))
+  const handleOpen = (e) => {
+      setOpen(true);
+  };
 
-    }, [store_id])
+  const handleClose = () => {
+      setOpen(false);
+  };
 
-
-    const handleOpen = (e) => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    return (
-        <> 
-            {/* Store-Item */}
-        <TableRow key="ID">
-            {/* Store ID */}
-            <TableCell align="left">{store_id.slice(0,5)} ...</TableCell>
-            <TableCell align="left">{store_name}</TableCell>
-            <TableCell align="left">{store_number && store_number}</TableCell>
-            <TableCell align="left">
-            {
-                localLoading ? <Spinner/> : 
-                admins ? 
-                admins.map((data,index) => {
-                    return <Chip key={data.store_admin_id} label={data.store_admin_name} variant='outlined' />
-                }) : ""
-              }
-            </TableCell>
-            <TableCell align="left">{store_phone && store_phone}</TableCell>
-            <TableCell align="left">{store_floor && store_floor}</TableCell>
-            <TableCell align="left">{store_currency && store_currency}</TableCell>
-            <TableCell align="left">{store_description && store_description}</TableCell>
-            {/* Edit */}
-            <TableCell align="center">
-              <Link to={`/stores/edit-store/${store_id}`}>
-                <Button 
-                  color="primary"
-                >
-                <EditIcon />
-                </Button>
-              </Link>
-            </TableCell>
-            {/* Delete */}
-            <TableCell align="center">
-                <Button
-                onClick={handleOpen}
-                color="secondary"
-                >
-                <DeleteOutlineIcon />
-                </Button>
-                <div key={store_id}>
-                      <Modal
-                        open={open}
-                        onClose={(e) => handleClose(e)}
-                        aria-labelledby="simple-modal-title"
-                        aria-describedby="simple-modal-description"
-                        BackdropComponent={Backdrop}
-                        BackdropProps={{
-                          timeout: 500,
-                        }}
-                      >
-                      <Fade in={open}
-                      >
-                        <div className={classes.paper}>
-                          <h3 id="transition-modal-title">Hakykatdanam shu <span style={{color : 'blue'}}>{store_name}</span> story pozmak isleyanizmi?</h3>
-                          <p id="transition-modal-description">
-                            Store pozulandan son yzyna gaydyp gelmeyar
-                          </p>
-                          <div className={classes.btnGroup}>
-                            <Button onClick={handleClose}>
-                              Cancel
-                            </Button>
-                            <Button variant="contained" color="secondary"
-                              onClick={() => {
-                                deleteStore(store_id);
-                              }}
-                            >
-                              Delete
-                            </Button>
-                          </div>
+  return (
+      <> 
+          {/* Store-Item */}
+      <TableRow key="ID">
+          {/* Store ID */}
+          <TableCell align="left">{store_id.slice(0,5)} ...</TableCell>
+          <TableCell align="left">{store_name}</TableCell>
+          <TableCell align="left">{store_number && store_number}</TableCell>
+          <TableCell align="left">
+          {
+              store_admins && 
+              store_admins.map((data,index) => {
+                  return <Chip key={index} label={data.store_admin_name} variant='outlined' />
+              })
+            }
+          </TableCell>
+          <TableCell align="left">{store_phone && store_phone}</TableCell>
+          <TableCell align="left">{store_floor && store_floor}</TableCell>
+          <TableCell align="left">{store_currency && store_currency}</TableCell>
+          <TableCell align="left">{store_description && store_description}</TableCell>
+          {/* Edit */}
+          <TableCell align="center">
+            <Link to={`/stores/edit-store/${store_id}`}>
+              <Button 
+                color="primary"
+              >
+              <EditIcon />
+              </Button>
+            </Link>
+          </TableCell>
+          {/* Delete */}
+          <TableCell align="center">
+              <Button
+              onClick={handleOpen}
+              color="secondary"
+              >
+              <DeleteOutlineIcon />
+              </Button>
+              <div key={store_id}>
+                    <Modal
+                      open={open}
+                      onClose={(e) => handleClose(e)}
+                      aria-labelledby="simple-modal-title"
+                      aria-describedby="simple-modal-description"
+                      BackdropComponent={Backdrop}
+                      BackdropProps={{
+                        timeout: 500,
+                      }}
+                    >
+                    <Fade in={open}
+                    >
+                      <div className={classes.paper}>
+                        <h3 id="transition-modal-title">Hakykatdanam shu <span style={{color : 'blue'}}>{store_name}</span> story pozmak isleyanizmi?</h3>
+                        <p id="transition-modal-description">
+                          Store pozulandan son yzyna gaydyp gelmeyar
+                        </p>
+                        <div className={classes.btnGroup}>
+                          <Button onClick={handleClose}>
+                            Cancel
+                          </Button>
+                          <Button variant="contained" color="secondary"
+                            onClick={() => {
+                              deleteStore(store_id);
+                            }}
+                          >
+                            Delete
+                          </Button>
                         </div>
-                      </Fade>
-                    </Modal>
-                </div>
-            </TableCell>
+                      </div>
+                    </Fade>
+                  </Modal>
+              </div>
+          </TableCell>
 
-        </TableRow>  
-        </>
-    )
+      </TableRow>  
+      </>
+  )
 }
 
 StoreItem.propTypes = {

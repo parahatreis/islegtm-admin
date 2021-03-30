@@ -5,8 +5,6 @@ import {
    DELETE_CATEGORIE,
    CREATE_CATEGORIE,
    GET_CURRENT_CATEGORIE,
-   UPDATE_CATEGORIE,
-   SET_CAT_IMAGE
 } from './types';
 
 
@@ -16,7 +14,7 @@ export const getCategories = () => async dispatch => {
    dispatch({ type: SET_LOADING_CATEGORIES });
 
    try {
-      const res = await axios.get('/api/categories');
+      const res = await axios.get('/v1/categories');
 
       dispatch({
          type: GET_CATEGORIES,
@@ -46,7 +44,7 @@ export const createCategorie = (obj,image) => async dispatch => {
 
       let newObj = {}
 
-      const res = await axios.post('/api/categories', body, config);
+      const res = await axios.post('/v1/categories', body, config);
       newObj = res.data
 
       dispatch({
@@ -57,15 +55,11 @@ export const createCategorie = (obj,image) => async dispatch => {
       const hasImage = image.get('image').name ? true : false;
 
       if(hasImage){
-         const resImage = await axios.post(`/api/categories/image/${newObj.categorie_id}`,image);
-         dispatch({
-            type: SET_CAT_IMAGE,
-            payload : {
-               id : newObj.categorie_id,
-               image : resImage.data
-            }
-         })
+         await axios.post(`/v1/categories/image/${newObj.categorie_id}`,image);
       }
+
+      return window.location.href = '/categories'
+
    }
    catch (error) {
       console.error(error)
@@ -80,7 +74,7 @@ export const deleteCategorie = (id) => async dispatch => {
     dispatch({ type: SET_LOADING_CATEGORIES });
 
     try {
-         await axios.delete(`/api/categories/${id}`);
+         await axios.delete(`/v1/categories/${id}`);
          
          dispatch({
              type: DELETE_CATEGORIE,
@@ -98,7 +92,7 @@ export const getCurrentCategorie = (id) => async dispatch => {
    dispatch({ type: SET_LOADING_CATEGORIES });
 
    try {
-        const res = await axios.get(`/api/categories/${id}`, {
+        const res = await axios.get(`/v1/categories/${id}`, {
            params : {
               getImage : true
            }  
@@ -125,25 +119,17 @@ export const editCategorie = (obj,image = null) => async dispatch => {
 
    try {
 
-      let newObj = obj;
-
-      await axios.patch(`/api/categories/${obj.categorie_id}`, body, config);
+      await axios.patch(`/v1/categories/${obj.categorie_id}`, body, config);
 
       // Check image
       const hasImage = image.get('image').name ? true : false;
 
       if(hasImage){
-         const resImage = await axios.post(`/api/categories/image/${obj.categorie_id}`,image);
-         newObj = {
-            ...newObj,
-            categorie_image : resImage.data
-         }
+         await axios.post(`/v1/categories/image/${obj.categorie_id}`,image);
       }
 
-      dispatch({
-         type: UPDATE_CATEGORIE,
-         payload : newObj
-      });
+      return window.location.href = '/categories'
+
    }
    catch (error) {
       console.error(error)

@@ -48,17 +48,16 @@ const AddStoreAdmin = ({createStoreAdmin}) => {
         store_admin_phone : '',
         store_admin_password : '',
         store_admin_username : '',
-        store_id : '',
+        storeId : '',
     })
     const classes = useStyles();
-    const history = useHistory();
     const [stores,setStore] = useState(null);
 
     const onChange = (e) => setFormData({...formData, [e.target.name] : e.target.value});
 
 
     useEffect(() => {
-        axios.get(`/api/stores`)
+        axios.get(`/v1/stores`)
             .then((res) => {
                 if (res.data) {
                     setStore(res.data);
@@ -72,7 +71,6 @@ const AddStoreAdmin = ({createStoreAdmin}) => {
     const onSubmit = (e) => {
         e.preventDefault();
         createStoreAdmin(formData);
-        return history.push('/store-admins')
     }
 
     return (
@@ -122,10 +120,10 @@ const AddStoreAdmin = ({createStoreAdmin}) => {
                             id="outlined-select-currency"
                             select
                             label="Store"
-                            value={formData.store_id}
+                            value={formData.storeId}
                             onChange={(e) => onChange(e)}
                             variant="outlined"
-                            name="store_id"
+                            name="storeId"
                         >
                             {
                                 stores && stores.length > 0 ?
