@@ -21,9 +21,6 @@ export const getProducts = (page = 0, order = null ) => async dispatch => {
    let sortBy = 'updatedAt:DESC';
 
    if (order !== null) sortBy = order
-
-   console.log(sortBy)
-
    
    dispatch({ type: SET_LOADING_PRODUCTS });
    try {
@@ -72,7 +69,6 @@ export const createProduct = (obj,image) => async dispatch => {
       const res = await axios.post('/v1/products', body, config);
       newObj = res.data
 
-      console.log(newObj)
 
       dispatch({
          type: CREATE_PRODUCT,
@@ -83,15 +79,10 @@ export const createProduct = (obj,image) => async dispatch => {
       const hasImage = image.getAll('images')[0].name ? true : false;
 
       if(hasImage){
-         const resImage = await axios.post(`/v1/products/image/${newObj.product_id}`,image);
-         dispatch({
-            type: SET_PRODUCT_IMAGES,
-            payload : {
-               id : newObj.product_id,
-               images : resImage.data
-            }
-         })
+         await axios.post(`/v1/products/image/${newObj.product_id}`,image);
       }
+
+      
 
 
    }

@@ -13,7 +13,6 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import TableRow from '@material-ui/core/TableRow';
-import axios from 'axios';
 // 
 import { deleteProduct, changeStatus } from '../../actions/productsAction';
 import Placeholder from '../../img/BG.svg';
@@ -63,9 +62,9 @@ const ProductItem = ({product :
         price_tmt,
         price_usd,
         product_status,
-        store_id,
-        subcategorie_id,
-        brand_id,
+        brand,
+        subcategorie,
+        store,
         product_images
     },
     deleteProduct,changeStatus
@@ -76,9 +75,6 @@ const ProductItem = ({product :
 
     const [open, setOpen] = useState(false);
     const nodeRef = useRef(null);
-    const [brand,setBrand] = useState(null);
-    const [subcategorie,setSubcategorie] = useState(null);
-    const [store,setStore] = useState(null);
     const [image,setImage] = useState(Placeholder);
     const [status,setStatus] = useState(false);
 
@@ -98,55 +94,6 @@ const ProductItem = ({product :
     useEffect(() => {
       setStatus(product_status);
     }, [product_status])
-
-
-    // GET Brand
-    useEffect(() => {
-      if(brand_id){
-        axios.get(`/api/brands/${brand_id}`,{
-          params : {
-            getImage : false
-          }
-        })
-          .then((res) => {
-              if (res.data) {
-                setBrand(res.data.brand_name);
-              }
-          })
-          .catch((err) => console.error('Brand: ',err))
-      }
-    }, [brand_id]);
-
-    // GET Subcategorie
-    useEffect(() => {
-      if(subcategorie_id){
-        axios.get(`/api/subcategories/${subcategorie_id}`,{
-          params : {
-            getImage : false
-          }
-        })
-          .then((res) => {
-              if (res.data) {
-                setSubcategorie(res.data.subcategorie_name);
-              }
-          })
-          .catch((err) => console.error('SubCategories: ',err))
-      }
-    }, [subcategorie_id]);
-
-    // GET Store
-    useEffect(() => {
-      if(store_id){
-        axios.get(`/api/stores/${store_id}`)
-          .then((res) => {
-              if (res.data) {
-                setStore(res.data.store_name);
-              }
-          })
-          .catch((err) => console.error('Stores: ',err))
-      }
-    }, [store_id])
-
 
 
     const handleOpen = (e) => {
@@ -175,15 +122,15 @@ const ProductItem = ({product :
             {/* Product Name */}
             <TableCell align="left">{product_name}</TableCell>
             {/* Price(TMT) */}
-            <TableCell align="left">{price_tmt}</TableCell>
+            <TableCell align="left">{price_tmt && price_tmt}</TableCell>
             {/* Price(USD) */}
-            <TableCell align="left">{price_usd}</TableCell>
+            <TableCell align="left">{price_usd && price_usd}</TableCell>
             {/* Brand */}
-            <TableCell align="left">{brand && brand}</TableCell>
+            <TableCell align="left">{brand && brand.brand_name}</TableCell>
             {/* Subcategorie */}
-            <TableCell align="left">{subcategorie && subcategorie}</TableCell>
+            <TableCell align="left">{subcategorie && subcategorie.subcategorie_name}</TableCell>
             {/* Store No */}
-            <TableCell align="left">{store && store}</TableCell>
+            <TableCell align="left">{store && store.store_name}</TableCell>
             {/* Status */}
             <TableCell align="left">
                 <FormControlLabel
@@ -241,7 +188,6 @@ const ProductItem = ({product :
                     <Button variant="contained" color="secondary"
                       onClick={() => {
                         deleteProduct(product_id);
-                        console.log(product_id)
                       }}
                     >
                       Delete

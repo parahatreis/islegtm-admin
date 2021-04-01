@@ -60,7 +60,7 @@ const EditCategorie = ({editCategorie, getCurrentCategorie, match, categories : 
     useEffect(() => {
         setFormData(current_categorie)
         if(current_categorie.categorie_image){
-            let img  = imgPath(current_categorie.categorie_image);
+            let img  = current_categorie.categorie_image;
             setImg({img})
         }
         else{

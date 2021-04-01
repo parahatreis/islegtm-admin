@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     image : {
         width : '100px',
         height : '100px'
-      },
+    },
 }));
 
 
@@ -58,6 +58,8 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
     const [stores,setStore] = useState(null);
     const [subcategories,setSubcategories] = useState(null);
     const [buffers,setBuffers] = useState([]);
+    const [currency, setCurrency] = useState('tmt');
+    const [productImages,setProductImages] = useState(null)
     const [formData,setFormData] = useState({
         product_id : '',
         product_name : '',
@@ -78,22 +80,56 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
         getCurrentProduct(match.params.id)
     }, [getCurrentProduct,match.params.id])
 
+    const onChangeCurrency = (e) => {
+        formData.price_tmt = ''
+        formData.price_usd = ''
+        setCurrency(e.target.value)
+    }
 
     // Set current Product
     useEffect(() => {
         if(current_product){
-            setFormData(current_product)
+            console.log(current_product)
+            setFormData({
+                ...current_product,
+                subcategorie_id : current_product.subcategorie.subcategorie_id,
+                brand_id : current_product.brand.brand_id,
+                store_id : current_product.store.store_id
+            })
+            if(current_product.price_tmt){  
+                setCurrency('tmt')
+            }
+            else{
+                setCurrency('usd')
+            }
         }
-    }, [current_product])
+    }, [current_product]);
+
+    useEffect(() => {
+        if(current_product){
+            if(current_product.product_images || current_product.product_images.length > 0){
+                // console.log(current_product.product_images)
+                // let imagesArray = []
+                // current_product.product_images.forEach((image,index) => {
+                //     imagesArray = [
+                //         ...imagesArray,
+                //         {
+                //             id : index + 1,
+                //             img : image
+                //         }
+                //     ]
+                // })
+                // console.log(imagesArray);
+                // setImage(imagesArray)
+                setProductImages(current_product.product_images)
+            }
+        }
+    },[current_product,productImages])
 
 
     // Get all subcategories
     useEffect(() => {
-        axios.get(`/api/subcategories`, {
-            params: {
-               getImage: false
-            }
-         })
+        axios.get(`/v1/subcategories`)
             .then((res) => {
                 if (res.data) {
                     setSubcategories(res.data);
@@ -105,11 +141,7 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
 
     // Get all brands
     useEffect(() => {
-        axios.get(`/api/brands`, {
-            params: {
-               getImage: false
-            }
-         })
+        axios.get(`/v1/brands`)
             .then((res) => {
                 if (res.data) {
                     let data = res.data;
@@ -126,7 +158,7 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
 
     // Get all stores
     useEffect(() => {
-        axios.get(`/api/stores`)
+        axios.get(`/v1/stores`)
             .then((res) => {
                 if (res.data) {
                     setStore(res.data);
@@ -139,7 +171,10 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
     const onFileUpload = (e,id) => {
         const newfile = e.target.files[0] 
         if(newfile.size < 1800000){
-            setBuffers([...buffers,newfile]);
+            setBuffers([...buffers,{
+                id : id,
+                buffer : newfile
+            }]);
 
             const reader = new FileReader();
             reader.addEventListener("load", function () {
@@ -181,6 +216,9 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
     const removeFileUpload = (id) => {
         const newArr = images.filter((file) => file.id !== id);
         setImage(newArr);
+        // Restore buffers
+        const newBuffers = buffers.filter((buffer) => buffer.id !== id);
+        setBuffers(newBuffers);
     }
 
     const onSubmit = (e) => {
@@ -194,9 +232,9 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
                 buffer, 
             ); 
         })
+        console.log(buffers)
         console.log(formData,fileData)
-        editProduct(formData,fileData);
-        return history.push('/products')
+        // editProduct(formData,fileData);
     }
 
 
@@ -206,7 +244,7 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
         {loading ? <Spinner /> : 
             <section className="add-product-section container">
             <Typography variant="h4" component="h2">
-               Add Product
+               Edit Product
             </Typography>
             <div className="form-block"> 
                 <form className={classes.root} noValidate autoComplete="off" onSubmit={(e) => onSubmit(e)}>
@@ -220,29 +258,53 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
                         value={formData.product_name}
                         onChange={(e) => onChange(e)}
                     /><br />
-                    {/* Price(TMT) */}
-                    <TextField 
-                        className={classes.inputNumber} 
-                        id="outlined-basic" 
-                        label="Price(TMT)" 
-                        type="number" 
-                        name="price_tmt"
-                        variant="outlined" 
-                        value={formData.price_tmt}
-                        onChange={(e) => onChange(e)}
-                    />
-                    &nbsp; &nbsp;  
-                    {/* Price(USD) */}
-                    <TextField 
-                        className={classes.inputNumber} 
-                        id="outlined-basic" 
-                        label="Price(USD)" 
-                        type="number" 
+                    <TextField
+                        className={classes.input}
+                        id="outlined-select-currency"
+                        select
+                        label="Select Product Price Currency"
+                        name="currency"
+                        value={currency}
+                        onChange={(e) => onChangeCurrency(e)}
                         variant="outlined"
-                        name="price_usd"
-                        onChange={(e) => onChange(e)}
-                        value={formData.price_usd}
-                    />
+                        >
+                        <MenuItem key={0} value={'tmt'}>
+                                TMT (Manat)
+                        </MenuItem>
+                        <MenuItem key={1} value={'usd'}>
+                                USD (Dollar)
+                        </MenuItem>
+                        </TextField>
+                    {
+                        currency === 'tmt' ? 
+                        <Fragment>
+                            {/* Price(TMT) */}
+                            <TextField 
+                                className={classes.inputNumber} 
+                                id="outlined-basic" 
+                                label="Price(TMT)" 
+                                type="number" 
+                                name="price_tmt"
+                                variant="outlined" 
+                                value={formData.price_tmt}
+                                onChange={(e) => onChange(e)}
+                            />
+                        </Fragment>
+                        :
+                        <Fragment>
+                            {/* Price(USD) */}
+                            <TextField 
+                                className={classes.inputNumber} 
+                                id="outlined-basic" 
+                                label="Price(USD)" 
+                                type="number" 
+                                variant="outlined"
+                                name="price_usd"
+                                onChange={(e) => onChange(e)}
+                                value={formData.price_usd}
+                            />
+                        </Fragment>
+                    }
                     {/* Brand */}
                     <TextField
                         className={classes.input}
@@ -318,6 +380,24 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
                         rowsMax={10}
                         />
                     <br />
+                    <p>Suratlardan biri chalyshylan yagdayynda ahli onki suratlar pozulyandyr!</p>
+                    <div className={classes.grid}>
+                        {
+                            productImages &&
+                            productImages.map((image,index) => 
+                                (
+                                    <Fragment>
+                                    <Avatar 
+                                        className={classes.image}
+                                        src={image}
+                                        variant="square" 
+                                    />
+                                    &nbsp; &nbsp;
+                                    </Fragment>
+                                )
+                            )
+                        }
+                    </div>
                     {
                         images.map((value,index) => 
                             <Fragment key={index}>

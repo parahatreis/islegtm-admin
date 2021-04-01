@@ -57,6 +57,7 @@ const AddProduct = ({createProduct}) => {
     const [stores,setStore] = useState(null);
     const [subcategories,setSubcategories] = useState(null);
     const [buffers,setBuffers] = useState([]);
+    const [currency, setCurrency] = useState('tmt')
     const [formData,setFormData] = useState({
         product_name : '',
         price_tmt : '',
@@ -66,18 +67,21 @@ const AddProduct = ({createProduct}) => {
         store_id : '',
         description : ''
     });
-    const history = useHistory();
 
-    const onChange = (e) => setFormData({...formData, [e.target.name] : e.target.value});
+    const onChange = (e) => {
+        setFormData({...formData, [e.target.name] : e.target.value})
+    };
+
+    const onChangeCurrency = (e) => {
+        formData.price_tmt = ''
+        formData.price_usd = ''
+        setCurrency(e.target.value)
+    }
 
 
     // Get all subcategories
     useEffect(() => {
-        axios.get(`/api/subcategories`, {
-            params: {
-               getImage: false
-            }
-         })
+        axios.get(`/v1/subcategories`)
             .then((res) => {
                 if (res.data) {
                     setSubcategories(res.data);
@@ -89,11 +93,7 @@ const AddProduct = ({createProduct}) => {
 
     // Get all brands
     useEffect(() => {
-        axios.get(`/api/brands`, {
-            params: {
-               getImage: false
-            }
-         })
+        axios.get(`/v1/brands`)
             .then((res) => {
                 if (res.data) {
                     let data = res.data;
@@ -110,7 +110,7 @@ const AddProduct = ({createProduct}) => {
 
     // Get all stores
     useEffect(() => {
-        axios.get(`/api/stores`)
+        axios.get(`/v1/stores`)
             .then((res) => {
                 if (res.data) {
                     setStore(res.data);
@@ -123,7 +123,10 @@ const AddProduct = ({createProduct}) => {
     const onFileUpload = (e,id) => {
         const newfile = e.target.files[0] 
         if(newfile.size < 1800000){
-            setBuffers([...buffers,newfile]);
+            setBuffers([...buffers,{
+                id : id,
+                buffer : newfile
+            }]);
 
             const reader = new FileReader();
             reader.addEventListener("load", function () {
@@ -140,7 +143,8 @@ const AddProduct = ({createProduct}) => {
                             return file
                         }
                     })
-                    setImage(newArr)
+                    console.log(buffers)
+                    setImage(newArr);
                 }
             }, false);
 
@@ -165,22 +169,27 @@ const AddProduct = ({createProduct}) => {
     const removeFileUpload = (id) => {
         const newArr = images.filter((file) => file.id !== id);
         setImage(newArr);
+        // Restore buffers
+        const newBuffers = buffers.filter((buffer) => buffer.id !== id);
+        setBuffers(newBuffers);
     }
 
     const onSubmit = (e) => {
         e.preventDefault();
-        const fileData = new FormData(); 
-     
-        // Update the formData object
-        buffers.forEach((buffer) => {
-            fileData.append( 
-                "images", 
-                buffer, 
-            ); 
-        })
-        console.log(formData,fileData)
-        createProduct(formData,fileData);
-        return history.push('/products')
+        if(buffers.length > 0){
+            const fileData = new FormData(); 
+            // Update the formData object
+            buffers.forEach((obj) => {
+                fileData.append( 
+                    "images", 
+                    obj.buffer, 
+                ); 
+            })
+            createProduct(formData,fileData);
+        }
+        else{
+            alert('Haryt suraty goshun!')
+        }
     }
 
 
@@ -202,29 +211,58 @@ const AddProduct = ({createProduct}) => {
                         value={formData.product_name}
                         onChange={(e) => onChange(e)}
                     /><br />
-                    {/* Price(TMT) */}
-                    <TextField 
-                        className={classes.inputNumber} 
-                        id="outlined-basic" 
-                        label="Price(TMT)" 
-                        type="number" 
-                        name="price_tmt"
-                        variant="outlined" 
-                        value={formData.price_tmt}
-                        onChange={(e) => onChange(e)}
-                    />
-                    &nbsp; &nbsp;  
-                    {/* Price(USD) */}
-                    <TextField 
-                        className={classes.inputNumber} 
-                        id="outlined-basic" 
-                        label="Price(USD)" 
-                        type="number" 
+                    {/* Currency */}
+                    <TextField
+                        className={classes.input}
+                        id="outlined-select-currency"
+                        select
+                        label="Select Product Price Currency"
+                        name="currency"
+                        value={currency}
+                        onChange={(e) => onChangeCurrency(e)}
                         variant="outlined"
-                        name="price_usd"
-                        onChange={(e) => onChange(e)}
-                        value={formData.price_usd}
-                    />
+                        >
+                        <MenuItem key={0} value={'tmt'}>
+                                TMT (Manat)
+                        </MenuItem>
+                        <MenuItem key={1} value={'usd'}>
+                                USD (Dollar)
+                        </MenuItem>
+                        </TextField>
+
+                    {
+                        currency === 'tmt' ? 
+                        <Fragment>
+                            {/* Price(TMT) */}
+                            <TextField 
+                                className={classes.inputNumber} 
+                                id="outlined-basic" 
+                                label="Price(TMT)" 
+                                type="number" 
+                                name="price_tmt"
+                                variant="outlined" 
+                                value={formData.price_tmt}
+                                onChange={(e) => onChange(e)}
+                            />
+                        </Fragment>
+                        :
+                        <Fragment>
+                            {/* Price(USD) */}
+                            <TextField 
+                                className={classes.inputNumber} 
+                                id="outlined-basic" 
+                                label="Price(USD)" 
+                                type="number" 
+                                variant="outlined"
+                                name="price_usd"
+                                onChange={(e) => onChange(e)}
+                                value={formData.price_usd}
+                            />
+                        </Fragment>
+                    }
+                    
+                    &nbsp; &nbsp;  
+                    
                     {/* Brand */}
                     <TextField
                         className={classes.input}

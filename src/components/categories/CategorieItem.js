@@ -69,7 +69,7 @@ const CategorieItem = ({deleteCategorie,categorie :{
 
     useEffect(() => {
       if(categorie_image){
-          let img  = imgPath(categorie_image);
+          let img  = categorie_image;
           setImg({img})
       }
       else{
