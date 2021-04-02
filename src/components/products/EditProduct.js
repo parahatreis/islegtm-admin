@@ -8,7 +8,6 @@ import Button from '@material-ui/core/Button';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Avatar from '@material-ui/core/Avatar';
 import axios from 'axios'
-import { useHistory } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete'
 import PropTypes from 'prop-types'
@@ -70,7 +69,6 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
         store_id : '',
         description : ''
     });
-    const history = useHistory();
 
 
     const onChange = (e) => setFormData({...formData, [e.target.name] : e.target.value});
@@ -89,11 +87,12 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
     // Set current Product
     useEffect(() => {
         if(current_product){
-            console.log(current_product)
+            console.log(current_product);
+            const brandId = current_product.brand !== null ? current_product.brand.brand_id : ''
             setFormData({
                 ...current_product,
                 subcategorie_id : current_product.subcategorie.subcategorie_id,
-                brand_id : current_product.brand.brand_id,
+                brand_id : brandId,
                 store_id : current_product.store.store_id
             })
             if(current_product.price_tmt){  
@@ -107,7 +106,7 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
 
     useEffect(() => {
         if(current_product){
-            if(current_product.product_images || current_product.product_images.length > 0){
+            if(current_product.product_images){
                 // console.log(current_product.product_images)
                 // let imagesArray = []
                 // current_product.product_images.forEach((image,index) => {
@@ -171,11 +170,6 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
     const onFileUpload = (e,id) => {
         const newfile = e.target.files[0] 
         if(newfile.size < 1800000){
-            setBuffers([...buffers,{
-                id : id,
-                buffer : newfile
-            }]);
-
             const reader = new FileReader();
             reader.addEventListener("load", function () {
                 // convert image file to base64 string
@@ -191,6 +185,10 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
                             return file
                         }
                     })
+                    setBuffers([...buffers,{
+                        id : id,
+                        buffer : newfile
+                    }]);
                     setImage(newArr)
                 }
             }, false);
@@ -225,16 +223,19 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
         e.preventDefault();
         const fileData = new FormData(); 
      
-        // Update the formData object
-        buffers.forEach((buffer) => {
-            fileData.append( 
-                "images", 
-                buffer, 
-            ); 
-        })
-        console.log(buffers)
-        console.log(formData,fileData)
-        // editProduct(formData,fileData);
+        if(buffers.length > 0){
+            // Update the formData object
+            buffers.forEach((obj) => {
+                fileData.append( 
+                    "images", 
+                    obj.buffer, 
+                ); 
+            })
+            editProduct(formData,fileData);
+        }
+        else{
+            editProduct(formData,null);
+        }
     }
 
 
@@ -409,7 +410,7 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
                                         variant="square" 
                                         />
                                     <div style={{paddingLeft : '10px', width : '100%'}}>
-                                        <InputLabel children={`Product Image ${index+1} `} />
+                                        <InputLabel children={`Product Image ${index+1} ${index === 0 ? 'Preview Image' : '' }`} />
                                         <br />
                                         <TextField className={classes.inputNumber} id="outlined-basic" type="file" variant="outlined" 
                                             onChange={(e) => onFileUpload(e,value.id)}
@@ -434,7 +435,7 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
                     </Button>
                     <br />
                     <Button variant="contained" color="primary" type='submit'>
-                        Create Product
+                        Update Product
                     </Button>
                 </form>
             </div>

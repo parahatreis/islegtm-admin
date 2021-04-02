@@ -1,6 +1,5 @@
 import React, { useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -22,7 +21,6 @@ import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import { editBrand, getCurrentBrand } from '../../actions/brandsActions';
 import Placeholder from '../../img/BG.svg';
 import Spinner from '../layouts/Spinner'
-import imgPath from '../../utils/imgPath'
 
 
 
@@ -69,7 +67,6 @@ const EditBrand = ({
     const [buffer,setBuffer] = useState(null)
     const [subcategories,setSubCategories] = useState(null);
     const classes = useStyles();
-    const history = useHistory();
 
 
 
@@ -83,7 +80,7 @@ const EditBrand = ({
         if(current_brand !== null){
             setFormData(current_brand);
             if(current_brand.brand_image){
-                let img  = imgPath(current_brand.brand_image);
+                let img  = current_brand.brand_image;
                 setImg({img})
             }
             else{

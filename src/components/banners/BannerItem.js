@@ -13,7 +13,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import TableRow from '@material-ui/core/TableRow';
 // 
-import { deleteCategorie } from '../../actions/categoriesAction';
+import { deleteBanner } from '../../actions/bannersAction';
 import Placeholder from '../../img/BG.svg';
 
 
@@ -26,8 +26,8 @@ const useStyles = makeStyles({
       color : '#3f51b5'
     },
     image : {
-      width : '100px',
-      height : '100px'
+      width : '200px',
+      height : '100px',
     },
     paper: {
       position: 'absolute',
@@ -37,7 +37,7 @@ const useStyles = makeStyles({
       width: 400,
       backgroundColor: 'white',
       boxShadow: '0 0 10px grey',
-      padding: '20px',
+      padding: '10px',
       outline : 'none',
       borderRadius : '5px',
       display : 'flex',
@@ -53,11 +53,11 @@ const useStyles = makeStyles({
 
 
 
-const CategorieItem = ({deleteCategorie,categorie :{
-    categorie_id,
-    categorie_image,
-    categorie_name,
-    subcategories
+const BannerItem = ({deleteBanner,banner :{
+    banner_id,
+    banner_name,
+    banner_url,
+    banner_image
 }}) => {
 
 
@@ -67,14 +67,14 @@ const CategorieItem = ({deleteCategorie,categorie :{
     const [imgUri,setImg] = useState({img : Placeholder})
 
     useEffect(() => {
-      if(categorie_image){
-          let img  = categorie_image;
+      if(banner_image){
+          let img  = banner_image;
           setImg({img})
       }
       else{
           setImg({img : Placeholder})
       }
-  }, [categorie_image])
+  }, [banner_image])
 
 
     const handleOpen = (e) => {
@@ -87,23 +87,27 @@ const CategorieItem = ({deleteCategorie,categorie :{
 
     return (
         <> 
-            {/* Categorie-Item */}
+            {/* Banner-Item */}
         <TableRow key="ID">
-            {/* Categorie ID */}
-            <TableCell align="left">{categorie_id.slice(0,5)} ...</TableCell>
-            {/* Categorie Image */}
+            {/* Banner ID */}
+            <TableCell align="left">{banner_id.slice(0,5)} ...</TableCell>
+            {/* Banner Image */}
             <TableCell align="left">
                 <Avatar className={classes.image} src={imgUri.img} variant="square"/>
             </TableCell>
-            {/* Categorie Name */}
-            <TableCell align="left">{categorie_name}</TableCell>
-            {/* Product Number */}
-            <TableCell align="left">1542</TableCell>
-            {/* Subcategorie Number */}
-            <TableCell align="left">{subcategories && subcategories.length}</TableCell>
+            {/* Banner Name */}
+            <TableCell align="left">{banner_name && banner_name}</TableCell>
+            {/* Banner URL */}
+            <TableCell align="left">
+              <a href={banner_url ? banner_url : '#'}>
+                {
+                  banner_url.length > 40 ? banner_url.slice(0,40) +  '..' : banner_url
+                }
+              </a>
+            </TableCell>
             {/* Edit */}
             <TableCell align="center">
-              <Link to={`/categories/edit-categorie/${categorie_id}`}>
+              <Link to={`/banners/edit-banner/${banner_id}`}>
                 <Button 
                   color="primary"
                 >
@@ -120,7 +124,7 @@ const CategorieItem = ({deleteCategorie,categorie :{
                 >
                 <DeleteOutlineIcon />
                 </Button>
-                <div key={categorie_id}>
+                <div key={banner_id}>
                       <Modal
                         open={open}
                         onClose={(e) => handleClose(e)}
@@ -134,9 +138,9 @@ const CategorieItem = ({deleteCategorie,categorie :{
                       <Fade in={open}
                       >
                         <div className={classes.paper}>
-                          <h3 id="transition-modal-title">Hakykatdanam shu <span style={{color : 'blue'}}>{categorie_name}</span> kategoriyany pozmak isleyanizmi?</h3>
+                          <h3 id="transition-modal-title">Hakykatdanam shu <span style={{color : 'blue'}}>{banner_name}</span> banneri pozmak isleyanizmi?</h3>
                           <p id="transition-modal-description">
-                            Kategoriya pozulandan son yzyna gaydyp gelmeyar
+                            Banner pozulandan son yzyna gaydyp gelmeyar
                           </p>
                           <div className={classes.btnGroup}>
                             <Button onClick={handleClose}>
@@ -144,7 +148,7 @@ const CategorieItem = ({deleteCategorie,categorie :{
                             </Button>
                             <Button variant="contained" color="secondary"
                               onClick={() => {
-                                deleteCategorie(categorie_id);
+                                deleteBanner(banner_id);
                               }}
                             >
                               Delete
@@ -161,13 +165,13 @@ const CategorieItem = ({deleteCategorie,categorie :{
     )
 }
 
-CategorieItem.propTypes = {
-  deleteCategorie: PropTypes.func.isRequired,
-  categorie : PropTypes.object.isRequired,
+BannerItem.propTypes = {
+  deleteBanner: PropTypes.func.isRequired,
+  banner : PropTypes.object.isRequired,
 }
 
 export default connect(null, {
-  deleteCategorie,
-})(CategorieItem);
+  deleteBanner,
+})(BannerItem);
 
 

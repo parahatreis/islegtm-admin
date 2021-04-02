@@ -6,49 +6,49 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 // 
-import CategorieList from '../components/categories/CategorieList'
-import { getCategories } from '../actions/categoriesAction';
+import BannerList from '../components/banners/BannerList'
+import { getBanners } from '../actions/bannersAction';
 
 
 
-const Categories = ({categories , getCategories}) => {
+const Banners = ({banners, getBanners}) => {
 
     useEffect(() => {
      
-        getCategories()
+      getBanners()
   
-     }, [getCategories])
+     }, [getBanners])
 
     return (
         <section className="container products-section">
          <header>
             <Typography variant="h4" component="h2">
-               Categories
+               Banners
             </Typography>
-            <Link to="/categories/add-categorie">
+            <Link to="/banners/add-banner">
                <Button className="btn" variant="contained" color="primary">
                   <AddIcon />
-                  Add categorie
+                  Add Banner
                </Button>
             </Link>
          </header>
          <div className="products-wrapper">
             {/* Product Pagination */}
-            <CategorieList categories={categories} />
+            <BannerList banners={banners} />
 
          </div>
       </section>
     )
 }
 
-Categories.propTypes = {
-    categories: PropTypes.object.isRequired,
-    getCategories: PropTypes.func.isRequired,
+Banners.propTypes = {
+    banner: PropTypes.object.isRequired,
+    getBanners: PropTypes.func.isRequired,
  }
  const mapStateToProps = state => ({
-    categories: state.categories,
+    banners: state.banners,
  })
  
  export default connect(mapStateToProps, {
-    getCategories
- })(Categories);
+   getBanners
+ })(Banners);

@@ -8,7 +8,6 @@ import Button from '@material-ui/core/Button';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Avatar from '@material-ui/core/Avatar';
 import axios from 'axios'
-import { useHistory } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete'
 import PropTypes from 'prop-types'
@@ -123,11 +122,6 @@ const AddProduct = ({createProduct}) => {
     const onFileUpload = (e,id) => {
         const newfile = e.target.files[0] 
         if(newfile.size < 1800000){
-            setBuffers([...buffers,{
-                id : id,
-                buffer : newfile
-            }]);
-
             const reader = new FileReader();
             reader.addEventListener("load", function () {
                 // convert image file to base64 string
@@ -143,7 +137,10 @@ const AddProduct = ({createProduct}) => {
                             return file
                         }
                     })
-                    console.log(buffers)
+                    setBuffers([...buffers,{
+                        id : id,
+                        buffer : newfile
+                    }]);
                     setImage(newArr);
                 }
             }, false);

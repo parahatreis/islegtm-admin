@@ -26,6 +26,8 @@ import ListAltIcon from '@material-ui/icons/ListAlt';
 import BrandingWatermarkIcon from '@material-ui/icons/BrandingWatermark';
 import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
 import StoreIcon from '@material-ui/icons/Store';
+import AmpStoriesIcon from '@material-ui/icons/AmpStories';
+import HomeWorkIcon from '@material-ui/icons/HomeWork';
 //Components
 import Dropdown from './Dropdown';
 
@@ -190,6 +192,29 @@ export default function MiniDrawer() {
                   <ListItemText primary="Orders" />
                </ListItem>
             </List>
+            
+            {/* Home Subcategories */}
+            <Link to="/home-subcategories">
+               <List>
+                  <ListItem button>
+                     <ListItemIcon>
+                        <HomeWorkIcon />
+                     </ListItemIcon>
+                     <ListItemText primary="Home Subcategories" className={classes.linkColor} />
+                  </ListItem>
+                  </List>
+            </Link>
+            {/* Banners */}
+            <Link to="/banners">
+               <List>
+                  <ListItem button>
+                     <ListItemIcon>
+                        <AmpStoriesIcon />
+                     </ListItemIcon>
+                     <ListItemText primary="Banners" className={classes.linkColor} />
+                  </ListItem>
+                  </List>
+            </Link>
             {/* Products */}
             <Link to="/products">
                <List>

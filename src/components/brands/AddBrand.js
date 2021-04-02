@@ -1,6 +1,5 @@
 import React, { useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -61,7 +60,6 @@ const AddBrand = ({createBrand}) => {
     const [buffer,setBuffer] = useState(null)
     const [subcategories,setSubCategories] = useState(null);
     const classes = useStyles();
-    const history = useHistory();
 
 
     // GET ALL SubCategories
@@ -102,13 +100,13 @@ const AddBrand = ({createBrand}) => {
     const onFileUpload = (e) => {
         const file = e.target.files[0] 
         if(file.size < 1800000){
-            setBuffer(file);
 
             const reader = new FileReader();
             reader.addEventListener("load", function () {
                 // convert image file to base64 string
                 if(reader.readyState === 2){
-                    setImg({img : reader.result})
+                    setImg({img : reader.result});
+                    setBuffer(file);
                 }
             }, false);
 

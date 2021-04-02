@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Switch ,Redirect} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 // components
 import Register from './pages/Register'
 import Login from './pages/Login'
@@ -29,6 +29,12 @@ import EditStore from './components/stores/EditStore'
 import StoreAdmins from './pages/StoreAdmins';
 import AddStoreAdmin from './components/store-admins/AddStoreAdmin'
 import EditStoreAdmin from './components/store-admins/EditStoreAdmin'
+// Banners
+import Banners from './pages/Banners';
+import AddBanner from './components/banners/AddBanner'
+import EditBanner from './components/banners/EditBanner'
+// Home
+import HomeSubcategories from './pages/HomeSubcategories';
 
 
 const publicRoutes = [
@@ -47,12 +53,14 @@ const publicRoutes = [
  ];
  
  const privateRoutes = [
+  //  home
    {
      key: "home",
      path: "/",
      component: Dashboard,
      exact: true
    },
+  //  products
    {
      key: "products",
      path: "/products",
@@ -165,14 +173,40 @@ const publicRoutes = [
       path: "/store-admins/edit-store-admin/:id",
       component: EditStoreAdmin,
       exact: true
-    }
+    },
+    // Banners
+    {
+      key: "banners",
+      path: "/banners",
+      component: Banners,
+      exact: true
+    },
+    {
+      key: "add-banners",
+      path: "/banners/add-banner",
+      component: AddBanner,
+      exact: true
+    },
+    {
+      key: "edit-banner",
+      path: "/banners/edit-banner/:id",
+      component: EditBanner,
+      exact: true
+    },
+    // home-subcategorie
+    {
+      key: "home-subcategories",
+      path: "/home-subcategories",
+      component: HomeSubcategories,
+      exact: true
+    },
  ];
 
 
 const Routing = () => {
 
    const privateArray = [
-    //  product
+      //  product
       "/", "/products", "/products/add-product","/products/edit-product/:id",
       // categories
       "/categories" , "/categories/add-categorie","/categories/edit-categorie/:id",
@@ -187,7 +221,12 @@ const Routing = () => {
       "/stores/add-store","/stores/edit-store/:id",
       // stores
       "/store-admins" , 
-      "/store-admins/add-store-admin","/store-admins/edit-store-admin/:id"
+      "/store-admins/add-store-admin","/store-admins/edit-store-admin/:id",
+      // banners
+      "/banners" , 
+      "/banners/add-banner","/banners/edit-banner/:id",
+      // home-subcategorie
+      "/home-subcategories"
    ]
 
    return (

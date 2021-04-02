@@ -9,7 +9,7 @@ import {
    GET_CURRENT_PRODUCT,
    UPDATE_PRODUCT,
    DELETE_PRODUCT,
-   SET_PRODUCT_IMAGES,
+   // SET_PRODUCT_IMAGES,
    CHANGE_PRODUCT_STATUS
 } from './types';
 
@@ -82,9 +82,7 @@ export const createProduct = (obj,image) => async dispatch => {
          await axios.post(`/v1/products/image/${newObj.product_id}`,image);
       }
 
-      
-
-
+      return window.location.href = '/products'
    }
    catch (error) {
       console.error(error)
@@ -122,7 +120,6 @@ export const editProduct = (obj,image) => async dispatch => {
    };
    const body = JSON.stringify(obj);
 
-   console.log(obj,image)
 
    try {
 
@@ -136,22 +133,16 @@ export const editProduct = (obj,image) => async dispatch => {
       });
 
       // Check image
-      const hasImage = image.getAll('images')[0].name ? true : false;
-
-      if(hasImage){
-         const resImage = await axios.post(`/v1/products/image/${obj.product_id}`,image);
-
-         console.log(resImage.data)
-
-         dispatch({
-            type: SET_PRODUCT_IMAGES,
-            payload : {
-               id : obj.product_id,
-               images : resImage.data
-            }
-         })
+      let hasImage = false
+      if(image){
+         hasImage = image.getAll('images')[0].name ? true : false;
       }
 
+      if(hasImage){
+         await axios.post(`/v1/products/image/${obj.product_id}`,image);
+      }
+
+      return window.location.href = '/products'
 
    }
    catch (error) {
@@ -184,14 +175,9 @@ export const changeStatus = (id,status) => async dispatch => {
    const body = JSON.stringify(obj);
 
    try {
-        await axios.patch(`/v1/products/change_status/${id}`,body,config);
-        dispatch({
-            type: CHANGE_PRODUCT_STATUS,
-            payload: {
-               id,
-               status
-            },
-        });
+      await axios.patch(`/v1/products/status/${id}`,body,config);
+
+      return window.location.href = '/products' 
 
    } catch (error) {
       console.error(error)
