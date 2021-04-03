@@ -8,6 +8,9 @@ import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import { makeStyles } from '@material-ui/core/styles';
+import axios from 'axios';
+import Button from '@material-ui/core/Button';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 // 
 import HomeSubsItem from './HomeSubsItem';
 import Spinner from '../layouts/Spinner'
@@ -24,12 +27,38 @@ const useStyles = makeStyles({
 const HomeSubsList = ({home : {home_subcategories ,loading}}) => {
 
     const classes = useStyles();
+    const [data,setData] = useState(null);
+    const [disabled,setDisable] = useState(false)
+    const [subcategories,setSubCategories] = useState(null);
 
-    const [data,serData] = useState(null);
 
     useEffect(() => {
-        serData(home_subcategories);
-    }, [home_subcategories])
+        setData(home_subcategories);
+    }, [home_subcategories]);
+
+
+    const addHomeSubcat = () => {
+        setDisable(true)
+        return setData([
+            ...data,
+            {
+                home_subcategorie_id : 'last'
+            }
+        ])
+    }
+
+
+    // GET ALL SubCategories
+    useEffect(() => {
+        axios.get(`/v1/subcategories`)
+            .then((res) => {
+                if (res.data) {
+                    setSubCategories(res.data);
+                }
+            })
+            .catch((err) => console.error('SubCategories: ',err))
+
+    }, [])
 
 
     return (
@@ -49,12 +78,20 @@ const HomeSubsList = ({home : {home_subcategories ,loading}}) => {
                         <TableBody>
                         {
                             data ? 
-                            data.map((obj,index) => <HomeSubsItem key={index} obj={obj} index={index} />) : 
+                            data.map((obj,index) => <HomeSubsItem key={index} obj={obj} index={index} subcats={subcategories} />) : 
                             'Loading'
                         }
                         </TableBody>
                     </Table>
                 </TableContainer>
+                <div>
+                    &nbsp; &nbsp;  
+                </div>
+                <Button variant="outlined" disabled={disabled} color="primary"
+                    onClick={() => addHomeSubcat()}
+                >
+                    <AddCircleOutlineIcon />
+                </Button>
                 </>
             )
         }

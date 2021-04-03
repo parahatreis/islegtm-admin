@@ -1,19 +1,18 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {Link} from 'react-router-dom';
 import TableCell from '@material-ui/core/TableCell';
-import EditIcon from '@material-ui/icons/Edit';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
-import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
+import TextField from '@material-ui/core/TextField';
 import TableRow from '@material-ui/core/TableRow';
+import MenuItem from '@material-ui/core/MenuItem';
 // 
-// import { deleteCategorie } from '../../actions/categoriesAction';
+import { addHomeSubcategorie, deleteHomeSubcat, editHomeSubcategorie } from '../../actions/homeSubcategoriesAction';
 
 
 
@@ -47,20 +46,45 @@ const useStyles = makeStyles({
       display : 'flex',
       width : '60%',
       justifyContent :'space-between',
-    }
+    },
+    input : {
+      width : '100%'
+  },
   });
 
 
 
-const HomeSubsItem = ({obj :{
+const HomeSubsItem = ({
+  obj :{
     home_subcategorie_id,
     subcategorie
-}}) => {
+  },
+  subcats,
+  index,
+  addHomeSubcategorie,
+  deleteHomeSubcat,
+  editHomeSubcategorie
+}) => {
 
 
     const classes = useStyles();
-
     const [open, setOpen] = useState(false);
+    const [subcategories,setSubCategories] = useState(null);
+    const [selectedSubcategorie,setSelectedSubcat] = useState('');
+
+
+
+    useEffect(() => {
+      if(subcategorie){
+        setSelectedSubcat(subcategorie.subcategorie_id)
+      }
+    }, [subcategorie])
+    
+    useEffect(() => {
+      if(subcats){
+        setSubCategories(subcats);
+      }
+    }, [subcats])
 
 
     const handleOpen = (e) => {
@@ -71,22 +95,59 @@ const HomeSubsItem = ({obj :{
         setOpen(false);
     };
 
+    const changeSubcat  = (e) => {
+      const id = e.target.value;
+      setSelectedSubcat(id);
+      if(!subcategorie){
+        // Add Home Sub
+        addHomeSubcategorie(id)
+      }
+      else{
+        // Edit Home Subcat
+        editHomeSubcategorie(id,home_subcategorie_id)
+      }
+    }
+
+
+    const deleteHome = (id) => {
+      deleteHomeSubcat(id)
+    }
+
+
     return (
         <> 
         <TableRow>
             {/* Index */}
-            <TableCell align="left">{home_subcategorie_id.slice(0,5)} ...</TableCell>
-            {/* Categorie Name */}
-            <TableCell align="left">{
-                subcategorie && 
-                subcategorie.subcategorie_name
-            }</TableCell>
+            <TableCell align="left">{ index + 1 }</TableCell>
+            {/* subcategorie_name */}
+            <TableCell>
+              <TextField
+                  className={classes.input}
+                  id="outlined-select-currency"
+                  select
+                  label="Subcategorie Name"
+                  value={selectedSubcategorie}
+                  onChange={(e) => changeSubcat(e)}
+                  variant="outlined"
+                  name="subcategorie"
+              >
+                  {
+                      subcategories && subcategories.length > 0 ?
+                      subcategories.map((option,index) => (
+                          <MenuItem key={index} value={option.subcategorie_id}>
+                          {option.subcategorie_name}
+                          </MenuItem>
+                      )) : 'Başga subkategoriýa ýok'
+                  }
+              </TextField>
+            </TableCell>
             {/* Delete */}
             <TableCell align="center">
                 <Button
-                onClick={handleOpen}
-                color="secondary"
-                href="#delete"
+                  disabled={subcategorie ? false : true}
+                  onClick={handleOpen}
+                  color="secondary"
+                  href="#delete"
                 >
                 <DeleteOutlineIcon />
                 </Button>
@@ -111,7 +172,7 @@ const HomeSubsItem = ({obj :{
                             </Button>
                             <Button variant="contained" color="secondary"
                               onClick={() => {
-                                // deleteCategorie(categorie_id);
+                                deleteHome(home_subcategorie_id);
                               }}
                             >
                               Delete
@@ -129,12 +190,16 @@ const HomeSubsItem = ({obj :{
 }
 
 HomeSubsItem.propTypes = {
-//   deleteCategorie: PropTypes.func.isRequired,
+  addHomeSubcategorie: PropTypes.func.isRequired,
+  deleteHomeSubcat: PropTypes.func.isRequired,
+  editHomeSubcategorie: PropTypes.func.isRequired,
   obj : PropTypes.object.isRequired,
 }
 
 export default connect(null, {
-//   deleteCategorie,
+  addHomeSubcategorie,
+  deleteHomeSubcat,
+  editHomeSubcategorie
 })(HomeSubsItem);
 
 

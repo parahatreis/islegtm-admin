@@ -16,7 +16,11 @@ export const getSubCategories = () => async dispatch => {
    dispatch({ type: SET_LOADING_SUBCATEGORIES });
 
    try {
-      const res = await axios.get('/v1/subcategories');
+      const res = await axios.get('/v1/subcategories',{
+         params : {
+            brands : 'true'
+         }
+      });
 
       dispatch({
          type: GET_SUBCATEGORIES,
