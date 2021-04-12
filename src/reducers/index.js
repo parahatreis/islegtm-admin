@@ -8,6 +8,7 @@ import stores from './stores';
 import store_admins from './store_admins';
 import banners from './banners';
 import home from './home';
+import sizes from './sizes';
 
 export default combineReducers({
    admins,
@@ -18,5 +19,6 @@ export default combineReducers({
    stores,
    store_admins,
    banners,
-   home
+   home,
+   sizes
 })

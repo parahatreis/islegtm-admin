@@ -35,7 +35,8 @@ import AddBanner from './components/banners/AddBanner'
 import EditBanner from './components/banners/EditBanner'
 // Home
 import HomeSubcategories from './pages/HomeSubcategories';
-
+// Sizes
+import Sizes from './pages/Sizes';
 
 const publicRoutes = [
    {
@@ -200,6 +201,13 @@ const publicRoutes = [
       component: HomeSubcategories,
       exact: true
     },
+    // sizes
+    {
+      key: "sizes",
+      path: "/sizes",
+      component: Sizes,
+      exact: true
+    },
  ];
 
 
@@ -226,7 +234,9 @@ const Routing = () => {
       "/banners" , 
       "/banners/add-banner","/banners/edit-banner/:id",
       // home-subcategorie
-      "/home-subcategories"
+      "/home-subcategories",
+      //sizes
+      "/sizes",
    ]
 
    return (

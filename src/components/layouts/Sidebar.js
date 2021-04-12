@@ -226,6 +226,17 @@ export default function MiniDrawer() {
                   </ListItem>
                   </List>
             </Link>
+            {/* Sizes */}
+            <Link to="/sizes">
+               <List>
+                  <ListItem button>
+                     <ListItemIcon>
+                        <ListAltIcon />
+                     </ListItemIcon>
+                     <ListItemText primary="Sizes" className={classes.linkColor} />
+                  </ListItem>
+                  </List>
+            </Link>
             {/* Categories */}
             <Link to="/categories">
                <List>
