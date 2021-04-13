@@ -36,7 +36,6 @@ const SizeList = ({sizes : {sizes ,loading}}) => {
                         <TableRow>
                             <TableCell align="left">ID</TableCell>
                             <TableCell align="left">Size Type</TableCell>
-                            <TableCell align="left">Subcategories</TableCell>
                             <TableCell align="left">Size Names</TableCell>
                             <TableCell align="center">Delete</TableCell>
                         </TableRow>

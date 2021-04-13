@@ -37,6 +37,9 @@ import EditBanner from './components/banners/EditBanner'
 import HomeSubcategories from './pages/HomeSubcategories';
 // Sizes
 import Sizes from './pages/Sizes';
+import AddSize from './components/sizes/AddSize';
+// orders
+import Orders from './pages/Orders';
 
 const publicRoutes = [
    {
@@ -208,6 +211,19 @@ const publicRoutes = [
       component: Sizes,
       exact: true
     },
+    {
+      key: "sizes",
+      path: "/sizes/add-size",
+      component: AddSize,
+      exact: true
+    },
+    // orders
+    {
+      key: "oders",
+      path: "/orders",
+      component: Orders,
+      exact: true
+    },
  ];
 
 
@@ -236,7 +252,9 @@ const Routing = () => {
       // home-subcategorie
       "/home-subcategories",
       //sizes
-      "/sizes",
+      "/sizes","/sizes/add-size",
+      //orders
+      "/orders",
    ]
 
    return (

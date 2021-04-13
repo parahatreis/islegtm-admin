@@ -12,12 +12,9 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import TableRow from '@material-ui/core/TableRow';
-import axios from 'axios'
 // 
 import { deleteSubCategorie } from '../../actions/subcategoriesAction';
 import Placeholder from '../../img/BG.svg';
-import imgPath from '../../utils/imgPath'
-import Spinner from '../layouts/Spinner'
 
 
 
@@ -60,8 +57,6 @@ const SubCategorieItem = ({deleteSubCategorie,subcategorie :{
     subcategorie_id,
     subcategorie_image,
     subcategorie_name,
-    hasSize,
-    hasColor,
     sizeType,
     categorie,
     products
@@ -105,11 +100,11 @@ const SubCategorieItem = ({deleteSubCategorie,subcategorie :{
             {/* Product Number */}
             <TableCell align="left">{products && products.length } </TableCell>
             {/* hasSize */}
-            <TableCell align="left">{ String(hasSize) }</TableCell>
+            {/* <TableCell align="left">{ String(hasSize) }</TableCell> */}
             {/* hasColor */}
-            <TableCell align="left">{ String(hasColor) }</TableCell>
+            {/* <TableCell align="left">{ String(hasColor) }</TableCell> */}
             {/* sizeType */}
-            <TableCell align="left">{ sizeType }</TableCell>
+            <TableCell align="left">{ sizeType && sizeType.size_type }</TableCell>
             {/* Edit */}
             <TableCell align="center">
               <Link to={`/subcategories/edit-subcategorie/${subcategorie_id}`}>

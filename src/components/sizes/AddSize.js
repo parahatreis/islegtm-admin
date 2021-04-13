@@ -1,13 +1,16 @@
 import React, { useState} from 'react';
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import { InputLabel } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 // 
-import { createStore } from '../../actions/storesAction';
+import { createSize } from '../../actions/sizesAction';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -38,99 +41,109 @@ const useStyles = makeStyles((theme) => ({
   
 
 
-const AddStore = ({createStore}) => {
+const AddSize = ({createSize}) => {
     
     const [formData,setFormData] = useState({
-        store_name : '',
-        store_number : '',
-        store_phone : '',
-        store_description : '',
-        store_floor : '',
-        store_currency : '',
-    })
+        size_type : ''
+    });
+    const [sizeNames, setSizeNames] = useState(
+        [{
+            id : 1,
+            size_name : ''
+        }]
+    )
     const classes = useStyles();
 
     const onChange = (e) => setFormData({...formData, [e.target.name] : e.target.value});
 
+
+    const changeSizeName = (e,id) => {
+        const newArr = sizeNames.map((name) => {
+            if(name.id === id){
+                return name = {
+                    id : name.id,
+                    size_name : e.target.value
+                }
+            }
+            else{
+                return name
+            }
+        })
+        setSizeNames(newArr)
+    };
+
+    const addSizeNameInput = () => {
+        setSizeNames([...sizeNames, {
+            id : sizeNames[sizeNames.length - 1].id + 1,
+            size_name : ''
+        }]);
+    }
+
+    const removeSizeNameInput = (id) => {
+        setSizeNames(sizeNames.filter(val => val.id !== id))
+    }
+
     const onSubmit = (e) => {
         e.preventDefault();
-        createStore(formData);
+
+        formData.size_names = sizeNames.filter(name => name.size_name !== '');
+        createSize(formData);
     }
 
     return (
         <section className="add-product-section container">
             <Typography variant="h4" component="h2">
-               Add Store
+               Add Size Type
             </Typography>
             <div className="form-block"> 
                 <form className={classes.root} noValidate autoComplete="off" onSubmit={(e) => onSubmit(e)}>
-                    {/* Store Name */}
+                    {/* Size Type */}
                     <TextField 
                         className={classes.input}
                         id="outlined-basic" 
-                        label="Store Name" 
+                        label="Size Type" 
                         variant="outlined"
-                        value={formData.store_name}
+                        value={formData.size_type}
                         required
-                        name="store_name"
+                        name="size_type"
                         onChange={(e) => onChange(e)}
                         /><br />
-                    {/* Store Number */}
-                    <TextField 
-                        className={classes.input}
-                        id="outlined-basic" 
-                        label="Store Number (Magazin nomer)" 
-                        variant="outlined"
-                        value={formData.store_number}
-                        required
-                        name="store_number"
-                        onChange={(e) => onChange(e)}
-                        /><br />
-                    {/* Store Phone Number */}
-                    <TextField 
-                        className={classes.input}
-                        id="outlined-basic" 
-                        label="Store Phone Number" 
-                        variant="outlined"
-                        value={formData.store_phone}
-                        required
-                        name="store_phone"
-                        onChange={(e) => onChange(e)}
-                        /><br />
-                    {/* Store Floor(etazh) */}
-                    <TextField 
-                        className={classes.input}
-                        id="outlined-basic" 
-                        label="Store Floor (etazh)" 
-                        variant="outlined"
-                        value={formData.store_floor}
-                        required
-                        name="store_floor"
-                        onChange={(e) => onChange(e)}
-                        /><br />
-                    {/* Store Currency */}
-                    <TextField 
-                        className={classes.input}
-                        id="outlined-basic" 
-                        label="Store Currency" 
-                        variant="outlined"
-                        value={formData.store_currency}
-                        name="store_currency"
-                        onChange={(e) => onChange(e)}
-                        /><br />
-                    {/* Store Description */}
-                    <TextField 
-                        className={classes.input}
-                        id="outlined-basic" 
-                        label="Store Description" 
-                        variant="outlined"
-                        value={formData.store_description}
-                        name="store_description"
-                        onChange={(e) => onChange(e)}
-                        /><br />
-                        
+                    {/* Size Names */}
+                    <InputLabel children={`Add Size Names`} />
+                    {
+                        sizeNames.map((val, index) => (
+                            <>
+                                <div className={classes.grid}>
+                                    {/* Size Type */}
+                                    <TextField 
+                                        className={classes.input}
+                                        id="outlined-basic" 
+                                        label={`Size Name ${index + 1}`} 
+                                        variant="outlined"
+                                        value={val.size_name}
+                                        name="size_name"
+                                        onChange={(e) => changeSizeName(e,val.id)}
+                                    />
+                                    {
+                                        sizeNames.length === 1 ? '' : 
+                                        <IconButton aria-label="delete" className={classes.margin} onClick={(e) => removeSizeNameInput(val.id) }>
+                                            <DeleteIcon fontSize="small" />
+                                        </IconButton>
+                                    }
+                                </div>
+                                <br />
+                            </>
+                        ))
+                    }
+
+                    <Button variant="outlined" color="default"
+                        onClick={() => addSizeNameInput()}
+                    >
+                        <AddCircleOutlineIcon />
+                    </Button>
+                    <br />
                     <Button variant="contained" color="primary" type='submit'>
-                        Create Store
+                        Create Size Type
                     </Button>
                 </form>
             </div>
@@ -138,11 +151,11 @@ const AddStore = ({createStore}) => {
     )
 }
 
-AddStore.propTypes = {
-    createStore: PropTypes.func.isRequired,
+AddSize.propTypes = {
+    createSize: PropTypes.func.isRequired,
 }
 
 export default connect(null, {
-    createStore
-  })(AddStore);
+    createSize
+  })(AddSize);
     

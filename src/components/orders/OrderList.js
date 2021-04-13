@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import TableHead from '@material-ui/core/TableHead';
 import TableCell from '@material-ui/core/TableCell';
@@ -9,7 +9,7 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import { makeStyles } from '@material-ui/core/styles';
 // 
-import SubCategorieItem from './SubCategorieItem';
+import OrderItem from './OrderItem';
 import Spinner from '../layouts/Spinner'
 
 
@@ -21,7 +21,7 @@ const useStyles = makeStyles({
   });
 
 
-const SubCategorieList = ({subcategories : {subcategories ,loading}}) => {
+const OrderList = ({orders : {orders ,loading}}) => {
 
     const classes = useStyles();
 
@@ -35,19 +35,17 @@ const SubCategorieList = ({subcategories : {subcategories ,loading}}) => {
                         <TableHead>
                         <TableRow>
                             <TableCell align="left">ID</TableCell>
-                            <TableCell align="left">SubCategorie Image</TableCell>
-                            <TableCell align="left">SubCategorie Name</TableCell>
-                            <TableCell align="left">Categorie</TableCell>
-                            <TableCell align="left">Product Number</TableCell>
-                            <TableCell align="left">Size Type</TableCell>
-                            <TableCell align="center">Edit</TableCell>
-                            <TableCell align="center">Delete</TableCell>
+                            <TableCell align="left">User</TableCell>
+                            <TableCell align="left"> Address </TableCell>
+                            <TableCell align="center">Status</TableCell>
+                            <TableCell align="center">Total</TableCell>
                         </TableRow>
                         </TableHead>
                         <TableBody>
                         {/* Categorie ITEM */}
-
-                        {subcategories.map((subcategorie,index) => <SubCategorieItem key={index} subcategorie={subcategorie} />)}
+                        {
+                            orders.map((order,index) => <OrderItem key={index} order={order} />)
+                        }
 
                         </TableBody>
                     </Table>
@@ -60,8 +58,8 @@ const SubCategorieList = ({subcategories : {subcategories ,loading}}) => {
 }
 
 
-SubCategorieList.propTypes = {
-    subcategories : PropTypes.object.isRequired,
+OrderList.propTypes = {
+    orders : PropTypes.object.isRequired,
 }
 
-export default SubCategorieList
+export default OrderList

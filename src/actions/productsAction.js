@@ -170,8 +170,6 @@ export const changeStatus = (id,status) => async dispatch => {
    if(status) obj.product_status = 'true'
    if(!status) obj.product_status = 'false'
 
-   console.log(obj)
-
    const body = JSON.stringify(obj);
 
    try {

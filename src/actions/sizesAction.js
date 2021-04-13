@@ -16,7 +16,8 @@ export const getSizes = () => async dispatch => {
        dispatch({
           type: GET_SIZES,
           payload : res.data
-       })
+       });
+
     }
     catch (error) {
        console.error(error)
@@ -53,6 +54,8 @@ export const deleteSize = (id) => async dispatch => {
 
     try {
          await axios.delete(`/v1/size_types/${id}`);
+
+         return window.location.href = '/sizes'
  
     } catch (error) {
        console.error(error)

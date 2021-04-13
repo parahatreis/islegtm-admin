@@ -25,7 +25,7 @@ const Sizes = ({sizes, getSizes}) => {
             <Typography variant="h4" component="h2">
                Sizes
             </Typography>
-            <Link to="/products/add-product">
+            <Link to="/sizes/add-size">
                <Button className="btn" variant="contained" color="primary">
                   <AddIcon />
                   Add Size Type

@@ -71,7 +71,6 @@ const AddBrand = ({createBrand}) => {
          })
             .then((res) => {
                 if (res.data) {
-                    console.log(res.data)
                     setSubCategories(res.data);
                 }
             })
@@ -127,8 +126,7 @@ const AddBrand = ({createBrand}) => {
         fileData.append( 
             "image", 
             buffer, 
-        ); 
-        console.log(formData,fileData)
+        );
         createBrand(formData,fileData);
         // return history.push('/brands')
     }

@@ -84,6 +84,7 @@ const AddProduct = ({createProduct}) => {
             .then((res) => {
                 if (res.data) {
                     setSubcategories(res.data);
+                    console.log(res.data)
                 }
             })
             .catch((err) => console.error('SubCategories: ',err))

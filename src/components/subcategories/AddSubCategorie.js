@@ -40,33 +40,20 @@ const useStyles = makeStyles((theme) => ({
       },
 }));
 
-const sizeTypes = [
-{
-    value: 'numeric',
-    label: 'Numeric (32,33,34)',
-},
-{
-    value: 'alphabetical',
-    label: 'Alphabetical (S,M,L)',
-},
-];
-
-
 
 const AddSubCategorie = ({createSubCategorie}) => {
     
     const [formData,setFormData] = useState({
         subcategorie_name : '',
         categorieId : '',
-        hasSize : false,
-        hasColor : false,
-        sizeType : '',
+        size_type_id : '',
     })
     const [imgUri,setImg] = useState({img : Placeholder})
     const [buffer,setBuffer] = useState(null)
-    const [categories,setCategories] = useState(null)
+    const [categories,setCategories] = useState(null);
+    const [sizeTypes, setSizeTypes] = useState(null);
+    const [hasSize, setHasSize] = useState(false)
     const classes = useStyles();
-    const history = useHistory();
 
 
     // GET ALL Categories
@@ -83,15 +70,35 @@ const AddSubCategorie = ({createSubCategorie}) => {
             })
             .catch((err) => console.error('Categories: ',err))
 
-    }, [])
+    }, []);
+
+    // GET ALL SizeTypes
+    useEffect(() => {
+        axios.get(`/v1/size_types`)
+            .then((res) => {
+                if (res.data) {
+                    setSizeTypes(res.data);
+                }
+            })
+            .catch((err) => console.error('SizeTypes: ',err))
+    }, []);
 
 
-    const onChange = (e) => {
-        setFormData({...formData, [e.target.name] : e.target.value});
-        console.log(formData)
+    const onChange = (e) => setFormData({...formData, [e.target.name] : e.target.value});
+
+
+    // const changeCheckbox = (e) => setFormData({...formData, [e.target.name] : e.target.checked})
+
+    const changeHasSizeType = () => {
+        if(hasSize === false) setHasSize(true)
+        else{
+            setHasSize(false)
+            setFormData({
+                ...formData,
+                size_type_id : ''
+            })
+        }
     };
-
-    const changeCheckbox = (e) => setFormData({...formData, [e.target.name] : e.target.checked})
 
     const onFileUpload = (e) => {
         const file = e.target.files[0] 
@@ -125,7 +132,6 @@ const AddSubCategorie = ({createSubCategorie}) => {
             buffer, 
         ); 
         createSubCategorie(formData,fileData);
-        // return history.push('/subcategories')
     }
 
     return (
@@ -167,31 +173,31 @@ const AddSubCategorie = ({createSubCategorie}) => {
                             }
                         </TextField>
                         {/* Has Color */}
-                        <FormControlLabel
+                        {/* <FormControlLabel
                             control={<Checkbox color="primary" value={formData.hasColor} checked={formData.hasColor} onChange={(e) => changeCheckbox(e)} name="hasColor" />}
                             label="Renk filteri"
-                        /><br />
+                        /><br /> */}
                         {/* Has Size  */}
                         <FormControlLabel
-                            control={<Checkbox color="primary" value={formData.hasSize} checked={formData.hasSize} onChange={(e) => changeCheckbox(e)} name="hasSize" />}
+                            control={<Checkbox color="primary" value={hasSize} checked={hasSize} onChange={(e) => changeHasSizeType()} name="hasSize" />}
                             label="Beden olcegi barmy"
                         />
                         {/* Size Type */}
                         {
-                            formData.hasSize &&
+                            hasSize &&
                             <TextField
                                 className={classes.input}
                                 id="outlined-select-currency"
                                 select
                                 label="Size Type"
-                                value={formData.sizeType}
+                                value={formData.size_type_id}
                                 onChange={(e) => onChange(e)}
                                 variant="outlined"
-                                name="sizeType"
+                                name="size_type_id"
                             >
                                 {sizeTypes.map((option) => (
-                                    <MenuItem key={option.value} value={option.value}>
-                                    {option.label}
+                                    <MenuItem key={option.value} value={option.size_type_id}>
+                                    {option.size_type}
                                     </MenuItem>
                                 ))}
                             </TextField>

@@ -54,7 +54,6 @@ const useStyles = makeStyles({
 const SizeItem = ({deleteSize,size :{
     size_type,
     size_type_id,
-    subcategorie,
     size_names,
 }}) => {
 
@@ -77,7 +76,6 @@ const SizeItem = ({deleteSize,size :{
           {/* Store ID */}
           <TableCell align="left">{size_type_id && size_type_id.slice(0,5)} ...</TableCell>
           <TableCell align="left">{size_type && size_type}</TableCell>
-          <TableCell align="left">{subcategorie && subcategorie.subcategorie_name}</TableCell>
           <TableCell align="left">
           {
               size_names && 

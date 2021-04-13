@@ -28,6 +28,7 @@ import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
 import StoreIcon from '@material-ui/icons/Store';
 import AmpStoriesIcon from '@material-ui/icons/AmpStories';
 import HomeWorkIcon from '@material-ui/icons/HomeWork';
+import FormatShapesIcon from '@material-ui/icons/FormatShapes'
 //Components
 import Dropdown from './Dropdown';
 
@@ -184,14 +185,16 @@ export default function MiniDrawer() {
                </List>
             </Link>
             {/* Orders */}
-            <List>
-               <ListItem button>
-                  <ListItemIcon>
-                     <ShoppingCartIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Orders" />
-               </ListItem>
-            </List>
+            <Link to="/orders">
+               <List>
+                  <ListItem button>
+                     <ListItemIcon>
+                        <ShoppingCartIcon />
+                     </ListItemIcon>
+                     <ListItemText primary="Orders" className={classes.linkColor} />
+                  </ListItem>
+               </List>
+            </Link>
             
             {/* Home Subcategories */}
             <Link to="/home-subcategories">
@@ -231,7 +234,7 @@ export default function MiniDrawer() {
                <List>
                   <ListItem button>
                      <ListItemIcon>
-                        <ListAltIcon />
+                        <FormatShapesIcon />
                      </ListItemIcon>
                      <ListItemText primary="Sizes" className={classes.linkColor} />
                   </ListItem>
