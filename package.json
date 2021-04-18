@@ -36,6 +36,10 @@
       "react-app/jest"
     ]
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/parahatreis/sm-admin.git"
+  },
   "browserslist": {
     "production": [
       ">0.2%",
