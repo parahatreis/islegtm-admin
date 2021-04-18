@@ -12,7 +12,6 @@ import Avatar from '@material-ui/core/Avatar';
 import { editCategorie,getCurrentCategorie } from '../../actions/categoriesAction';
 import Spinner from '../layouts/Spinner'
 import Placeholder from '../../img/BG.svg';
-import imgPath from '../../utils/imgPath'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -41,8 +40,9 @@ const useStyles = makeStyles((theme) => ({
 const EditCategorie = ({editCategorie, getCurrentCategorie, match, categories :  {current_categorie, loading} }) => {
     
     const [formData,setFormData] = useState({
-        categorie_id : '',
-        categorie_name : null
+        categorie_name_tm : '',
+        categorie_name_ru : '',
+        categorie_name_en: '',
     })
     const [buffer,setBuffer] = useState(null)
     const [imgUri,setImg] = useState({img : Placeholder})
@@ -95,9 +95,7 @@ const EditCategorie = ({editCategorie, getCurrentCategorie, match, categories : 
             "image", 
             buffer, 
         ); 
-        console.log(formData, fileData)
         editCategorie(formData,fileData);
-        return history.push('/categories')
     }
 
     return (
@@ -110,17 +108,39 @@ const EditCategorie = ({editCategorie, getCurrentCategorie, match, categories : 
                     </Typography>
                     <div className="form-block"> 
                         <form className={classes.root} noValidate autoComplete="off" onSubmit={(e) => onSubmit(e)}>
-                            {/* Categorie Name */}
-                            <TextField 
-                                className={classes.input}
-                                id="outlined-basic" 
-                                label="Categorie Name" 
-                                variant="outlined"
-                                value={formData.categorie_name}
-                                required
-                                name="categorie_name"
-                                onChange={(e) => onChange(e)}
-                                /><br />
+                           {/* Categorie Name (TURKMENÇE) */}
+                    <TextField 
+                        className={classes.input}
+                        id="outlined-basic" 
+                        label="Categorie Name (TURKMENÇE)" 
+                        variant="outlined"
+                        value={formData.categorie_name_tm}
+                        required
+                        name="categorie_name_tm"
+                        onChange={(e) => onChange(e)}
+                        /><br />
+                    {/* Categorie Name */}
+                    <TextField 
+                        className={classes.input}
+                        id="outlined-basic" 
+                        label="Categorie Name (РУССКИЙ)" 
+                        variant="outlined"
+                        value={formData.categorie_name_ru}
+                        required
+                        name="categorie_name_ru"
+                        onChange={(e) => onChange(e)}
+                        /><br />
+                    {/* Categorie Name */}
+                    <TextField 
+                        className={classes.input}
+                        id="outlined-basic" 
+                        label="Categorie Name (ENGLISH)" 
+                        variant="outlined"
+                        value={formData.categorie_name_en}
+                        required
+                        name="categorie_name_en"
+                        onChange={(e) => onChange(e)}
+                        /><br />
                             {/*  */}
                             <div className={classes.grid}>
                                 {

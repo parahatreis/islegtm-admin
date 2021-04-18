@@ -32,8 +32,6 @@ export const getProducts = (page = 0, order = null ) => async dispatch => {
             }
         });
 
-        console.log(res.data)
-
         dispatch({
             type: COUNT_PRODUCTS,
             payload: res.data.count
@@ -216,7 +214,7 @@ export const changeStatus = (id,status) => async dispatch => {
 //       });
 
 //    } catch (error) {
-//       console.log(error)
+//       console.error(error)
 //    }
 // }
 
@@ -254,7 +252,7 @@ export const deleteProduct = (id) => async dispatch => {
         });
 
    } catch (error) {
-      console.log(error)
+      console.error(error)
    }
 }
 

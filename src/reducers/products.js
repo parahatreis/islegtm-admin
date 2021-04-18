@@ -95,7 +95,6 @@ export default function productsReducer(state = initialState, action) {
             return products.product_id === payload.id
          });
          let changedArr = state.products;
-         console.log(changedArr[prIndex])
          changedArr[prIndex].product_status = payload.status ;
          return {
             ...state,

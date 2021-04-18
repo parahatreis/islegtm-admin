@@ -36,22 +36,13 @@ export const createBrand = (obj,image) => async dispatch => {
 
    dispatch({ type: SET_LOADING_BRANDS });
 
-   let subcats = [];
-
    const config = {
       headers: {
          'Content-Type': 'application/json'  
       }
    };
 
-   if(obj.subcategories && obj.subcategories.length > 0){
-      obj.subcategories.forEach((sub) => subcats.push(sub.subcategorie_id));
-   } 
-
-   const body = JSON.stringify({
-      brand_name : obj.brand_name,
-      subcategories : subcats
-   });
+   const body = JSON.stringify(obj);
 
    try {
 
@@ -122,21 +113,13 @@ export const getCurrentBrand = (id) => async dispatch => {
  // Edit Brand
 export const editBrand = (obj,image = null) => async dispatch => {
 
-   let subcats = []; 
    const config = {
       headers: {
       'Content-Type': 'application/json'  
       }
    };
 
-   if(obj.subcategories && obj.subcategories.length > 0){
-      obj.subcategories.forEach((sub) => subcats.push(sub.subcategorie_id));
-   } 
-
-   const body = JSON.stringify({
-      brand_name : obj.brand_name,
-      subcategories : subcats
-   });
+   const body = JSON.stringify(obj);
 
    try {
       await axios.patch(`/v1/brands/${obj.brand_id}`, body, config);

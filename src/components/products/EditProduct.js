@@ -61,7 +61,9 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
     const [productImages,setProductImages] = useState(null)
     const [formData,setFormData] = useState({
         product_id : '',
-        product_name : '',
+        product_name_tm : '',
+        product_name_ru : '',
+        product_name_en : '',
         price_tmt : '',
         price_usd : '',
         subcategorie_id : '',
@@ -87,13 +89,13 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
     // Set current Product
     useEffect(() => {
         if(current_product){
-            console.log(current_product);
-            const brandId = current_product.brand !== null ? current_product.brand.brand_id : ''
+            const brandId = current_product.brand !== null ? current_product.brand.brand_id : '';
+            const storeId = current_product.store !== null ? current_product.store.store_id : '';
             setFormData({
                 ...current_product,
                 subcategorie_id : current_product.subcategorie.subcategorie_id,
                 brand_id : brandId,
-                store_id : current_product.store.store_id
+                store_id : storeId
             })
             if(current_product.price_tmt){  
                 setCurrency('tmt')
@@ -107,7 +109,6 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
     useEffect(() => {
         if(current_product){
             if(current_product.product_images){
-                // console.log(current_product.product_images)
                 // let imagesArray = []
                 // current_product.product_images.forEach((image,index) => {
                 //     imagesArray = [
@@ -118,7 +119,6 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
                 //         }
                 //     ]
                 // })
-                // console.log(imagesArray);
                 // setImage(imagesArray)
                 setProductImages(current_product.product_images)
             }
@@ -160,7 +160,12 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
         axios.get(`/v1/stores`)
             .then((res) => {
                 if (res.data) {
-                    setStore(res.data);
+                    let data = res.data;
+                    data.push({
+                        brand_id : '',
+                        brand_name : 'Dont have Store'
+                    })
+                    setStore(data);
                 }
             })
             .catch((err) => console.error('Stores : ',err))
@@ -249,14 +254,34 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
             </Typography>
             <div className="form-block"> 
                 <form className={classes.root} noValidate autoComplete="off" onSubmit={(e) => onSubmit(e)}>
-                    {/* Product Name */}
+                    {/* Product Name (TURKMENÇE) */}
                     <TextField 
                         className={classes.input} 
                         id="outlined-basic" 
-                        label="Product Name" 
+                        label="Product Name (TURKMENÇE)" 
                         variant="outlined"
-                        name="product_name"
-                        value={formData.product_name}
+                        name="product_name_tm"
+                        value={formData.product_name_tm}
+                        onChange={(e) => onChange(e)}
+                    /><br />
+                    {/* Product Name (РУССКИЙ) */}
+                    <TextField 
+                        className={classes.input} 
+                        id="outlined-basic" 
+                        label="Product Name (РУССКИЙ)" 
+                        variant="outlined"
+                        name="product_name_ru"
+                        value={formData.product_name_ru}
+                        onChange={(e) => onChange(e)}
+                    /><br />
+                    {/* Product Name (ENGLISH) */}
+                    <TextField 
+                        className={classes.input} 
+                        id="outlined-basic" 
+                        label="Product Name (ENGLISH)" 
+                        variant="outlined"
+                        name="product_name_en"
+                        value={formData.product_name_en}
                         onChange={(e) => onChange(e)}
                     /><br />
                     <TextField
@@ -341,7 +366,7 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
                             subcategories &&
                             subcategories.map((option) => (
                                 <MenuItem key={option.subcategorie_id} value={option.subcategorie_id}>
-                                    {option.subcategorie_name}
+                                    {option.subcategorie_name_tm}
                                 </MenuItem>
                             ))
                         }

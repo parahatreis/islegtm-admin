@@ -36,7 +36,6 @@ import {
        case REGISTER_SUCCESS:
        case LOGIN_SUCCESS:
           localStorage.setItem('adminToken', payload.token);
-          console.log(payload.token)
           return {
              ...state,
              ...payload,

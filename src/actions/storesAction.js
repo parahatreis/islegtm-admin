@@ -21,7 +21,6 @@ export const getStores = () => async dispatch => {
           payload : res.data
        })
 
-       console.log(res.data)
     }
     catch (error) {
        console.error(error)

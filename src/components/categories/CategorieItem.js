@@ -56,7 +56,7 @@ const useStyles = makeStyles({
 const CategorieItem = ({deleteCategorie,categorie :{
     categorie_id,
     categorie_image,
-    categorie_name,
+    categorie_name_tm,
     subcategories
 }}) => {
 
@@ -96,7 +96,7 @@ const CategorieItem = ({deleteCategorie,categorie :{
                 <Avatar className={classes.image} src={imgUri.img} variant="square"/>
             </TableCell>
             {/* Categorie Name */}
-            <TableCell align="left">{categorie_name}</TableCell>
+            <TableCell align="left">{categorie_name_tm}</TableCell>
             {/* Product Number */}
             <TableCell align="left">1542</TableCell>
             {/* Subcategorie Number */}
@@ -134,7 +134,7 @@ const CategorieItem = ({deleteCategorie,categorie :{
                       <Fade in={open}
                       >
                         <div className={classes.paper}>
-                          <h3 id="transition-modal-title">Hakykatdanam shu <span style={{color : 'blue'}}>{categorie_name}</span> kategoriyany pozmak isleyanizmi?</h3>
+                          <h3 id="transition-modal-title">Hakykatdanam shu <span style={{color : 'blue'}}>{categorie_name_tm}</span> kategoriyany pozmak isleyanizmi?</h3>
                           <p id="transition-modal-description">
                             Kategoriya pozulandan son yzyna gaydyp gelmeyar
                           </p>

@@ -99,7 +99,7 @@ const BannerItem = ({deleteBanner,banner :{
             <TableCell align="left">{banner_name && banner_name}</TableCell>
             {/* Banner URL */}
             <TableCell align="left">
-              <a href={banner_url ? banner_url : '#'}>
+              <a href={banner_url ? banner_url : '#'} target="_blank">
                 {
                   banner_url.length > 40 ? banner_url.slice(0,40) +  '..' : banner_url
                 }

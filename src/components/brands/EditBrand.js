@@ -111,7 +111,7 @@ const EditBrand = ({
                 .catch((err) => console.error('SubCategories: ',err))
         }
         
-    }, [current_brand,formData.subcategories])
+    }, [current_brand,formData])
 
     const onChange = (e) => setFormData({...formData, [e.target.name] : e.target.value});
 
@@ -122,9 +122,8 @@ const EditBrand = ({
 
     const refactorSubcategorie = (id) => {
         const sub = subcategories.find((val) => val.subcategorie_id === id);
-        console.log('ref',sub)
-        const name = sub.subcategorie_name;
-        setFormData({...formData, subcategories : [...formData.subcategories, {subcategorie_id : id, subcategorie_name : name} ]} )
+        const name = sub.subcategorie_name_tm;
+        setFormData({...formData, subcategories : [...formData.subcategories, {subcategorie_id : id, subcategorie_name_tm : name} ]} )
         const arr = subcategories.filter((val) => val.subcategorie_id !== id);
         setSubCategories(arr)
     }
@@ -168,7 +167,6 @@ const EditBrand = ({
             buffer, 
         ); 
         editBrand(formData,fileData);
-        // return history.push('/brands')
     }
 
     return (
@@ -208,7 +206,7 @@ const EditBrand = ({
                                     formData.subcategories.map((row) => (
                                         <TableRow key={row.subcategorie_id}>
                                         <TableCell component="th" scope="row">
-                                            {row.subcategorie_name}
+                                            {row.subcategorie_name_tm}
                                         </TableCell>
                                         <TableCell align="right">
                                             <Button
@@ -241,7 +239,7 @@ const EditBrand = ({
                                 subcategories && subcategories.length > 0 ?
                                 subcategories.map((option,index) => (
                                     <MenuItem key={index} value={option.subcategorie_id}>
-                                    {option.subcategorie_name}
+                                    {option.subcategorie_name_tm}
                                     </MenuItem>
                                 )) : 'Başga subkategoriýa ýok'
                             }

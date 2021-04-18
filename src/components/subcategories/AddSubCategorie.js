@@ -44,8 +44,10 @@ const useStyles = makeStyles((theme) => ({
 const AddSubCategorie = ({createSubCategorie}) => {
     
     const [formData,setFormData] = useState({
-        subcategorie_name : '',
-        categorieId : '',
+        subcategorie_name_tm : '',
+        subcategorie_name_ru : '',
+        subcategorie_name_en : '',
+        categorie_id : '',
         size_type_id : '',
     })
     const [imgUri,setImg] = useState({img : Placeholder})
@@ -141,67 +143,90 @@ const AddSubCategorie = ({createSubCategorie}) => {
             </Typography>
             <div className="form-block"> 
                 <form className={classes.root} noValidate autoComplete="off" onSubmit={(e) => onSubmit(e)}>
-                    {/* Categorie Name */}
+                    {/* SubCategorie Name (TURKMENÇE) */}
                     <TextField 
                         className={classes.input}
                         id="outlined-basic" 
-                        label="SubCategorie Name" 
+                        label="SubCategorie Name (TURKMENÇE)" 
                         variant="outlined"
-                        value={formData.subcategorie_name}
+                        value={formData.subcategorie_name_tm}
                         required
-                        name="subcategorie_name"
+                        name="subcategorie_name_tm"
                         onChange={(e) => onChange(e)}
                         /><br />
-                        {/* Categorie Name */}
+                    {/* SubCategorie Name (РУССКИЙ) */}
+                    <TextField 
+                        className={classes.input}
+                        id="outlined-basic" 
+                        label="SubCategorie Name (РУССКИЙ)" 
+                        variant="outlined"
+                        value={formData.subcategorie_name_ru}
+                        required
+                        name="subcategorie_name_ru"
+                        onChange={(e) => onChange(e)}
+                        /><br />
+                    {/* SubCategorie Name (ENGLISH) */}
+                    <TextField 
+                        className={classes.input}
+                        id="outlined-basic" 
+                        label="SubCategorie Name (ENGLISH)" 
+                        variant="outlined"
+                        value={formData.subcategorie_name_en}
+                        required
+                        name="subcategorie_name_en"
+                        onChange={(e) => onChange(e)}
+                        /><br />
+                    {/* Categorie Name */}
+                    <TextField
+                        className={classes.input}
+                        id="outlined-select-currency"
+                        select
+                        label="Categorie Name"
+                        value={formData.categorie_name}
+                        onChange={(e) => onChange(e)}
+                        variant="outlined"
+                        name="categorie_id"
+                        required
+                    >
+                        {
+                            categories && 
+                            categories.map((option,index) => (
+                                <MenuItem key={index} value={option.categorie_id}>
+                                {option.categorie_name_tm}
+                                </MenuItem>
+                            ))
+                        }
+                    </TextField>
+                    {/* Has Color */}
+                    {/* <FormControlLabel
+                        control={<Checkbox color="primary" value={formData.hasColor} checked={formData.hasColor} onChange={(e) => changeCheckbox(e)} name="hasColor" />}
+                        label="Renk filteri"
+                    /><br /> */}
+                    {/* Has Size  */}
+                    <FormControlLabel
+                        control={<Checkbox color="primary" value={hasSize} checked={hasSize} onChange={(e) => changeHasSizeType()} name="hasSize" />}
+                        label="Beden olcegi barmy"
+                    />
+                    {/* Size Type */}
+                    {
+                        hasSize &&
                         <TextField
                             className={classes.input}
                             id="outlined-select-currency"
                             select
-                            label="Categorie Name"
-                            value={formData.categorie_name}
+                            label="Size Type"
+                            value={formData.size_type_id}
                             onChange={(e) => onChange(e)}
                             variant="outlined"
-                            name="categorieId"
+                            name="size_type_id"
                         >
-                            {
-                                categories && 
-                                categories.map((option,index) => (
-                                    <MenuItem key={index} value={option.categorie_id}>
-                                    {option.categorie_name}
-                                    </MenuItem>
-                                ))
-                            }
+                            {sizeTypes.map((option) => (
+                                <MenuItem key={option.value} value={option.size_type_id}>
+                                {option.size_type}
+                                </MenuItem>
+                            ))}
                         </TextField>
-                        {/* Has Color */}
-                        {/* <FormControlLabel
-                            control={<Checkbox color="primary" value={formData.hasColor} checked={formData.hasColor} onChange={(e) => changeCheckbox(e)} name="hasColor" />}
-                            label="Renk filteri"
-                        /><br /> */}
-                        {/* Has Size  */}
-                        <FormControlLabel
-                            control={<Checkbox color="primary" value={hasSize} checked={hasSize} onChange={(e) => changeHasSizeType()} name="hasSize" />}
-                            label="Beden olcegi barmy"
-                        />
-                        {/* Size Type */}
-                        {
-                            hasSize &&
-                            <TextField
-                                className={classes.input}
-                                id="outlined-select-currency"
-                                select
-                                label="Size Type"
-                                value={formData.size_type_id}
-                                onChange={(e) => onChange(e)}
-                                variant="outlined"
-                                name="size_type_id"
-                            >
-                                {sizeTypes.map((option) => (
-                                    <MenuItem key={option.value} value={option.size_type_id}>
-                                    {option.size_type}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                        }
+                    }
                     {/* Add Image */}
                     <div className={classes.grid}>
                         <Avatar 

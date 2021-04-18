@@ -16,7 +16,7 @@ export default function SimpleMenu() {
 
   return (
     <div>
-        <Button aria-controls="simple-menu" color="inherit" aria-haspopup="true" onClick={handleClick}>
+      <Button aria-controls="simple-menu" color="inherit" aria-haspopup="true" onClick={handleClick}>
         Parahat
       </Button>
       <Menu

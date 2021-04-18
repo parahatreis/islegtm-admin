@@ -46,8 +46,10 @@ const useStyles = makeStyles((theme) => ({
 const EditSubCategorie = ({getCurrentSubCategorie,match,subcategories : {current_subcategorie,loading}, editSubCategorie}) => {
     
     const [formData,setFormData] = useState({
-        subcategorie_name : '',
-        categorieId : '',
+        subcategorie_name_tm : '',
+        subcategorie_name_ru : '',
+        subcategorie_name_en : '',
+        categorie_id : '',
         size_type_id : '',
     })
     const [imgUri,setImg] = useState({img : Placeholder})
@@ -89,22 +91,13 @@ const EditSubCategorie = ({getCurrentSubCategorie,match,subcategories : {current
 
     useEffect(() => {
         if(current_subcategorie){
-            if(current_subcategorie.sizeType){
-                setHasSize(true)
-                setFormData({
-                    ...current_subcategorie,
-                    categorieId: current_subcategorie.categorie.categorie_id,
-                    size_type_id : current_subcategorie.sizeType.size_type_id
-                });
-            }
-            else{
-                setHasSize(false);
-                setFormData({
-                    ...current_subcategorie,
-                    categorieId: current_subcategorie.categorie.categorie_id,
-                    size_type_id : ''
-                });
-            }
+            const sizeTypeId =  current_subcategorie.sizeType ?  current_subcategorie.sizeType.size_type_id : '';
+            setHasSize(sizeTypeId !== '' ? true : false);
+            setFormData({
+                ...current_subcategorie,
+                categorie_id: current_subcategorie.categorie.categorie_id,
+                size_type_id : sizeTypeId
+            });
             if(current_subcategorie.subcategorie_image){
                 let img  = imgPath(current_subcategorie.subcategorie_image);
                 setImg({img})
@@ -175,85 +168,108 @@ const EditSubCategorie = ({getCurrentSubCategorie,match,subcategories : {current
                 </Typography>
                 <div className="form-block"> 
                     <form className={classes.root} noValidate autoComplete="off" onSubmit={(e) => onSubmit(e)}>
-                        {/* Categorie Name */}
-                        <TextField 
+                        {/* SubCategorie Name (TURKMENÇE) */}
+                    <TextField 
+                        className={classes.input}
+                        id="outlined-basic" 
+                        label="SubCategorie Name (TURKMENÇE)" 
+                        variant="outlined"
+                        value={formData.subcategorie_name_tm}
+                        required
+                        name="subcategorie_name_tm"
+                        onChange={(e) => onChange(e)}
+                        /><br />
+                    {/* SubCategorie Name (РУССКИЙ) */}
+                    <TextField 
+                        className={classes.input}
+                        id="outlined-basic" 
+                        label="SubCategorie Name (РУССКИЙ)" 
+                        variant="outlined"
+                        value={formData.subcategorie_name_ru}
+                        required
+                        name="subcategorie_name_ru"
+                        onChange={(e) => onChange(e)}
+                        /><br />
+                    {/* SubCategorie Name (ENGLISH) */}
+                    <TextField 
+                        className={classes.input}
+                        id="outlined-basic" 
+                        label="SubCategorie Name (ENGLISH)" 
+                        variant="outlined"
+                        value={formData.subcategorie_name_en}
+                        required
+                        name="subcategorie_name_en"
+                        onChange={(e) => onChange(e)}
+                        /><br />
+                    {/* Categorie Name */}
+                    <TextField
+                        className={classes.input}
+                        id="outlined-select-currency"
+                        select
+                        label="Categorie Name"
+                        value={formData.categorie_id}
+                        onChange={(e) => onChange(e)}
+                        variant="outlined"
+                        name="categorie_id"
+                        required
+                    >
+                        {
+                            categories && 
+                            categories.map((option,index) => (
+                                <MenuItem key={index} value={option.categorie_id}>
+                                {option.categorie_name_tm}
+                                </MenuItem>
+                            ))
+                        }
+                    </TextField>
+                    {/* Has Color */}
+                    {/* <FormControlLabel
+                        control={<Checkbox color="primary" value={formData.hasColor} checked={formData.hasColor} onChange={(e) => changeCheckbox(e)} name="hasColor" />}
+                        label="Renk filteri"
+                    /><br /> */}
+                    {/* Has Size  */}
+                    <FormControlLabel
+                        control={<Checkbox color="primary" value={hasSize} checked={hasSize} onChange={(e) => changeHasSizeType()} name="hasSize" />}
+                        label="Beden olcegi barmy"
+                    />
+                    {/* Size Type */}
+                    {
+                        hasSize &&
+                        <TextField
                             className={classes.input}
-                            id="outlined-basic" 
-                            label="SubCategorie Name" 
-                            variant="outlined"
-                            value={formData.subcategorie_name}
-                            required
-                            name="subcategorie_name"
+                            id="outlined-select-currency"
+                            select
+                            label="Size Type"
+                            value={formData.size_type_id}
                             onChange={(e) => onChange(e)}
-                            /><br />
-                            {/* Categorie Name */}
-                            <TextField
-                                className={classes.input}
-                                id="outlined-select-currency"
-                                select
-                                label="Categorie Name"
-                                value={formData.categorieId}
-                                onChange={(e) => onChange(e)}
-                                variant="outlined"
-                                name="categorieId"
-                            >
-                                {
-                                    categories && 
-                                    categories.map((option,index) => (
-                                        <MenuItem key={index} value={option.categorie_id}>
-                                        {option.categorie_name}
-                                        </MenuItem>
-                                    ))
-                                }
-                            </TextField>
-                            {/* Has Color */}
-                            {/* <FormControlLabel
-                                control={<Checkbox color="primary" value={formData.hasColor} checked={formData.hasColor} onChange={(e) => changeCheckbox(e)} name="hasColor" />}
-                                label="Renk filteri"
-                            /><br /> */}
-                            {/* Has Size  */}
-                            <FormControlLabel
-                                control={<Checkbox color="primary" value={hasSize} checked={hasSize} onChange={(e) => changeHasSizeType()} name="hasSize" />}
-                                label="Beden olcegi barmy"
+                            variant="outlined"
+                            name="size_type_id"
+                        >
+                            {sizeTypes.map((option) => (
+                                <MenuItem key={option.value} value={option.size_type_id}>
+                                {option.size_type}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+                    }
+                    {/* Add Image */}
+                    <div className={classes.grid}>
+                        <Avatar 
+                            className={classes.image}
+                            src={imgUri.img}
+                            variant="square" 
                             />
-                            {/* Size Type */}
-                            {
-                                hasSize &&
-                                <TextField
-                                    className={classes.input}
-                                    id="outlined-select-currency"
-                                    select
-                                    label="Size Type"
-                                    value={formData.size_type_id}
-                                    onChange={(e) => onChange(e)}
-                                    variant="outlined"
-                                    name="size_type_id"
-                                >
-                                    {sizeTypes.map((option) => (
-                                        <MenuItem key={option.value} value={option.size_type_id}>
-                                        {option.size_type}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            }
-                        {/* Add Image */}
-                        <div className={classes.grid}>
-                            <Avatar 
-                                className={classes.image}
-                                src={imgUri.img}
-                                variant="square" 
-                                />
-                            <div style={{paddingLeft : '10px', width : '100%'}}>
-                                <InputLabel children={`Categorie Image`} />
-                                <br />
-                                <TextField className={classes.inputNumber} id="outlined-basic" type="file" variant="outlined" 
-                                    onChange={(e) => onFileUpload(e)}
-                                /><br />
-                            </div>
+                        <div style={{paddingLeft : '10px', width : '100%'}}>
+                            <InputLabel children={`Categorie Image`} />
+                            <br />
+                            <TextField className={classes.inputNumber} id="outlined-basic" type="file" variant="outlined" 
+                                onChange={(e) => onFileUpload(e)}
+                            /><br />
                         </div>
-                        <Button variant="contained" color="primary" type='submit'>
-                            Update SubCategorie
-                        </Button>
+                    </div>
+                    <Button variant="contained" color="primary" type='submit'>
+                        Update SubCategorie
+                    </Button>
                     </form>
                 </div>
             </section>

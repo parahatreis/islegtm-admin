@@ -135,7 +135,7 @@ const HomeSubsItem = ({
                       subcategories && subcategories.length > 0 ?
                       subcategories.map((option,index) => (
                           <MenuItem key={index} value={option.subcategorie_id}>
-                          {option.subcategorie_name}
+                          {option.subcategorie_name_tm}
                           </MenuItem>
                       )) : 'Başga subkategoriýa ýok'
                   }

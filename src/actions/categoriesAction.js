@@ -71,19 +71,21 @@ export const createCategorie = (obj,image) => async dispatch => {
  // DELETE Categorie
 export const deleteCategorie = (id) => async dispatch => {
    
-    dispatch({ type: SET_LOADING_CATEGORIES });
+   dispatch({ type: SET_LOADING_CATEGORIES });
 
-    try {
-         await axios.delete(`/v1/categories/${id}`);
-         
-         dispatch({
-             type: DELETE_CATEGORIE,
-             payload: id
-         });
- 
-    } catch (error) {
-       console.error(error)
-    }
+   try {
+      await axios.delete(`/v1/categories/${id}`);
+      
+      dispatch({
+            type: DELETE_CATEGORIE,
+            payload: id
+      });
+
+      return window.location.href = '/categories'
+
+   } catch (error) {
+      console.error(error)
+   }
  }
 
 // Get Current Categorie

@@ -57,17 +57,6 @@ const OrderItem = ({order :{
     user,
 }}) => {
 
-  const classes = useStyles();
-  const [open, setOpen] = useState(false);  
-
-
-  const handleOpen = (e) => {
-      setOpen(true);
-  };
-
-  const handleClose = () => {
-      setOpen(false);
-  };
 
   return (
       <> 

@@ -12,14 +12,10 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import TableRow from '@material-ui/core/TableRow';
-import axios from 'axios'
 import Chip from '@material-ui/core/Chip';
 // 
 import { deletBrand } from '../../actions/brandsActions';
 import Placeholder from '../../img/BG.svg';
-import imgPath from '../../utils/imgPath'
-import Spinner from '../layouts/Spinner';
-
 
 
 const useStyles = makeStyles({
@@ -105,7 +101,7 @@ const BrandItem = ({deletBrand,brand :{
                 subcategories && subcategories.length > 0 ? 
                 subcategories.map((data,index) => {
                     if(index < 3){
-                      return <Chip key={data.subcategorie_id} label={data.subcategorie_name} variant='outlined' />
+                      return <Chip key={data.subcategorie_id} label={data.subcategorie_name_tm} variant='outlined' />
                     }
                 }) : ""
               }

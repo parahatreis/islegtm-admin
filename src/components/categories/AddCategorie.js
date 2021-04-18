@@ -39,7 +39,9 @@ const useStyles = makeStyles((theme) => ({
 const AddCategorie = ({createCategorie}) => {
     
     const [formData,setFormData] = useState({
-        categorie_name : '',
+        categorie_name_tm : '',
+        categorie_name_ru : '',
+        categorie_name_en: '',
     })
     const [imgUri,setImg] = useState({img : Placeholder})
     const [buffer,setBuffer] = useState(null)
@@ -81,7 +83,6 @@ const AddCategorie = ({createCategorie}) => {
             buffer, 
         ); 
         createCategorie(formData,fileData);
-        return history.push('/categories')
     }
 
     return (
@@ -91,15 +92,37 @@ const AddCategorie = ({createCategorie}) => {
             </Typography>
             <div className="form-block"> 
                 <form className={classes.root} noValidate autoComplete="off" onSubmit={(e) => onSubmit(e)}>
+                    {/* Categorie Name (TURKMENÇE) */}
+                    <TextField 
+                        className={classes.input}
+                        id="outlined-basic" 
+                        label="Categorie Name (TURKMENÇE)" 
+                        variant="outlined"
+                        value={formData.categorie_name_tm}
+                        required
+                        name="categorie_name_tm"
+                        onChange={(e) => onChange(e)}
+                        /><br />
                     {/* Categorie Name */}
                     <TextField 
                         className={classes.input}
                         id="outlined-basic" 
-                        label="Categorie Name" 
+                        label="Categorie Name (РУССКИЙ)" 
                         variant="outlined"
-                        value={formData.categorie_name}
+                        value={formData.categorie_name_ru}
                         required
-                        name="categorie_name"
+                        name="categorie_name_ru"
+                        onChange={(e) => onChange(e)}
+                        /><br />
+                    {/* Categorie Name */}
+                    <TextField 
+                        className={classes.input}
+                        id="outlined-basic" 
+                        label="Categorie Name (ENGLISH)" 
+                        variant="outlined"
+                        value={formData.categorie_name_en}
+                        required
+                        name="categorie_name_en"
                         onChange={(e) => onChange(e)}
                         /><br />
                     {/*  */}

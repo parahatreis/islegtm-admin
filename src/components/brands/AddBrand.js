@@ -84,8 +84,8 @@ const AddBrand = ({createBrand}) => {
     const addSubcategorie = (e) => {
         const id  = e.target.value
         const sub = subcategories.find((val) => val.subcategorie_id === e.target.value);
-        const name = sub.subcategorie_name;
-        setFormData({...formData, subcategories : [...formData.subcategories, {subcategorie_id : id, subcategorie_name : name} ]} )
+        const name = sub.subcategorie_name_tm;
+        setFormData({...formData, subcategories : [...formData.subcategories, {subcategorie_id : id, subcategorie_name_tm : name} ]} )
         const arr = subcategories.filter((val) => val.subcategorie_id !== id);
         setSubCategories(arr)
     }
@@ -128,7 +128,6 @@ const AddBrand = ({createBrand}) => {
             buffer, 
         );
         createBrand(formData,fileData);
-        // return history.push('/brands')
     }
 
     return (
@@ -164,7 +163,7 @@ const AddBrand = ({createBrand}) => {
                                     formData.subcategories.map((row) => (
                                         <TableRow key={row.subcategorie_id}>
                                         <TableCell component="th" scope="row">
-                                            {row.subcategorie_name}
+                                            {row.subcategorie_name_tm}
                                         </TableCell>
                                         <TableCell align="right">
                                             <Button
@@ -197,7 +196,7 @@ const AddBrand = ({createBrand}) => {
                                 subcategories && subcategories.length > 0 ?
                                 subcategories.map((option,index) => (
                                     <MenuItem key={index} value={option.subcategorie_id}>
-                                    {option.subcategorie_name}
+                                    {option.subcategorie_name_tm}
                                     </MenuItem>
                                 )) : 'Başga subkategoriýa ýok'
                             }

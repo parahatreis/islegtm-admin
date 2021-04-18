@@ -58,7 +58,7 @@ const useStyles = makeStyles({
 const ProductItem = ({product : 
     {
         product_id,
-        product_name,
+        product_name_tm,
         price_tmt,
         price_usd,
         product_status,
@@ -120,7 +120,7 @@ const ProductItem = ({product :
                 />
             </TableCell>
             {/* Product Name */}
-            <TableCell align="left">{product_name}</TableCell>
+            <TableCell align="left">{product_name_tm}</TableCell>
             {/* Price(TMT) */}
             <TableCell align="left">{price_tmt && price_tmt}</TableCell>
             {/* Price(USD) */}
@@ -128,7 +128,7 @@ const ProductItem = ({product :
             {/* Brand */}
             <TableCell align="left">{brand && brand.brand_name}</TableCell>
             {/* Subcategorie */}
-            <TableCell align="left">{subcategorie && subcategorie.subcategorie_name}</TableCell>
+            <TableCell align="left">{subcategorie && subcategorie.subcategorie_name_tm}</TableCell>
             {/* Store No */}
             <TableCell align="left">{store && store.store_name}</TableCell>
             {/* Status */}

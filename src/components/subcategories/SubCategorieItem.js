@@ -56,7 +56,7 @@ const useStyles = makeStyles({
 const SubCategorieItem = ({deleteSubCategorie,subcategorie :{
     subcategorie_id,
     subcategorie_image,
-    subcategorie_name,
+    subcategorie_name_tm,
     sizeType,
     categorie,
     products
@@ -94,9 +94,9 @@ const SubCategorieItem = ({deleteSubCategorie,subcategorie :{
                 <Avatar className={classes.image} src={image} variant="square"/>
             </TableCell>
             {/* SubCategorie Name */}
-            <TableCell align="left">{subcategorie_name}</TableCell>
+            <TableCell align="left">{subcategorie_name_tm}</TableCell>
             {/* Categorie Name */}
-            <TableCell align="left">{categorie && categorie.categorie_name}</TableCell>
+            <TableCell align="left">{categorie && categorie.categorie_name_tm}</TableCell>
             {/* Product Number */}
             <TableCell align="left">{products && products.length } </TableCell>
             {/* hasSize */}
@@ -138,7 +138,7 @@ const SubCategorieItem = ({deleteSubCategorie,subcategorie :{
                       <Fade in={open}
                       >
                         <div className={classes.paper}>
-                          <h3 id="transition-modal-title">Hakykatdanam shu <span style={{color : 'blue'}}>{subcategorie_name}</span> kategoriyany pozmak isleyanizmi?</h3>
+                          <h3 id="transition-modal-title">Hakykatdanam shu <span style={{color : 'blue'}}>{subcategorie_name_tm}</span> kategoriyany pozmak isleyanizmi?</h3>
                           <p id="transition-modal-description">
                             Kategoriya pozulandan son yzyna gaydyp gelmeyar
                           </p>
@@ -149,7 +149,6 @@ const SubCategorieItem = ({deleteSubCategorie,subcategorie :{
                             <Button variant="contained" color="secondary"
                               onClick={() => {
                                 deleteSubCategorie(subcategorie_id);
-                                console.log(subcategorie_id)
                               }}
                             >
                               Delete

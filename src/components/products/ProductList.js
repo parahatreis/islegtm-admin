@@ -31,7 +31,6 @@ const ProductList = ({products : {products, loading, count_products}, setPageNum
   // Calculate Page Number
   useEffect(() => {
     setCounter(Math.ceil(count_products / 10));
-    console.log(count_products)
     setPageNumber(0)
  }, [count_products, pageCount, setPageNumber]);
 
