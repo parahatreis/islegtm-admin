@@ -1,6 +1,5 @@
 import React, { useState} from 'react';
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -46,7 +45,6 @@ const AddCategorie = ({createCategorie}) => {
     const [imgUri,setImg] = useState({img : Placeholder})
     const [buffer,setBuffer] = useState(null)
     const classes = useStyles();
-    const history = useHistory();
 
     const onChange = (e) => setFormData({...formData, [e.target.name] : e.target.value})
     

@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import store from './store';
 // import { loadUser } from './actions/adminsAction';
 // import setAuthToken from './utils/setAuthToken'; 
-
+import Alerts from './components/layouts/Alerts'
 
 
 // if (localStorage.adminToken) {
@@ -23,6 +23,7 @@ const App = () => {
 
   return (
     <Provider store={store} >
+        <Alerts />
         <Routing />
     </Provider>
   )

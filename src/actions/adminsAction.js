@@ -7,9 +7,10 @@ import {
    LOGIN_FAIL,
    LOGIN_SUCCESS,
    SET_LOADING_AUTH,
-   LOGOUT
+   LOGOUT,
 } from './types';
 import setAuthToken from '../utils/setAuthToken';
+import {setAlert} from './alertsAction'
 
 // Load Admin
 export const loadAdmin = () => async dispatch => {
@@ -18,7 +19,7 @@ export const loadAdmin = () => async dispatch => {
       setAuthToken(localStorage.smToken);
    }
    try {
-      const res = await axios.get('/api/users/auth');
+      const res = await axios.get('/v1/admins/auth');
       dispatch({
          type: ADMIN_LOADED,
          payload: res.data
@@ -44,7 +45,7 @@ export const register = ({ username, phone_number, password }) => async dispatch
    const body = JSON.stringify({ username, phone_number, password });
 
    try {
-      const res = await axios.post('/api/users', body, config);
+      const res = await axios.post('/v1/admins', body, config);
 
       dispatch({
          type: REGISTER_SUCCESS,
@@ -61,29 +62,32 @@ export const register = ({ username, phone_number, password }) => async dispatch
 }
 
 // Login Admin
-export const login = (phone_number, password) => async dispatch => {
+export const login = (obj) => async dispatch => {
    const config = {
       headers: {
          'Content-Type': 'application/json'
       }
    };
 
-   const body = JSON.stringify({ phone_number, password });
+   const body = JSON.stringify(obj);
+   console.log(body)
    
    try {
-      const res = await axios.post('/api/users/login', body, config);
+      const res = await axios.post('/v1/admins/login', body, config);
 
       dispatch({
          type: LOGIN_SUCCESS,
          payload: res.data
       });
 
+      console.log(res.data)
+
       dispatch(loadAdmin());
 
    }
    catch (err) {
-      console.error(err)
-
+      const errors = err.response.data.errors;
+      dispatch(setAlert(errors, 'error'))
       dispatch({ type: LOGIN_FAIL });
    }
 };
