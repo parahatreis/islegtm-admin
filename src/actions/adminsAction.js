@@ -15,8 +15,8 @@ import {setAlert} from './alertsAction'
 // Load Admin
 export const loadAdmin = () => async dispatch => {
    
-   if (localStorage.smToken) {
-      setAuthToken(localStorage.smToken);
+   if (localStorage.adminToken) {
+      setAuthToken(localStorage.adminToken);
    }
    try {
       const res = await axios.get('/v1/admins/auth');
@@ -52,7 +52,7 @@ export const register = ({ username, phone_number, password }) => async dispatch
          payload : res.data
       });
 
-      // dispatch(loadAdmin());
+      dispatch(loadAdmin());
 
    }
    catch (err) {
@@ -79,8 +79,6 @@ export const login = (obj) => async dispatch => {
          type: LOGIN_SUCCESS,
          payload: res.data
       });
-
-      console.log(res.data)
 
       dispatch(loadAdmin());
 

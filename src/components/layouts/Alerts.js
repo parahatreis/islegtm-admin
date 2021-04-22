@@ -7,7 +7,10 @@ import Alert from '@material-ui/lab/Alert';
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
+    maxWidth : '400px',
+    margin : '1rem',
     position : 'fixed',
+    right : '0',
     '& > * + *': {
       marginTop: theme.spacing(2),
     },
@@ -27,8 +30,8 @@ const Alerts = ({alerts}) => {
     <div className={classes.root}>
       {
         data.length > 0 &&
-        data.map(alert => (
-          <Alert variant="filled" severity={alert.alertType}>
+        data.map((alert) => (
+          <Alert key={alert.id} severity={alert.alertType}>
             {alert.msg}
           </Alert>
         ))

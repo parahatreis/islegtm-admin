@@ -7,9 +7,11 @@ import Typography from '@material-ui/core/Typography';
 import { InputLabel } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
+import validator from 'validator'
 // 
 import { createBanner } from '../../actions/bannersAction';
 import Placeholder from '../../img/BG.svg';
+import { setAlert } from '../../actions/alertsAction'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -40,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   
 
 
-const AddBanner = ({createBanner}) => {
+const AddBanner = ({createBanner, setAlert}) => {
     
     const [formData,setFormData] = useState({
         banner_name : '',
@@ -76,19 +78,36 @@ const AddBanner = ({createBanner}) => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        const fileData = new FormData(); 
-     
-        if(buffer){
-            // Update the formData object 
-            fileData.append( 
-                "image", 
-                buffer, 
-            ); 
-            createBanner(formData,fileData);
+        const fileData = new FormData();
+
+        const validated = validateInputs();
+
+        if(validated){
+            if(buffer){
+                // Update the formData object 
+                fileData.append( 
+                    "image", 
+                    buffer, 
+                );
+                createBanner(formData,fileData);
+            }
+            else{
+                setAlert('Upload Banner Image', 'error');
+            }
+        }   
+    }
+
+
+    const validateInputs = () => {
+        if(validator.isEmpty(formData.banner_name)){
+            setAlert('Banner Name Girizin', 'error');
+            return false
         }
-        else{
-            alert('Upload Banner Image')
+        if(!validator.isURL(formData.banner_url) || validator.isEmpty(formData.banner_url)){
+            setAlert('Banner URL Girizin', 'error');
+            return false
         }
+        return true
     }
 
     return (
@@ -146,9 +165,11 @@ const AddBanner = ({createBanner}) => {
 
 AddBanner.propTypes = {
     createBanner: PropTypes.func.isRequired,
+    setAlert: PropTypes.func.isRequired,
 }
 
 export default connect(null, {
-    createBanner
+    createBanner,
+    setAlert
   })(AddBanner);
     

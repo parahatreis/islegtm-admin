@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
 import CardContent from '@material-ui/core/CardContent';
+import { Redirect } from 'react-router-dom';
 // 
 import { login } from '../actions/adminsAction'
 
@@ -34,7 +35,7 @@ const useStyles = makeStyles({
 });
 
 
-const LoginView = ({login}) => {
+const LoginView = ({login, isAuthenticated}) => {
 
     const classes = useStyles();
     const [formData, setFormData] = useState({
@@ -46,8 +47,11 @@ const LoginView = ({login}) => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        console.log(formData);
         login(formData)
+    }
+
+    if (isAuthenticated) {
+        return <Redirect to = "/" />
     }
 
     return (
@@ -107,8 +111,13 @@ const LoginView = ({login}) => {
 
 LoginView.propTypes = {
     login: PropTypes.func.isRequired,
+    isAuthenticated : PropTypes.bool,
 }
 
-export default connect(null, {
+const mapStateToProps = state => ({
+    isAuthenticated: state.admins.isAuthenticated
+ })
+
+export default connect(mapStateToProps, {
     login
 })(LoginView);

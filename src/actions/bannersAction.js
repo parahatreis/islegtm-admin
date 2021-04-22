@@ -5,6 +5,8 @@ import {
    DELETE_BANNER,
    GET_CURRENT_BANNER
 } from './types';
+import {setAlert} from './alertsAction'
+
 
 
 // GET ALL Banners
@@ -57,6 +59,8 @@ export const createBanner = (obj,image) => async dispatch => {
 
    }
    catch (error) {
+      const errors = error.response.data.errors;
+      dispatch(setAlert(errors, 'error'))
       console.error(error)
    }
  }

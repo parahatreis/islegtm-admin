@@ -1,25 +1,29 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 // 
 import './styles/style.scss';
-import Routing from './routing'
+import Routing from './router/routing'
 // State
 import { Provider } from 'react-redux';
 import store from './store';
-// import { loadUser } from './actions/adminsAction';
-// import setAuthToken from './utils/setAuthToken'; 
+import { loadAdmin } from './actions/adminsAction';
+import setAuthToken from './utils/setAuthToken'; 
 import Alerts from './components/layouts/Alerts'
-
-
-// if (localStorage.adminToken) {
-//   setAuthToken(localStorage.adminToken);
-// }
 
 
 const App = () => {
 
-//   useEffect(() => {
-//     store.dispatch(loadUser());
-//  }, []);
+  useEffect(() => {
+    // check for token in LS
+    if (localStorage.adminToken) {
+      setAuthToken(localStorage.adminToken);
+    }    
+    store.dispatch(loadAdmin());
+
+    // log user out from all tabs if they log out in one tab
+    // window.addEventListener('storage', () => {
+    //   if (!localStorage.token) store.dispatch({ type: LOGOUT });
+    // });
+  }, []);
 
   return (
     <Provider store={store} >

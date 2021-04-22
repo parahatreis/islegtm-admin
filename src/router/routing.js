@@ -1,45 +1,47 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+// 
+import PrivateRoute from './PrivateRoute';
 // components
-import Register from './pages/Register'
-import Login from './pages/Login'
-import Dashboard from './pages/Dashboard'
-import SideBar from './components/layouts/Sidebar'
+import Register from '../pages/Register'
+import Login from '../pages/Login'
+import Dashboard from '../pages/Dashboard'
+import SideBar from '../components/layouts/Sidebar'
 // products
-import Products from './pages/Products'
-import AddProduct from './components/products/AddProduct'
-import EditProduct from './components/products/EditProduct'
+import Products from '../pages/Products'
+import AddProduct from '../components/products/AddProduct'
+import EditProduct from '../components/products/EditProduct'
 // categories
-import Categories from './pages/Categories';
-import AddCategorie from './components/categories/AddCategorie'
-import EditCategorie from './components/categories/EditCategorie'
+import Categories from '../pages/Categories';
+import AddCategorie from '../components/categories/AddCategorie'
+import EditCategorie from '../components/categories/EditCategorie'
 // subcategories
-import SubCategories from './pages/SubCategories';
-import AddSubCategorie from './components/subcategories/AddSubCategorie'
-import EditSubCategorie from './components/subcategories/EditSubCategorie'
+import SubCategories from '../pages/SubCategories';
+import AddSubCategorie from '../components/subcategories/AddSubCategorie'
+import EditSubCategorie from '../components/subcategories/EditSubCategorie'
 // Brands
-import Brands from './pages/Brands';
-import AddBrand from './components/brands/AddBrand'
-import EditBrand from './components/brands/EditBrand'
+import Brands from '../pages/Brands';
+import AddBrand from '../components/brands/AddBrand'
+import EditBrand from '../components/brands/EditBrand'
 // Stores
-import Stores from './pages/Stores';
-import AddStore from './components/stores/AddStore'
-import EditStore from './components/stores/EditStore'
+import Stores from '../pages/Stores';
+import AddStore from '../components/stores/AddStore'
+import EditStore from '../components/stores/EditStore'
 // Stores
-import StoreAdmins from './pages/StoreAdmins';
-import AddStoreAdmin from './components/store-admins/AddStoreAdmin'
-import EditStoreAdmin from './components/store-admins/EditStoreAdmin'
+import StoreAdmins from '../pages/StoreAdmins';
+import AddStoreAdmin from '../components/store-admins/AddStoreAdmin'
+import EditStoreAdmin from '../components/store-admins/EditStoreAdmin'
 // Banners
-import Banners from './pages/Banners';
-import AddBanner from './components/banners/AddBanner'
-import EditBanner from './components/banners/EditBanner'
+import Banners from '../pages/Banners';
+import AddBanner from '../components/banners/AddBanner'
+import EditBanner from '../components/banners/EditBanner'
 // Home
-import HomeSubcategories from './pages/HomeSubcategories';
+import HomeSubcategories from '../pages/HomeSubcategories';
 // Sizes
-import Sizes from './pages/Sizes';
-import AddSize from './components/sizes/AddSize';
+import Sizes from '../pages/Sizes';
+import AddSize from '../components/sizes/AddSize';
 // orders
-import Orders from './pages/Orders';
+import Orders from '../pages/Orders';
 
 const publicRoutes = [
    {
@@ -260,19 +262,21 @@ const Routing = () => {
    return (
       <Router>
           <Switch>
+            {/* Private Routes */}
             <Route exact path={privateArray}>
                <main>
                   <SideBar />
                   <Switch>
                      <div className="inside-main">
                      {privateRoutes.map(privateRouteProps => (
-                        <Route {...privateRouteProps} />
+                        <PrivateRoute {...privateRouteProps} />
                      ))}
                      </div>
                   </Switch>
                 </main>
             </Route>
 
+            {/* Public Routes */}
             <Route exact path={["/login", "/signup"]}>
               {/* <LayoutAnonymous> */}
               <h1>
