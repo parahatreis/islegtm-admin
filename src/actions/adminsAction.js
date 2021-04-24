@@ -14,6 +14,8 @@ import {setAlert} from './alertsAction'
 
 // Load Admin
 export const loadAdmin = () => async dispatch => {
+
+   dispatch({ type: SET_LOADING_AUTH });
    
    if (localStorage.adminToken) {
       setAuthToken(localStorage.adminToken);
@@ -33,7 +35,7 @@ export const loadAdmin = () => async dispatch => {
 // Register Admin
 export const register = ({ username, phone_number, password }) => async dispatch => {
 
-      dispatch({ type: SET_LOADING_AUTH });
+   dispatch({ type: SET_LOADING_AUTH });
 
 
    const config = {
@@ -63,6 +65,10 @@ export const register = ({ username, phone_number, password }) => async dispatch
 
 // Login Admin
 export const login = (obj) => async dispatch => {
+
+   dispatch({ type: SET_LOADING_AUTH });
+
+
    const config = {
       headers: {
          'Content-Type': 'application/json'
@@ -70,7 +76,6 @@ export const login = (obj) => async dispatch => {
    };
 
    const body = JSON.stringify(obj);
-   console.log(body)
    
    try {
       const res = await axios.post('/v1/admins/login', body, config);

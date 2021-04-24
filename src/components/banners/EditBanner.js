@@ -106,6 +106,8 @@ const EditBanner = ({editBanner, getCurrentBanner,match,
         editBanner(formData,fileData);
     }
 
+    
+
     return (
         <section className="add-product-section container">
             <Typography variant="h4" component="h2">

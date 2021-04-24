@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
@@ -35,7 +35,7 @@ const useStyles = makeStyles({
 });
 
 
-const LoginView = ({login, isAuthenticated}) => {
+const LoginView = ({login, isAuthenticated, loading}) => {
 
     const classes = useStyles();
     const [formData, setFormData] = useState({
@@ -43,7 +43,13 @@ const LoginView = ({login, isAuthenticated}) => {
         admin_password : ''
     });
 
-    const onChangeFormData = (e) => setFormData({...formData,[e.target.name] : e.target.value})
+    const [btnActive,setBtnActive] = useState(false);
+
+    useEffect(() => {
+        setBtnActive(loading)
+    }, [loading])
+
+    const onChangeFormData = (e) => setFormData({...formData,[e.target.name] : e.target.value});
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -53,6 +59,8 @@ const LoginView = ({login, isAuthenticated}) => {
     if (isAuthenticated) {
         return <Redirect to = "/" />
     }
+
+    
 
     return (
         <div className={classes.wrapper}>
@@ -98,7 +106,7 @@ const LoginView = ({login, isAuthenticated}) => {
 
                     {/* Submit */}
                     <div className={classes.inputBlock}>
-                        <Button variant="contained" className={classes.input} color="primary" type='submit'>
+                        <Button variant="contained" disabled={btnActive} className={classes.input} color="primary" type='submit'>
                             Login
                         </Button>
                     </div>
@@ -112,10 +120,12 @@ const LoginView = ({login, isAuthenticated}) => {
 LoginView.propTypes = {
     login: PropTypes.func.isRequired,
     isAuthenticated : PropTypes.bool,
+    loading : PropTypes.bool,
 }
 
 const mapStateToProps = state => ({
-    isAuthenticated: state.admins.isAuthenticated
+    isAuthenticated: state.admins.isAuthenticated,
+    loading: state.admins.loading
  })
 
 export default connect(mapStateToProps, {

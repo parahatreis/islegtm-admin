@@ -5,7 +5,7 @@ import Routing from './router/routing'
 // State
 import { Provider } from 'react-redux';
 import store from './store';
-import { loadAdmin } from './actions/adminsAction';
+import { loadAdmin, logout } from './actions/adminsAction';
 import setAuthToken from './utils/setAuthToken'; 
 import Alerts from './components/layouts/Alerts'
 
@@ -20,9 +20,9 @@ const App = () => {
     store.dispatch(loadAdmin());
 
     // log user out from all tabs if they log out in one tab
-    // window.addEventListener('storage', () => {
-    //   if (!localStorage.token) store.dispatch({ type: LOGOUT });
-    // });
+    window.addEventListener('storage', () => {
+      if (!localStorage.adminToken) store.dispatch(logout());
+    });
   }, []);
 
   return (

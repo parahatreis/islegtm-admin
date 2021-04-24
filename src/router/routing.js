@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 // 
 import PrivateRoute from './PrivateRoute';
 // components
-import Register from '../pages/Register'
 import Login from '../pages/Login'
 import Dashboard from '../pages/Dashboard'
 import SideBar from '../components/layouts/Sidebar'
@@ -49,13 +48,7 @@ const publicRoutes = [
      path: "/login",
      component: Login,
      exact: true
-   },
-   {
-     key: "signup",
-     path: "/signup",
-     component: Register,
-     exact: true
-   },
+   }
  ];
  
  const privateRoutes = [
@@ -277,7 +270,7 @@ const Routing = () => {
             </Route>
 
             {/* Public Routes */}
-            <Route exact path={["/login", "/signup"]}>
+            <Route exact path={["/login"]}>
               {/* <LayoutAnonymous> */}
               <h1>
                 <Switch>

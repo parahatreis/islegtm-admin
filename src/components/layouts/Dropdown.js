@@ -1,9 +1,13 @@
-import React from 'react';
+import React from 'react'
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+// 
+import {logout} from '../../actions/adminsAction'
 
-export default function SimpleMenu() {
+const SimpleMenu = ({admins : {admin}, logout}) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
@@ -14,10 +18,15 @@ export default function SimpleMenu() {
     setAnchorEl(null);
   };
 
+  const handleLogout = () => {
+    logout();
+    handleClose();
+  }
+
   return (
     <div>
       <Button aria-controls="simple-menu" color="inherit" aria-haspopup="true" onClick={handleClick}>
-        Parahat
+        {admin && admin.admin_name}
       </Button>
       <Menu
         id="simple-menu"
@@ -26,9 +35,22 @@ export default function SimpleMenu() {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        {/* <MenuItem onClick={handleClose}>My account</MenuItem> */}
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </div>
   );
 }
+
+SimpleMenu.propTypes = {
+  logout: PropTypes.func.isRequired,
+  admins : PropTypes.object.isRequired,
+}
+
+const mapStateToProps = state => ({
+  admins: state.admins
+})
+
+export default connect(mapStateToProps, {
+  logout
+})(SimpleMenu);

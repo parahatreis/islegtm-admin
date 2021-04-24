@@ -12,8 +12,8 @@ import {
  
  const initialState = {
     token: localStorage.getItem('adminToken'),
-    isAuthenticated: null,
-    loading: false,
+    isAuthenticated: true,
+    loading: true,
     admin : null
  };
  
