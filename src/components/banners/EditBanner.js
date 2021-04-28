@@ -7,9 +7,11 @@ import Typography from '@material-ui/core/Typography';
 import { InputLabel } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
+import validator from 'validator'
 // 
 import { editBanner, getCurrentBanner } from '../../actions/bannersAction';
 import Placeholder from '../../img/BG.svg';
+import { setAlert } from '../../actions/alertsAction'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -40,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   
 
 
-const EditBanner = ({editBanner, getCurrentBanner,match,
+const EditBanner = ({editBanner, getCurrentBanner,match,setAlert,
     banners : {current_banner, loading},
 }) => {
     
@@ -96,14 +98,35 @@ const EditBanner = ({editBanner, getCurrentBanner,match,
 
     const onSubmit = (e) => {
         e.preventDefault();
-        const fileData = new FormData(); 
+        const fileData = new FormData();
 
-        // Update the formData object 
-        fileData.append( 
-            "image", 
-            buffer, 
-        ); 
-        editBanner(formData,fileData);
+        const validated = validateInputs();
+
+        if(validated){
+            if(buffer){
+                // Update the formData object 
+                fileData.append( 
+                    "image", 
+                    buffer, 
+                );
+                editBanner(formData,fileData);
+            }
+            else{
+                setAlert('Upload Banner Image', 'error');
+            }
+        }   
+    }
+
+    const validateInputs = () => {
+        if(validator.isEmpty(formData.banner_name)){
+            setAlert('Banner Name Girizin', 'error');
+            return false
+        }
+        if(!validator.isURL(formData.banner_url) || validator.isEmpty(formData.banner_url)){
+            setAlert('Banner URL Girizin', 'error');
+            return false
+        }
+        return true
     }
 
     
@@ -163,6 +186,7 @@ const EditBanner = ({editBanner, getCurrentBanner,match,
 
 EditBanner.propTypes = {
     editBanner: PropTypes.func.isRequired,
+    setAlert: PropTypes.func.isRequired,
     getCurrentBanner: PropTypes.func.isRequired,
     banners : PropTypes.object.isRequired,
 }
@@ -173,6 +197,7 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
     editBanner,
-    getCurrentBanner
+    getCurrentBanner,
+    setAlert
   })(EditBanner);
     
