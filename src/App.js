@@ -1,4 +1,5 @@
 import React, {useEffect} from 'react';
+import axios from 'axios'
 // 
 import './styles/style.scss';
 import Routing from './router/routing'
@@ -8,6 +9,10 @@ import store from './store';
 import { loadAdmin, logout } from './actions/adminsAction';
 import setAuthToken from './utils/setAuthToken'; 
 import Alerts from './components/layouts/Alerts'
+
+axios.defaults.baseURL = 'http://localhost:5000';
+axios.defaults.headers.common['Authorization'] = 'AUTH TOKEN';
+axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 
 const App = () => {
