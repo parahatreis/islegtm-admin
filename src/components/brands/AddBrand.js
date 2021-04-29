@@ -17,9 +17,12 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
+import validator from 'validator'
 // 
 import { createBrand } from '../../actions/brandsActions';
 import Placeholder from '../../img/BG.svg';
+import { setAlert } from '../../actions/alertsAction'
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -50,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
   
 
 
-const AddBrand = ({createBrand}) => {
+const AddBrand = ({createBrand ,setAlert }) => {
     
     const [formData,setFormData] = useState({
         brand_name : '',
@@ -120,14 +123,31 @@ const AddBrand = ({createBrand}) => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        const fileData = new FormData(); 
-     
-        // Update the formData object 
-        fileData.append( 
-            "image", 
-            buffer, 
-        );
-        createBrand(formData,fileData);
+        const fileData = new FormData();
+
+        const validated = validateInputs();
+
+        if(validated){
+            if(buffer){
+                // Update the formData object 
+                fileData.append( 
+                    "image", 
+                    buffer, 
+                );
+                createBrand(formData,fileData);
+            }
+            else{
+                setAlert('Upload Banner Image', 'error');
+            }
+        }   
+    }
+
+    const validateInputs = () => {
+        if(validator.isEmpty(formData.brand_name)){
+            setAlert('Brand Name Girizin', 'error');
+            return false
+        }
+        return true
     }
 
     return (
@@ -227,9 +247,11 @@ const AddBrand = ({createBrand}) => {
 
 AddBrand.propTypes = {
     createBrand: PropTypes.func.isRequired,
+    setAlert: PropTypes.func.isRequired,
 }
 
 export default connect(null, {
-    createBrand
+    createBrand,
+    setAlert
   })(AddBrand);
     

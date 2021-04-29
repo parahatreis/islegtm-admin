@@ -15,6 +15,7 @@ import TableRow from '@material-ui/core/TableRow';
 // 
 import { deleteSubCategorie } from '../../actions/subcategoriesAction';
 import Placeholder from '../../img/BG.svg';
+import apiPath from '../../utils/apiPath'
 
 
 
@@ -70,7 +71,9 @@ const SubCategorieItem = ({deleteSubCategorie,subcategorie :{
 
     useEffect(() => {
       if(subcategorie_image){
-        setImage(subcategorie_image)
+        if(subcategorie_image){
+          setImage(`${apiPath()}/${subcategorie_image}`)
+        }
       }
     }, [subcategorie_image])
 

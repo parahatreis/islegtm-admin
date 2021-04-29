@@ -9,15 +9,17 @@ import store from './store';
 import { loadAdmin, logout } from './actions/adminsAction';
 import setAuthToken from './utils/setAuthToken'; 
 import Alerts from './components/layouts/Alerts'
-
-axios.defaults.baseURL = 'http://localhost:5000';
-axios.defaults.headers.common['Authorization'] = 'AUTH TOKEN';
-axios.defaults.headers.post['Content-Type'] = 'application/json';
+import apiPath from './utils/apiPath'
 
 
 const App = () => {
 
   useEffect(() => {
+    
+    axios.defaults.baseURL = apiPath();
+    axios.defaults.headers.common['Authorization'] = 'AUTH TOKEN';
+    axios.defaults.headers.post['Content-Type'] = 'application/json';
+
     // check for token in LS
     if (localStorage.adminToken) {
       setAuthToken(localStorage.adminToken);

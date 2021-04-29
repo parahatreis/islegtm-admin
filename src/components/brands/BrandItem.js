@@ -16,6 +16,7 @@ import Chip from '@material-ui/core/Chip';
 // 
 import { deletBrand } from '../../actions/brandsActions';
 import Placeholder from '../../img/BG.svg';
+import apiPath from '../../utils/apiPath'
 
 
 const useStyles = makeStyles({
@@ -66,11 +67,11 @@ const BrandItem = ({deletBrand,brand :{
     const [open, setOpen] = useState(false);
     const [image, setImage] = useState(Placeholder);
 
-
-
     useEffect(() => {
       if(brand_image){
-        setImage(brand_image)
+        if(brand_image){
+          setImage(`${apiPath()}/${brand_image}`)
+        }
       }
     }, [brand_image])
 

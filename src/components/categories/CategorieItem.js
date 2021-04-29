@@ -15,6 +15,7 @@ import TableRow from '@material-ui/core/TableRow';
 // 
 import { deleteCategorie } from '../../actions/categoriesAction';
 import Placeholder from '../../img/BG.svg';
+import apiPath from '../../utils/apiPath'
 
 
 
@@ -64,17 +65,15 @@ const CategorieItem = ({deleteCategorie,categorie :{
     const classes = useStyles();
 
     const [open, setOpen] = useState(false);
-    const [imgUri,setImg] = useState({img : Placeholder})
+    const [image, setImage] = useState(Placeholder);
 
     useEffect(() => {
       if(categorie_image){
-          let img  = categorie_image;
-          setImg({img})
+        if(categorie_image){
+          setImage(`${apiPath()}/${categorie_image}`)
+        }
       }
-      else{
-          setImg({img : Placeholder})
-      }
-  }, [categorie_image])
+    }, [categorie_image])
 
 
     const handleOpen = (e) => {
@@ -93,7 +92,7 @@ const CategorieItem = ({deleteCategorie,categorie :{
             <TableCell align="left">{categorie_id.slice(0,5)} ...</TableCell>
             {/* Categorie Image */}
             <TableCell align="left">
-                <Avatar className={classes.image} src={imgUri.img} variant="square"/>
+                <Avatar className={classes.image} src={image} variant="square"/>
             </TableCell>
             {/* Categorie Name */}
             <TableCell align="left">{categorie_name_tm}</TableCell>

@@ -16,7 +16,7 @@ import TableRow from '@material-ui/core/TableRow';
 // 
 import { deleteProduct, changeStatus } from '../../actions/productsAction';
 import Placeholder from '../../img/BG.svg';
-import imgPath from '../../utils/imgPath'
+import apiPath from '../../utils/apiPath'
 
 
 
@@ -81,7 +81,7 @@ const ProductItem = ({product :
     useEffect(() => {
       if(product_images){
         if(product_images[0]){
-          setImage(imgPath(product_images[0]))
+          setImage(`${apiPath()}/${product_images[0]}`)
         }
       }
     }, [product_images])

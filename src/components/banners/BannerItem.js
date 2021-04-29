@@ -15,6 +15,8 @@ import TableRow from '@material-ui/core/TableRow';
 // 
 import { deleteBanner } from '../../actions/bannersAction';
 import Placeholder from '../../img/BG.svg';
+import apiPath from '../../utils/apiPath'
+
 
 
 
@@ -64,17 +66,15 @@ const BannerItem = ({deleteBanner,banner :{
     const classes = useStyles();
 
     const [open, setOpen] = useState(false);
-    const [imgUri,setImg] = useState({img : Placeholder})
+    const [image,setImage] = useState(Placeholder);
 
     useEffect(() => {
       if(banner_image){
-          let img  = banner_image;
-          setImg({img})
+        if(banner_image){
+          setImage(`${apiPath()}/${banner_image}`)
+        }
       }
-      else{
-          setImg({img : Placeholder})
-      }
-  }, [banner_image])
+    }, [banner_image])
 
 
     const handleOpen = (e) => {
@@ -93,7 +93,7 @@ const BannerItem = ({deleteBanner,banner :{
             <TableCell align="left">{banner_id.slice(0,5)} ...</TableCell>
             {/* Banner Image */}
             <TableCell align="left">
-                <Avatar className={classes.image} src={imgUri.img} variant="square"/>
+                <Avatar className={classes.image} src={image} variant="square"/>
             </TableCell>
             {/* Banner Name */}
             <TableCell align="left">{banner_name && banner_name}</TableCell>

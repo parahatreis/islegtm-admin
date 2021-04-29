@@ -1,6 +1,5 @@
 import React, { useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -16,7 +15,7 @@ import axios from 'axios'
 import { getCurrentSubCategorie, editSubCategorie } from '../../actions/subcategoriesAction';
 import Placeholder from '../../img/BG.svg';
 import Spinner from '../layouts/Spinner';
-import imgPath from '../../utils/imgPath'
+import apiPath from '../../utils/apiPath'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -99,7 +98,7 @@ const EditSubCategorie = ({getCurrentSubCategorie,match,subcategories : {current
                 size_type_id : sizeTypeId
             });
             if(current_subcategorie.subcategorie_image){
-                let img  = imgPath(current_subcategorie.subcategorie_image);
+                let img  = apiPath(current_subcategorie.subcategorie_image);
                 setImg({img})
             }
             else{
