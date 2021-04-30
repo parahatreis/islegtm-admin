@@ -59,7 +59,7 @@ export const createBanner = (obj,image) => async dispatch => {
 
    }
    catch (error) {
-      const errors = error.response.data.errors;
+      const errors = error.response.data.msg;
       dispatch(setAlert(errors, 'error'))
       console.error(error)
    }
