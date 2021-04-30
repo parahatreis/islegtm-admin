@@ -35,11 +35,11 @@ const BrandList = ({brands : {brands ,loading}}) => {
                         <TableHead>
                         <TableRow>
                             <TableCell align="left">ID</TableCell>
-                            <TableCell align="left">Brand Image</TableCell>
-                            <TableCell align="left">Brand Name</TableCell>
-                            <TableCell align="left">Subcategories</TableCell>
-                            <TableCell align="center">Edit</TableCell>
-                            <TableCell align="center">Delete</TableCell>
+                            <TableCell align="left">Brend Suraty</TableCell>
+                            <TableCell align="left">Brend Ady</TableCell>
+                            <TableCell align="left">Subkategoriýalar</TableCell>
+                            <TableCell align="center">Üýtgetmek</TableCell>
+                            <TableCell align="center">Pozmak</TableCell>
                         </TableRow>
                         </TableHead>
                         <TableBody>

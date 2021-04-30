@@ -17,10 +17,10 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
-import validator from 'validator'
 // 
 import { createBrand } from '../../actions/brandsActions';
 import Placeholder from '../../img/BG.svg';
+import validator from 'validator'
 import { setAlert } from '../../actions/alertsAction'
 
 
@@ -137,14 +137,14 @@ const AddBrand = ({createBrand ,setAlert }) => {
                 createBrand(formData,fileData);
             }
             else{
-                setAlert('Upload Banner Image', 'error');
+                setAlert('Brend suraty giriziň!', 'error');
             }
         }   
     }
 
     const validateInputs = () => {
         if(validator.isEmpty(formData.brand_name)){
-            setAlert('Brand Name Girizin', 'error');
+            setAlert('Brend ady giriziň!', 'error');
             return false
         }
         return true
@@ -153,7 +153,7 @@ const AddBrand = ({createBrand ,setAlert }) => {
     return (
         <section className="add-product-section container">
             <Typography variant="h4" component="h2">
-               Add Brand
+               Brend Goşuň
             </Typography>
             <div className="form-block"> 
                 <form className={classes.root} noValidate autoComplete="off" onSubmit={(e) => onSubmit(e)}>
@@ -161,7 +161,7 @@ const AddBrand = ({createBrand ,setAlert }) => {
                     <TextField 
                         className={classes.input}
                         id="outlined-basic" 
-                        label="Brand Name" 
+                        label="Brend Ady" 
                         variant="outlined"
                         value={formData.brand_name}
                         required
@@ -173,7 +173,7 @@ const AddBrand = ({createBrand ,setAlert }) => {
                             <Table className={classes.table} size="small" aria-label="a dense table">
                                 <TableHead>
                                 <TableRow>
-                                    <TableCell style={{color: 'grey'}}>Subcategories</TableCell>
+                                    <TableCell style={{color: 'grey'}}>Subkategoriýalar</TableCell>
                                     <TableCell align="right"></TableCell>
                                 </TableRow>
                                 </TableHead>
@@ -201,12 +201,12 @@ const AddBrand = ({createBrand ,setAlert }) => {
                             </Table>
                             </TableContainer>
                             {/* Add Subcategorie */}
-                        <InputLabel children={`Add Subcategorie`} />
+                        <InputLabel children={`Subkategoriýa goşuň`} />
                         <TextField
                             className={classes.input}
                             id="outlined-select-currency"
                             select
-                            label="Categorie Name"
+                            label="Kategoriýa ady"
                             value={''}
                             onChange={(e) => addSubcategorie(e)}
                             variant="outlined"
@@ -229,7 +229,7 @@ const AddBrand = ({createBrand ,setAlert }) => {
                             variant="square" 
                             />
                         <div style={{paddingLeft : '10px', width : '100%'}}>
-                            <InputLabel children={`Categorie Image`} />
+                            <InputLabel children={`Brend suraty`} />
                             <br />
                             <TextField className={classes.inputNumber} id="outlined-basic" type="file" variant="outlined" 
                                 onChange={(e) => onFileUpload(e)}
@@ -237,7 +237,7 @@ const AddBrand = ({createBrand ,setAlert }) => {
                         </div>
                     </div>
                     <Button variant="contained" color="primary" type='submit'>
-                        Create Brand
+                        Brend döret
                     </Button>
                 </form>
             </div>

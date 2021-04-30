@@ -70,9 +70,9 @@ const HomeSubsList = ({home : {home_subcategories ,loading}}) => {
                     <Table className={classes.table} aria-label="simple table">              
                         <TableHead>
                         <TableRow>
-                            <TableCell align="left">Order</TableCell>
-                            <TableCell align="left">Subcategories</TableCell>
-                            <TableCell align="center">Delete</TableCell>
+                            <TableCell align="left">Yzygiderlik</TableCell>
+                            <TableCell align="left">Subkategoriýalar</TableCell>
+                            <TableCell align="center">Pozmak</TableCell>
                         </TableRow>
                         </TableHead>
                         <TableBody>

@@ -177,20 +177,20 @@ const ProductItem = ({product :
                 ref={nodeRef}
               >
                 <div className={classes.paper}>
-                  <h2 id="transition-modal-title">Hakykatdanam bu harydy pozmak isleyanizmi?</h2>
+                  <h2 id="transition-modal-title">Hakykatdanam şu harydy pozmak isleýäňizmi?</h2>
                   <p id="transition-modal-description">
-                    Haryt pozulandan son yzyna gaydyp gelmeyar
+                    Haryt pozulandan soň yzyna gaýdyp gelmeýär!
                   </p>
                   <div className={classes.btnGroup}>
                     <Button variant="contained">
-                      Cancel
+                      Goybolsun et
                     </Button>
                     <Button variant="contained" color="secondary"
                       onClick={() => {
                         deleteProduct(product_id);
                       }}
-                    >
-                      Delete
+                    > 
+                      Poz
                     </Button>
                   </div>
                 </div>

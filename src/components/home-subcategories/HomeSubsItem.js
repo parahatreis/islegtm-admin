@@ -165,17 +165,17 @@ const HomeSubsItem = ({
                       <Fade in={open}
                       >
                         <div className={classes.paper}>
-                          <h3 id="transition-modal-title">Hakykatdanam pozmak isleyanizmi?</h3>
+                          <h3 id="transition-modal-title">Hakykatdanam pozmak isleýäňizmi?</h3>
                           <div className={classes.btnGroup}>
                             <Button onClick={handleClose}>
-                              Cancel
+                            Goýbolsun et
                             </Button>
                             <Button variant="contained" color="secondary"
                               onClick={() => {
                                 deleteHome(home_subcategorie_id);
                               }}
                             >
-                              Delete
+                              Poz
                             </Button>
                           </div>
                         </div>

@@ -16,6 +16,9 @@ import {connect} from 'react-redux'
 import Placeholder from '../../img/BG.svg'
 import { editProduct, getCurrentProduct } from '../../actions/productsAction';
 import Spinner from '../layouts/Spinner';
+import validator from 'validator'
+import { setAlert } from '../../actions/alertsAction'
+import apiPath from '../../utils/apiPath'
 
 
 
@@ -43,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_product,loading}}) => {
+const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_product,loading}, setAlert}) => {
 
     const classes = useStyles();
 
@@ -58,7 +61,7 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
     const [subcategories,setSubcategories] = useState(null);
     const [buffers,setBuffers] = useState([]);
     const [currency, setCurrency] = useState('tmt');
-    const [productImages,setProductImages] = useState(null)
+    const [productImages,setProductImages] = useState([])
     const [formData,setFormData] = useState({
         product_id : '',
         product_name_tm : '',
@@ -109,21 +112,10 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
     useEffect(() => {
         if(current_product){
             if(current_product.product_images){
-                // let imagesArray = []
-                // current_product.product_images.forEach((image,index) => {
-                //     imagesArray = [
-                //         ...imagesArray,
-                //         {
-                //             id : index + 1,
-                //             img : image
-                //         }
-                //     ]
-                // })
-                // setImage(imagesArray)
                 setProductImages(current_product.product_images)
             }
         }
-    },[current_product,productImages])
+    },[current_product])
 
 
     // Get all subcategories
@@ -226,21 +218,41 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
 
     const onSubmit = (e) => {
         e.preventDefault();
-        const fileData = new FormData(); 
-     
-        if(buffers.length > 0){
-            // Update the formData object
-            buffers.forEach((obj) => {
-                fileData.append( 
-                    "images", 
-                    obj.buffer, 
-                ); 
-            })
-            editProduct(formData,fileData);
+        
+        const validated = validateInputs();
+
+        if(validated){
+            if(buffers.length > 0){
+                const fileData = new FormData(); 
+                // Update the formData object
+                buffers.forEach((obj) => {
+                    fileData.append( 
+                        "images", 
+                        obj.buffer, 
+                    ); 
+                })
+                editProduct(formData,fileData);
+            }
+            else{
+                editProduct(formData,null);
+            }
+        }  
+    }
+
+    const validateInputs = () => {
+        if(validator.isEmpty(formData.product_name_tm) || validator.isEmpty(formData.product_name_ru) || validator.isEmpty(formData.product_name_en)){
+            setAlert('Haryt ady giriziň!', 'error');
+            return false
         }
-        else{
-            editProduct(formData,null);
+        if(validator.isEmpty(String(formData.price_tmt)) || validator.isEmpty(String(formData.price_usd)) ){
+            setAlert('Harydyn bahasyny giriziň!', 'error');
+            return false
         }
+        if(validator.isEmpty(formData.subcategorie_id)){
+            setAlert('Subkategoriýa saýlaň!', 'error');
+            return false
+        }
+        return true
     }
 
 
@@ -250,15 +262,16 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
         {loading ? <Spinner /> : 
             <section className="add-product-section container">
             <Typography variant="h4" component="h2">
-               Edit Product
+               Haryt Üýtgetmek - {formData.product_name_tm}
             </Typography>
+            <br />
             <div className="form-block"> 
                 <form className={classes.root} noValidate autoComplete="off" onSubmit={(e) => onSubmit(e)}>
                     {/* Product Name (TURKMENÇE) */}
                     <TextField 
                         className={classes.input} 
                         id="outlined-basic" 
-                        label="Product Name (TURKMENÇE)" 
+                        label="Haryt ady (TURKMENÇE)" 
                         variant="outlined"
                         name="product_name_tm"
                         value={formData.product_name_tm}
@@ -268,7 +281,7 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
                     <TextField 
                         className={classes.input} 
                         id="outlined-basic" 
-                        label="Product Name (РУССКИЙ)" 
+                        label="Название продукта (РУССКИЙ)" 
                         variant="outlined"
                         name="product_name_ru"
                         value={formData.product_name_ru}
@@ -288,7 +301,7 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
                         className={classes.input}
                         id="outlined-select-currency"
                         select
-                        label="Select Product Price Currency"
+                        label="Harydyň bahasynyň pul birligi"
                         name="currency"
                         value={currency}
                         onChange={(e) => onChangeCurrency(e)}
@@ -308,7 +321,7 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
                             <TextField 
                                 className={classes.inputNumber} 
                                 id="outlined-basic" 
-                                label="Price(TMT)" 
+                                label="Bahasy(TMT)" 
                                 type="number" 
                                 name="price_tmt"
                                 variant="outlined" 
@@ -322,7 +335,7 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
                             <TextField 
                                 className={classes.inputNumber} 
                                 id="outlined-basic" 
-                                label="Price(USD)" 
+                                label="Bahasy(USD)" 
                                 type="number" 
                                 variant="outlined"
                                 name="price_usd"
@@ -336,7 +349,7 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
                         className={classes.input}
                         id="outlined-select-currency"
                         select
-                        label="Brand"
+                        label="Brend"
                         name="brand_id"
                         value={formData.brand_id}
                         onChange={(e) => onChange(e)}
@@ -356,7 +369,7 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
                         className={classes.input}
                         id="outlined-select-currency"
                         select
-                        label="Subcategorie"
+                        label="Subkategoriýa"
                         name="subcategorie_id"
                         value={formData.subcategorie_id}
                         onChange={(e) => onChange(e)}
@@ -376,7 +389,7 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
                         className={classes.input}
                         id="outlined-select-currency"
                         select
-                        label="Store"
+                        label="Magazin"
                         name="store_id"
                         value={formData.store_id}
                         variant="outlined"
@@ -391,12 +404,12 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
                             ))
                         }   
                         </TextField>
-                    {/* Brand */}
+                    {/* Description */}
                     <TextField
                         className={classes.input}
                         placeholder="MultiLine with rows: 2 and rowsMax: 4"
                         id="outlined-select-currency"
-                        label="Description"
+                        label="Haryt maglumatlary"
                         name="description"
                         variant="outlined"
                         value={formData.description}
@@ -406,7 +419,7 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
                         rowsMax={10}
                         />
                     <br />
-                    <p>Suratlardan biri chalyshylan yagdayynda ahli onki suratlar pozulyandyr!</p>
+                    <p>Suratlardan biri çalyşylan ýagdaýynda ähli öňki suratlar pozulýandyr!</p>
                     <div className={classes.grid}>
                         {
                             productImages &&
@@ -415,7 +428,7 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
                                     <Fragment>
                                     <Avatar 
                                         className={classes.image}
-                                        src={image}
+                                        src={`${apiPath()}/${image}`}
                                         variant="square" 
                                     />
                                     &nbsp; &nbsp;
@@ -435,7 +448,7 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
                                         variant="square" 
                                         />
                                     <div style={{paddingLeft : '10px', width : '100%'}}>
-                                        <InputLabel children={`Product Image ${index+1} ${index === 0 ? 'Preview Image' : '' }`} />
+                                        <InputLabel children={`Haryt suraty ${index+1} ${index === 0 ? 'Preview Image' : '' }`} />
                                         <br />
                                         <TextField className={classes.inputNumber} id="outlined-basic" type="file" variant="outlined" 
                                             onChange={(e) => onFileUpload(e,value.id)}
@@ -460,7 +473,7 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
                     </Button>
                     <br />
                     <Button variant="contained" color="primary" type='submit'>
-                        Update Product
+                        Ýatda sakla
                     </Button>
                 </form>
             </div>
@@ -474,6 +487,7 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
 EditProduct.propTypes = {
     getCurrentProduct: PropTypes.func.isRequired,
     editProduct: PropTypes.func.isRequired,
+    setAlert: PropTypes.func.isRequired,
     products : PropTypes.object.isRequired,
 }
 
@@ -484,5 +498,6 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
     getCurrentProduct,
-    editProduct
+    editProduct,
+    setAlert
   })(EditProduct);

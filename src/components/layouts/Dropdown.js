@@ -36,7 +36,7 @@ const SimpleMenu = ({admins : {admin}, logout}) => {
         onClose={handleClose}
       >
         {/* <MenuItem onClick={handleClose}>My account</MenuItem> */}
-        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+        <MenuItem onClick={handleLogout}>Çykmak</MenuItem>
       </Menu>
     </div>
   );

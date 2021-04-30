@@ -42,11 +42,11 @@ const BannerList = ({banners : {banners ,loading}}) => {
                         <TableHead>
                         <TableRow>
                             <TableCell align="left">ID</TableCell>
-                            <TableCell align="left">Banner Image</TableCell>
-                            <TableCell align="left">Banner Name</TableCell>
+                            <TableCell align="left">Banner Suraty</TableCell>
+                            <TableCell align="left">Banner Ady</TableCell>
                             <TableCell align="left">Banner URL</TableCell>
-                            <TableCell align="center">Edit</TableCell>
-                            <TableCell align="center">Delete</TableCell>
+                            <TableCell align="center">Üýtgetmek</TableCell>
+                            <TableCell align="center">Pozmak</TableCell>
                         </TableRow>
                         </TableHead>
                         <TableBody>

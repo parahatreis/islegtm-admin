@@ -19,7 +19,6 @@ import apiPath from '../../utils/apiPath'
 
 
 
-
 const useStyles = makeStyles({
     table: {
       minWidth: 650
@@ -99,7 +98,7 @@ const BannerItem = ({deleteBanner,banner :{
             <TableCell align="left">{banner_name && banner_name}</TableCell>
             {/* Banner URL */}
             <TableCell align="left">
-              <a href={banner_url ? banner_url : '#'} target="_blank">
+              <a href={banner_url ? banner_url : '#'} rel="noreferrer" target="_blank">
                 {
                   banner_url.length > 40 ? banner_url.slice(0,40) +  '..' : banner_url
                 }
@@ -138,20 +137,20 @@ const BannerItem = ({deleteBanner,banner :{
                       <Fade in={open}
                       >
                         <div className={classes.paper}>
-                          <h3 id="transition-modal-title">Hakykatdanam shu <span style={{color : 'blue'}}>{banner_name}</span> banneri pozmak isleyanizmi?</h3>
+                          <h3 id="transition-modal-title">Hakykatdanam şu <span style={{color : 'blue'}}>{banner_name}</span> banneri pozmak isleýäňizmi?</h3>
                           <p id="transition-modal-description">
-                            Banner pozulandan son yzyna gaydyp gelmeyar
+                            Banner pozulandan soň yzyna gaýdyp gelmeyar!
                           </p>
                           <div className={classes.btnGroup}>
                             <Button onClick={handleClose}>
-                              Cancel
+                              Goýbolsun et
                             </Button>
                             <Button variant="contained" color="secondary"
                               onClick={() => {
                                 deleteBanner(banner_id);
                               }}
                             >
-                              Delete
+                              Poz
                             </Button>
                           </div>
                         </div>

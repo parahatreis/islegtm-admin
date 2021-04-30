@@ -191,7 +191,7 @@ export default function MiniDrawer() {
                      <ListItemIcon>
                         <ShoppingCartIcon />
                      </ListItemIcon>
-                     <ListItemText primary="Orders" className={classes.linkColor} />
+                     <ListItemText primary="Sargytlar" className={classes.linkColor} />
                   </ListItem>
                </List>
             </Link>
@@ -203,7 +203,7 @@ export default function MiniDrawer() {
                      <ListItemIcon>
                         <HomeWorkIcon />
                      </ListItemIcon>
-                     <ListItemText primary="Home Subcategories" className={classes.linkColor} />
+                     <ListItemText primary="Baş sahypa" className={classes.linkColor} />
                   </ListItem>
                   </List>
             </Link>
@@ -214,7 +214,7 @@ export default function MiniDrawer() {
                      <ListItemIcon>
                         <AmpStoriesIcon />
                      </ListItemIcon>
-                     <ListItemText primary="Banners" className={classes.linkColor} />
+                     <ListItemText primary="Bannerler" className={classes.linkColor} />
                   </ListItem>
                   </List>
             </Link>
@@ -225,7 +225,7 @@ export default function MiniDrawer() {
                      <ListItemIcon>
                         <ListAltIcon />
                      </ListItemIcon>
-                     <ListItemText primary="Products" className={classes.linkColor} />
+                     <ListItemText primary="Harytlar" className={classes.linkColor} />
                   </ListItem>
                   </List>
             </Link>
@@ -236,7 +236,7 @@ export default function MiniDrawer() {
                      <ListItemIcon>
                         <FormatShapesIcon />
                      </ListItemIcon>
-                     <ListItemText primary="Sizes" className={classes.linkColor} />
+                     <ListItemText primary="Ölçegler" className={classes.linkColor} />
                   </ListItem>
                   </List>
             </Link>
@@ -247,7 +247,7 @@ export default function MiniDrawer() {
                      <ListItemIcon>
                         <ViewStreamIcon />
                      </ListItemIcon>
-                     <ListItemText primary="Categories" className={classes.linkColor} />
+                     <ListItemText primary="Kategoriýalar" className={classes.linkColor} />
                   </ListItem>
                </List>
             </Link>
@@ -258,7 +258,7 @@ export default function MiniDrawer() {
                      <ListItemIcon>
                         <ViewModuleIcon />
                      </ListItemIcon>
-                     <ListItemText primary="Subcategories" className={classes.linkColor} />
+                     <ListItemText primary="Subkategoriýalar" className={classes.linkColor} />
                   </ListItem>
                </List>
             </Link>
@@ -269,7 +269,7 @@ export default function MiniDrawer() {
                      <ListItemIcon>
                         <BrandingWatermarkIcon />
                      </ListItemIcon>
-                     <ListItemText primary="Brands" className={classes.linkColor} />
+                     <ListItemText primary="Brendler" className={classes.linkColor} />
                   </ListItem>
                </List>
             </Link>
@@ -280,7 +280,7 @@ export default function MiniDrawer() {
                      <ListItemIcon>
                         <StoreIcon />
                      </ListItemIcon>
-                     <ListItemText primary="Stores" className={classes.linkColor} />
+                     <ListItemText primary="Magazinler" className={classes.linkColor} />
                   </ListItem>
                </List>
             </Link>
@@ -291,7 +291,7 @@ export default function MiniDrawer() {
                      <ListItemIcon>
                         <SupervisedUserCircleIcon />
                      </ListItemIcon>
-                     <ListItemText primary="Store Admins" className={classes.linkColor} />
+                     <ListItemText primary="Magazin Adminleri" className={classes.linkColor} />
                   </ListItem>
                </List>
             </Link>
@@ -301,7 +301,7 @@ export default function MiniDrawer() {
                   <ListItemIcon>
                      <GroupIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Users" />
+                  <ListItemText primary="Ulanyjylar" />
                </ListItem>
             </List>
 

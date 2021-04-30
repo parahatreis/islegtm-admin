@@ -72,7 +72,7 @@ const AddBanner = ({createBanner, setAlert}) => {
             }       
         }
         else{
-            alert('2MB dan kan bolan surat yuklap bolmayar')
+            alert('2MB dan kän bolan suraty yüklap bolmayar!')
         }
     };
 
@@ -92,7 +92,7 @@ const AddBanner = ({createBanner, setAlert}) => {
                 createBanner(formData,fileData);
             }
             else{
-                setAlert('Upload Banner Image', 'error');
+                setAlert('Banner suraty ýükläň!', 'error');
             }
         }   
     }
@@ -100,11 +100,11 @@ const AddBanner = ({createBanner, setAlert}) => {
 
     const validateInputs = () => {
         if(validator.isEmpty(formData.banner_name)){
-            setAlert('Banner Name Girizin', 'error');
+            setAlert('Banner ady giriziň!', 'error');
             return false
         }
         if(!validator.isURL(formData.banner_url) || validator.isEmpty(formData.banner_url)){
-            setAlert('Banner URL Girizin', 'error');
+            setAlert('Banner URL giriziň!', 'error');
             return false
         }
         return true
@@ -113,7 +113,7 @@ const AddBanner = ({createBanner, setAlert}) => {
     return (
         <section className="add-product-section container">
             <Typography variant="h4" component="h2">
-               Add Banner
+                Banner Goşuň
             </Typography>
             <div className="form-block"> 
                 <form className={classes.root} noValidate autoComplete="off" onSubmit={(e) => onSubmit(e)}>
@@ -121,7 +121,7 @@ const AddBanner = ({createBanner, setAlert}) => {
                     <TextField 
                         className={classes.input}
                         id="outlined-basic" 
-                        label="Banner Name" 
+                        label="Banner Ady" 
                         variant="outlined"
                         value={formData.banner_name}
                         required
@@ -147,7 +147,7 @@ const AddBanner = ({createBanner, setAlert}) => {
                             variant="square"
                             />
                         <div style={{paddingLeft : '10px', width : '100%'}}>
-                            <InputLabel children={`Banner Image`} />
+                            <InputLabel children={`Banner Suraty`} />
                             <br />
                             <TextField className={classes.inputNumber} id="outlined-basic" type="file" variant="outlined" 
                                 onChange={(e) => onFileUpload(e)}
@@ -155,7 +155,7 @@ const AddBanner = ({createBanner, setAlert}) => {
                         </div>
                     </div>
                     <Button variant="contained" color="primary" type='submit'>
-                        Create Banner
+                        Banner döret
                     </Button>
                 </form>
             </div>

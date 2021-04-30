@@ -1,6 +1,5 @@
 import React, { useState,useEffect, Fragment} from 'react';
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -12,6 +11,7 @@ import Avatar from '@material-ui/core/Avatar';
 import { editCategorie,getCurrentCategorie } from '../../actions/categoriesAction';
 import Spinner from '../layouts/Spinner'
 import Placeholder from '../../img/BG.svg';
+import apiPath from '../../utils/apiPath'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -45,9 +45,9 @@ const EditCategorie = ({editCategorie, getCurrentCategorie, match, categories : 
         categorie_name_en: '',
     })
     const [buffer,setBuffer] = useState(null)
-    const [imgUri,setImg] = useState({img : Placeholder})
+    const [image,setImage] = useState(Placeholder);
+
     const classes = useStyles();
-    const history = useHistory();
     
 
     useEffect(() => {
@@ -61,10 +61,7 @@ const EditCategorie = ({editCategorie, getCurrentCategorie, match, categories : 
         setFormData(current_categorie)
         if(current_categorie.categorie_image){
             let img  = current_categorie.categorie_image;
-            setImg({img})
-        }
-        else{
-            setImg({img : Placeholder})
+            setImage(`${apiPath()}/${img}`)
         }
     }, [current_categorie])
 
@@ -78,7 +75,7 @@ const EditCategorie = ({editCategorie, getCurrentCategorie, match, categories : 
         reader.addEventListener("load", function () {
             // convert image file to base64 string
             if(reader.readyState === 2){
-                setImg({img : reader.result})
+                setImage(reader.result)
             }
         }, false);
 
@@ -104,15 +101,16 @@ const EditCategorie = ({editCategorie, getCurrentCategorie, match, categories : 
             loading ? <Spinner /> : (
                 <section className="add-product-section container">
                     <Typography variant="h4" component="h2">
-                    Edit Categorie
+                        Kategoriýa üýtget - {formData.categorie_name_tm && formData.categorie_name_tm}
                     </Typography>
+                    <br />
                     <div className="form-block"> 
                         <form className={classes.root} noValidate autoComplete="off" onSubmit={(e) => onSubmit(e)}>
                            {/* Categorie Name (TURKMENÇE) */}
                     <TextField 
                         className={classes.input}
                         id="outlined-basic" 
-                        label="Categorie Name (TURKMENÇE)" 
+                        label="Kategoriýa ady (TURKMENÇE)" 
                         variant="outlined"
                         value={formData.categorie_name_tm}
                         required
@@ -123,7 +121,7 @@ const EditCategorie = ({editCategorie, getCurrentCategorie, match, categories : 
                     <TextField 
                         className={classes.input}
                         id="outlined-basic" 
-                        label="Categorie Name (РУССКИЙ)" 
+                        label="Название категории (РУССКИЙ)" 
                         variant="outlined"
                         value={formData.categorie_name_ru}
                         required
@@ -146,10 +144,10 @@ const EditCategorie = ({editCategorie, getCurrentCategorie, match, categories : 
                                 {
                                     // formData.categorie_image ? 
                                         // <Avatar className={classes.image} src={imgPath(formData.categorie_image)} variant="square"/> :
-                                        <Avatar className={classes.image} src={imgUri.img} variant="square"/>
+                                        <Avatar className={classes.image} src={image} variant="square"/>
                                 }
                                 <div style={{paddingLeft : '10px', width : '100%'}}>
-                                    <InputLabel children={`Categorie Image`} />
+                                    <InputLabel children={`Kategoriýa suraty`} />
                                     <br />
                                     <TextField className={classes.inputNumber} id="outlined-basic" type="file" variant="outlined" 
                                         onChange={(e) => onFileUpload(e)}
@@ -157,7 +155,7 @@ const EditCategorie = ({editCategorie, getCurrentCategorie, match, categories : 
                                 </div>
                             </div>
                             <Button variant="contained" color="primary" type='submit'>
-                                Update Categorie
+                                Ýatda sakla
                             </Button>
                         </form>
                     </div>

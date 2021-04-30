@@ -10,6 +10,8 @@ import Avatar from '@material-ui/core/Avatar';
 // 
 import { createCategorie } from '../../actions/categoriesAction';
 import Placeholder from '../../img/BG.svg';
+import validator from 'validator'
+import { setAlert } from '../../actions/alertsAction'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -35,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
       },
 }));
 
-const AddCategorie = ({createCategorie}) => {
+const AddCategorie = ({ createCategorie, setAlert }) => {
     
     const [formData,setFormData] = useState({
         categorie_name_tm : '',
@@ -73,28 +75,46 @@ const AddCategorie = ({createCategorie}) => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        const fileData = new FormData();        
-     
-        // Update the formData object 
-        fileData.append( 
-            "image", 
-            buffer, 
-        ); 
-        createCategorie(formData,fileData);
+        const fileData = new FormData();
+
+        const validated = validateInputs();
+
+        if(validated){
+            if(buffer){
+                // Update the formData object 
+                fileData.append( 
+                    "image", 
+                    buffer, 
+                );
+                createCategorie(formData,fileData);
+            }
+            else{
+                setAlert('Kategoriýa suraty ýükläň!', 'error');
+            }
+        }   
+    }
+
+    const validateInputs = () => {
+        if(validator.isEmpty(formData.categorie_name_en) || validator.isEmpty(formData.categorie_name_tm) || validator.isEmpty(formData.categorie_name_ru)){
+            setAlert('Kategoriýa ady girizin!', 'error');
+            return false
+        }
+        return true
     }
 
     return (
         <section className="add-product-section container">
             <Typography variant="h4" component="h2">
-               Add Categorie
+                Kategoriýa goşuň
             </Typography>
+            <br />
             <div className="form-block"> 
                 <form className={classes.root} noValidate autoComplete="off" onSubmit={(e) => onSubmit(e)}>
                     {/* Categorie Name (TURKMENÇE) */}
                     <TextField 
                         className={classes.input}
                         id="outlined-basic" 
-                        label="Categorie Name (TURKMENÇE)" 
+                        label="Kategoriýa ady (TURKMENÇE)" 
                         variant="outlined"
                         value={formData.categorie_name_tm}
                         required
@@ -105,7 +125,7 @@ const AddCategorie = ({createCategorie}) => {
                     <TextField 
                         className={classes.input}
                         id="outlined-basic" 
-                        label="Categorie Name (РУССКИЙ)" 
+                        label="Название категории (РУССКИЙ)" 
                         variant="outlined"
                         value={formData.categorie_name_ru}
                         required
@@ -131,7 +151,7 @@ const AddCategorie = ({createCategorie}) => {
                             variant="square" 
                             />
                         <div style={{paddingLeft : '10px', width : '100%'}}>
-                            <InputLabel children={`Categorie Image`} />
+                            <InputLabel children={`Kategoriýa suraty`} />
                             <br />
                             <TextField className={classes.inputNumber} id="outlined-basic" type="file" variant="outlined" 
                                 onChange={(e) => onFileUpload(e)}
@@ -139,7 +159,7 @@ const AddCategorie = ({createCategorie}) => {
                         </div>
                     </div>
                     <Button variant="contained" color="primary" type='submit'>
-                        Craete Categorie
+                        Kategoriýa döret
                     </Button>
                 </form>
             </div>
@@ -149,9 +169,11 @@ const AddCategorie = ({createCategorie}) => {
 
 AddCategorie.propTypes = {
     createCategorie: PropTypes.func.isRequired,
+    setAlert: PropTypes.func.isRequired,
 }
 
 export default connect(null, {
-      createCategorie
+      createCategorie,
+      setAlert
     })(AddCategorie);
     

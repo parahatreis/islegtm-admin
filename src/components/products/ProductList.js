@@ -58,14 +58,14 @@ const ProductList = ({products : {products, loading, count_products}, setPageNum
                   <Table className={classes.table} aria-label="simple table">              
                     <TableHead>
                       <TableRow>
-                        <TableCell align="left">Product Code</TableCell>
-                        <TableCell align="left">Product Image</TableCell>
-                        <TableCell align="left">Product Name</TableCell>
-                        <TableCell align="left">Price(TMT)</TableCell>
-                        <TableCell align="left">Price (USD)</TableCell>
-                        <TableCell align="left">Brand</TableCell>
-                        <TableCell align="left">Subcategorie</TableCell>
-                        <TableCell align="left">Store Number</TableCell>
+                        <TableCell align="left">Haryt Kody</TableCell>
+                        <TableCell align="left">Haryt Suraty</TableCell>
+                        <TableCell align="left">Haryt Ady</TableCell>
+                        <TableCell align="left">Bahasy (TMT)</TableCell>
+                        <TableCell align="left">Bahasy (USD)</TableCell>
+                        <TableCell align="left">Brend</TableCell>
+                        <TableCell align="left">Subkategoriýa</TableCell>
+                        <TableCell align="left">Magazin No</TableCell>
                         <TableCell align="left">Status</TableCell>
                         <TableCell align="center">Edit</TableCell>
                         <TableCell align="center">Delete</TableCell>

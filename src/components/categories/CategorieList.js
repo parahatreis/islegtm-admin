@@ -42,12 +42,11 @@ const CategorieList = ({categories : {categories ,loading}}) => {
                         <TableHead>
                         <TableRow>
                             <TableCell align="left">ID</TableCell>
-                            <TableCell align="left">Categorie Image</TableCell>
-                            <TableCell align="left">Categorie Name</TableCell>
-                            <TableCell align="left">Product Number</TableCell>
-                            <TableCell align="left">Subcategorie Number</TableCell>
-                            <TableCell align="center">Edit</TableCell>
-                            <TableCell align="center">Delete</TableCell>
+                            <TableCell align="left">Kategoriýa Suraty</TableCell>
+                            <TableCell align="left">Kategoriýa Ady</TableCell>
+                            <TableCell align="left">Subkategoriýa sany</TableCell>
+                            <TableCell align="center">Üýtgetmek</TableCell>
+                            <TableCell align="center">Pozmak</TableCell>
                         </TableRow>
                         </TableHead>
                         <TableBody>

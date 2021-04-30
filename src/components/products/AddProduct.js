@@ -15,7 +15,8 @@ import {connect} from 'react-redux'
 // 
 import Placeholder from '../../img/BG.svg'
 import { createProduct } from '../../actions/productsAction';
-
+import validator from 'validator'
+import { setAlert } from '../../actions/alertsAction'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -42,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const AddProduct = ({createProduct}) => {
+const AddProduct = ({ createProduct , setAlert}) => {
 
     const classes = useStyles();
 
@@ -180,28 +181,48 @@ const AddProduct = ({createProduct}) => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        if(buffers.length > 0){
-            const fileData = new FormData(); 
-            // Update the formData object
-            buffers.forEach((obj) => {
-                fileData.append( 
-                    "images", 
-                    obj.buffer, 
-                ); 
-            })
-            createProduct(formData,fileData);
-        }
-        else{
-            alert('Haryt suraty goshun!')
-        }
+        
+        const validated = validateInputs();
+
+        if(validated){
+            if(buffers.length > 0){
+                const fileData = new FormData(); 
+                // Update the formData object
+                buffers.forEach((obj) => {
+                    fileData.append( 
+                        "images", 
+                        obj.buffer, 
+                    ); 
+                })
+                createProduct(formData,fileData);
+            }
+            else{
+                setAlert('Haryt suraty giriziň!', 'error');
+            }
+        }  
     }
 
+    const validateInputs = () => {
+        if(validator.isEmpty(formData.product_name_tm) || validator.isEmpty(formData.product_name_ru) || validator.isEmpty(formData.product_name_en)){
+            setAlert('Haryt ady giriziň!', 'error');
+            return false
+        }
+        if(validator.isEmpty(formData.price_tmt) && validator.isEmpty(formData.price_usd) ){
+            setAlert('Harydyn bahasyny giriziň!', 'error');
+            return false
+        }
+        if(validator.isEmpty(formData.subcategorie_id)){
+            setAlert('Subkategoriýa saýlaň!', 'error');
+            return false
+        }
+        return true
+    }
 
 
     return (
         <section className="add-product-section container">
             <Typography variant="h4" component="h2">
-               Add Product
+               Haryt goşuň
             </Typography>
             <div className="form-block"> 
                 <form className={classes.root} noValidate autoComplete="off" onSubmit={(e) => onSubmit(e)}>
@@ -209,7 +230,7 @@ const AddProduct = ({createProduct}) => {
                     <TextField 
                         className={classes.input} 
                         id="outlined-basic" 
-                        label="Product Name (TURKMENÇE)" 
+                        label="Haryt ady (TURKMENÇE)" 
                         variant="outlined"
                         name="product_name_tm"
                         value={formData.product_name_tm}
@@ -219,7 +240,7 @@ const AddProduct = ({createProduct}) => {
                     <TextField 
                         className={classes.input} 
                         id="outlined-basic" 
-                        label="Product Name (РУССКИЙ)" 
+                        label="Название продукта (РУССКИЙ)" 
                         variant="outlined"
                         name="product_name_ru"
                         value={formData.product_name_ru}
@@ -240,7 +261,7 @@ const AddProduct = ({createProduct}) => {
                         className={classes.input}
                         id="outlined-select-currency"
                         select
-                        label="Select Product Price Currency"
+                        label="Harydyň bahasynyň pul birligi"
                         name="currency"
                         value={currency}
                         onChange={(e) => onChangeCurrency(e)}
@@ -261,7 +282,7 @@ const AddProduct = ({createProduct}) => {
                             <TextField 
                                 className={classes.inputNumber} 
                                 id="outlined-basic" 
-                                label="Price(TMT)" 
+                                label="Bahasy(TMT)" 
                                 type="number" 
                                 name="price_tmt"
                                 variant="outlined" 
@@ -275,7 +296,7 @@ const AddProduct = ({createProduct}) => {
                             <TextField 
                                 className={classes.inputNumber} 
                                 id="outlined-basic" 
-                                label="Price(USD)" 
+                                label="Bahasy(USD)" 
                                 type="number" 
                                 variant="outlined"
                                 name="price_usd"
@@ -292,7 +313,7 @@ const AddProduct = ({createProduct}) => {
                         className={classes.input}
                         id="outlined-select-currency"
                         select
-                        label="Brand"
+                        label="Brend"
                         name="brand_id"
                         value={formData.brand_id}
                         onChange={(e) => onChange(e)}
@@ -312,7 +333,7 @@ const AddProduct = ({createProduct}) => {
                         className={classes.input}
                         id="outlined-select-currency"
                         select
-                        label="Subcategorie"
+                        label="Subkategoriýa"
                         name="subcategorie_id"
                         value={formData.subcategorie_id}
                         onChange={(e) => onChange(e)}
@@ -332,7 +353,7 @@ const AddProduct = ({createProduct}) => {
                         className={classes.input}
                         id="outlined-select-currency"
                         select
-                        label="Store"
+                        label="Magazin"
                         name="store_id"
                         value={formData.store_id}
                         variant="outlined"
@@ -347,12 +368,12 @@ const AddProduct = ({createProduct}) => {
                             ))
                         }   
                         </TextField>
-                    {/* Brand */}
+                    {/* Description */}
                     <TextField
                         className={classes.input}
                         placeholder="MultiLine with rows: 2 and rowsMax: 4"
                         id="outlined-select-currency"
-                        label="Description"
+                        label="Haryt maglumatlary"
                         name="description"
                         variant="outlined"
                         value={formData.description}
@@ -360,7 +381,7 @@ const AddProduct = ({createProduct}) => {
                         multiline
                         rows={2}
                         rowsMax={10}
-                        />
+                    />
                     <br />
                     {
                         images.map((value,index) => 
@@ -373,7 +394,7 @@ const AddProduct = ({createProduct}) => {
                                         variant="square" 
                                         />
                                     <div style={{paddingLeft : '10px', width : '100%'}}>
-                                        <InputLabel children={`Product Image ${index+1} `} />
+                                        <InputLabel children={`Haryt suraty ${index+1} `} />
                                         <br />
                                         <TextField className={classes.inputNumber} id="outlined-basic" type="file" variant="outlined" 
                                             onChange={(e) => onFileUpload(e,value.id)}
@@ -398,7 +419,7 @@ const AddProduct = ({createProduct}) => {
                     </Button>
                     <br />
                     <Button variant="contained" color="primary" type='submit'>
-                        Create Product
+                        Haryt döret
                     </Button>
                 </form>
             </div>
@@ -409,8 +430,10 @@ const AddProduct = ({createProduct}) => {
 
 AddProduct.propTypes = {
     createProduct: PropTypes.func.isRequired,
+    setAlert: PropTypes.func.isRequired,
 }
 
 export default connect(null, {
-    createProduct
+    createProduct,
+    setAlert
   })(AddProduct);

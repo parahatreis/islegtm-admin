@@ -139,20 +139,20 @@ const BrandItem = ({deletBrand,brand :{
                       <Fade in={open}
                       >
                         <div className={classes.paper}>
-                          <h3 id="transition-modal-title">Hakykatdanam shu <span style={{color : 'blue'}}>{brand_name}</span> brendi pozmak isleyanizmi?</h3>
+                          <h3 id="transition-modal-title">Hakykatdanam şu <span style={{color : 'blue'}}>{brand_name}</span> brendi pozmak isleyaňizmi?</h3>
                           <p id="transition-modal-description">
-                            Brend pozulandan son yzyna gaydyp gelmeyar
+                            Brend pozulandan soň yzyna gaýdyp gelmeýär!
                           </p>
                           <div className={classes.btnGroup}>
                             <Button onClick={handleClose}>
-                              Cancel
+                            Goýbolsun et
                             </Button>
                             <Button variant="contained" color="secondary"
                               onClick={() => {
                                 deletBrand(brand_id);
                               }}
                             >
-                              Delete
+                              Poz
                             </Button>
                           </div>
                         </div>

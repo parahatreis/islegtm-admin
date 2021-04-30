@@ -20,7 +20,10 @@ import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 // 
 import { editBrand, getCurrentBrand } from '../../actions/brandsActions';
 import Placeholder from '../../img/BG.svg';
-import Spinner from '../layouts/Spinner'
+import Spinner from '../layouts/Spinner';
+import validator from 'validator';
+import apiPath from '../../utils/apiPath'
+import { setAlert } from '../../actions/alertsAction';
 
 
 
@@ -56,14 +59,15 @@ const EditBrand = ({
     editBrand,
     getCurrentBrand,
     brands : {current_brand, loading},
-    match
+    match,
+    setAlert
 }) => {
     
     const [formData,setFormData] = useState({
         brand_name : '',
         subcategories : []
     })
-    const [imgUri,setImg] = useState({img : Placeholder})
+    const [image,setImage] = useState(Placeholder);
     const [buffer,setBuffer] = useState(null)
     const [subcategories,setSubCategories] = useState(null);
     const classes = useStyles();
@@ -81,10 +85,7 @@ const EditBrand = ({
             setFormData(current_brand);
             if(current_brand.brand_image){
                 let img  = current_brand.brand_image;
-                setImg({img})
-            }
-            else{
-                setImg({img : Placeholder})
+                setImage(`${apiPath()}/${img}`)
             }
         }
     }, [current_brand])
@@ -144,7 +145,7 @@ const EditBrand = ({
             reader.addEventListener("load", function () {
                 // convert image file to base64 string
                 if(reader.readyState === 2){
-                    setImg({img : reader.result})
+                    setImage(reader.result)
                 }
             }, false);
 
@@ -159,14 +160,26 @@ const EditBrand = ({
 
     const onSubmit = (e) => {
         e.preventDefault();
-        const fileData = new FormData(); 
-     
-        // Update the formData object 
-        fileData.append( 
-            "image", 
-            buffer, 
-        ); 
-        editBrand(formData,fileData);
+        const fileData = new FormData();
+
+        const validated = validateInputs();
+
+        if(validated){
+            // Update the formData object 
+            fileData.append( 
+                "image", 
+                buffer, 
+            );
+            editBrand(formData,fileData);
+        }   
+    }
+
+    const validateInputs = () => {
+        if(validator.isEmpty(formData.brand_name)){
+            setAlert('Brand Name Girizin', 'error');
+            return false
+        }
+        return true
     }
 
     return (
@@ -175,7 +188,7 @@ const EditBrand = ({
 
             <section className="add-product-section container">
             <Typography variant="h4" component="h2">
-                Edit {formData.brand_name && formData.brand_name} Brand
+                Brendi Üýtget - {formData.brand_name && formData.brand_name}
             </Typography>
             <div className="form-block"> 
                 <form className={classes.root} noValidate autoComplete="off" onSubmit={(e) => onSubmit(e)}>
@@ -183,7 +196,7 @@ const EditBrand = ({
                     <TextField 
                         className={classes.input}
                         id="outlined-basic" 
-                        label="Brand Name" 
+                        label="Brand Ady" 
                         variant="outlined"
                         value={formData.brand_name}
                         required
@@ -195,7 +208,7 @@ const EditBrand = ({
                             <Table className={classes.table} size="small" aria-label="a dense table">
                                 <TableHead>
                                 <TableRow>
-                                    <TableCell style={{color: 'grey'}}>Subcategories</TableCell>
+                                    <TableCell style={{color: 'grey'}}>Subkategoriýalar</TableCell>
                                     <TableCell align="right"></TableCell>
                                 </TableRow>
                                 </TableHead>
@@ -224,12 +237,12 @@ const EditBrand = ({
                             </Table>
                             </TableContainer>
                             {/* Add Subcategorie */}
-                        <InputLabel children={`Add Subcategorie`} />
+                        <InputLabel children={`Subkategoriýa goşuň`} />
                         <TextField
                             className={classes.input}
                             id="outlined-select-currency"
                             select
-                            label="Categorie Name"
+                            label="Kategoriýa ady"
                             value={''}
                             onChange={(e) => addSubcategorie(e)}
                             variant="outlined"
@@ -248,11 +261,11 @@ const EditBrand = ({
                     <div className={classes.grid}>
                         <Avatar 
                             className={classes.image}
-                            src={imgUri.img}
+                            src={image}
                             variant="square" 
                             />
                         <div style={{paddingLeft : '10px', width : '100%'}}>
-                            <InputLabel children={`Categorie Image`} />
+                            <InputLabel children={`Brend suraty`} />
                             <br />
                             <TextField className={classes.inputNumber} id="outlined-basic" type="file" variant="outlined" 
                                 onChange={(e) => onFileUpload(e)}
@@ -260,7 +273,7 @@ const EditBrand = ({
                         </div>
                     </div>
                     <Button variant="contained" color="primary" type='submit'>
-                        Create Brand
+                        Ýatda sakla
                     </Button>
                 </form>
             </div>
@@ -273,6 +286,7 @@ const EditBrand = ({
 EditBrand.propTypes = {
     editBrand: PropTypes.func.isRequired,
     getCurrentBrand : PropTypes.func.isRequired,
+    setAlert : PropTypes.func.isRequired,
     brands : PropTypes.object.isRequired,
 }
 
@@ -283,6 +297,7 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
     editBrand,
-    getCurrentBrand
+    getCurrentBrand,
+    setAlert
   })(EditBrand);
     
