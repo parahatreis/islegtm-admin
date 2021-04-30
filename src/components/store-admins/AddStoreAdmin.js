@@ -11,6 +11,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import axios from 'axios'
 // 
 import { createStoreAdmin } from '../../actions/storeAdminsAction';
+import validator from 'validator'
+import { setAlert } from '../../actions/alertsAction'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -41,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   
 
 
-const AddStoreAdmin = ({createStoreAdmin}) => {
+const AddStoreAdmin = ({createStoreAdmin, setAlert}) => {
     
     const [formData,setFormData] = useState({
         store_admin_name : '',
@@ -69,14 +71,42 @@ const AddStoreAdmin = ({createStoreAdmin}) => {
 
 
     const onSubmit = (e) => {
-        e.preventDefault();
-        createStoreAdmin(formData);
-    }
+       e.preventDefault();
+       const validated = validateInputs();
+
+       if (validated) {
+          createStoreAdmin(formData);
+       }
+   }
+   
+   const validateInputs = () => {
+      if (validator.isEmpty(formData.store_admin_name)) {
+         setAlert('Magazin Admin ady giriziň!', 'error');
+         return false
+      }
+      if (validator.isEmpty(formData.store_admin_password)) {
+         setAlert('Magazin Admin parol giriziň!', 'error');
+         return false
+      }
+      if (validator.isEmpty(formData.store_admin_phone)) {
+         setAlert('Magazin Admin telefon nomeri giriziň!', 'error');
+         return false
+      }
+      if (validator.isEmpty(formData.store_admin_username)) {
+         setAlert('Magazin Admin ulanyjy ady(username) giriziň!', 'error');
+         return false
+      }
+      if (validator.isEmpty(formData.storeId)) {
+         setAlert('Magazin saýlaň!', 'error');
+         return false
+      }
+      return true
+   }
 
     return (
         <section className="add-product-section container">
             <Typography variant="h4" component="h2">
-               Add Store
+               Magazin admin goşuň
             </Typography>
             <div className="form-block"> 
                 <form className={classes.root} noValidate autoComplete="off" onSubmit={(e) => onSubmit(e)}>
@@ -84,7 +114,7 @@ const AddStoreAdmin = ({createStoreAdmin}) => {
                     <TextField 
                         className={classes.input}
                         id="outlined-basic" 
-                        label="Store Admin Name" 
+                        label="Magazin Admin ady" 
                         variant="outlined"
                         value={formData.store_admin_name}
                         required
@@ -95,7 +125,7 @@ const AddStoreAdmin = ({createStoreAdmin}) => {
                     <TextField 
                         className={classes.input}
                         id="outlined-basic" 
-                        label="Store Admin Username" 
+                        label="Magazin Admin ulanyjy ady(username)" 
                         variant="outlined"
                         value={formData.store_admin_username}
                         required
@@ -106,24 +136,37 @@ const AddStoreAdmin = ({createStoreAdmin}) => {
                     <TextField 
                         className={classes.input}
                         id="outlined-basic" 
-                        label="Store Admin Phone Number" 
+                        label="Magazin Admin telefon belgisi" 
                         variant="outlined"
                         value={formData.store_admin_phone}
-                        required
+                        required 
+                         type = "number"
                         name="store_admin_phone"
                         onChange={(e) => onChange(e)}
+                /><br />
+                {/* Store Admin Password */}
+                    <TextField 
+                        className={classes.input}
+                        id="outlined-basic" 
+                        label="Magazin Admin parol" 
+                        variant="outlined"
+                        value={formData.store_admin_password}
+                        required
+                        name="store_admin_password"
+                        onChange={(e) => onChange(e)}
                         /><br />
-                    {/* Store Admin Password */}
-                    <InputLabel children={`Select Store`} />
+                    {/* Store */}
+                    <InputLabel children={`Magazin saýla`} />
                         <TextField
                             className={classes.input}
                             id="outlined-select-currency"
                             select
-                            label="Store"
-                            value={formData.storeId}
+                            label="Magazin"
+                            value={formData.storeId ? formData.storeId : ''}
                             onChange={(e) => onChange(e)}
                             variant="outlined"
-                            name="storeId"
+                           name="storeId"
+                           required
                         >
                             {
                                 stores && stores.length > 0 ?
@@ -134,20 +177,10 @@ const AddStoreAdmin = ({createStoreAdmin}) => {
                                 )) : 'Başga store ýok'
                             }
                         </TextField>
-                    {/* Store Admin Password */}
-                    <TextField 
-                        className={classes.input}
-                        id="outlined-basic" 
-                        label="Store Admin Password" 
-                        variant="outlined"
-                        value={formData.store_admin_password}
-                        required
-                        name="store_admin_password"
-                        onChange={(e) => onChange(e)}
-                        /><br />
+                    
                         
                     <Button variant="contained" color="primary" type='submit'>
-                        Create Store
+                        Magazin admin döret
                     </Button>
                 </form>
             </div>
@@ -157,9 +190,12 @@ const AddStoreAdmin = ({createStoreAdmin}) => {
 
 AddStoreAdmin.propTypes = {
     createStoreAdmin: PropTypes.func.isRequired,
+    setAlert: PropTypes.func.isRequired,
+
 }
 
 export default connect(null, {
-    createStoreAdmin
+   createStoreAdmin,
+   setAlert
   })(AddStoreAdmin);
     

@@ -35,13 +35,13 @@ const SubCategorieList = ({subcategories : {subcategories ,loading}}) => {
                         <TableHead>
                         <TableRow>
                             <TableCell align="left">ID</TableCell>
-                            <TableCell align="left">SubCategorie Image</TableCell>
-                            <TableCell align="left">SubCategorie Name</TableCell>
-                            <TableCell align="left">Categorie</TableCell>
-                            <TableCell align="left">Product Number</TableCell>
-                            <TableCell align="left">Size Type</TableCell>
-                            <TableCell align="center">Edit</TableCell>
-                            <TableCell align="center">Delete</TableCell>
+                            <TableCell align="left">Subkategoriýa Suraty</TableCell>
+                            <TableCell align="left">Subkategoriýa Ady</TableCell>
+                            <TableCell align="left">Kategoriýa</TableCell>
+                            <TableCell align="left">Haryt sany</TableCell>
+                            <TableCell align="left">Ölçeg görnüşi</TableCell>
+                            <TableCell align="center">Üýtgetmek</TableCell>
+                            <TableCell align="center">Pozmak</TableCell>
                         </TableRow>
                         </TableHead>
                         <TableBody>

@@ -23,42 +23,47 @@ const useStyles = makeStyles({
 
 const StoreList = ({stores : {stores ,loading}}) => {
 
-    const classes = useStyles();
+   const classes = useStyles();
 
-    return (
-        <div className="list-wrapper">
-             {  
-            loading ? <Spinner /> : (
-                <>
-                <TableContainer component={Paper}>
-                    <Table className={classes.table} aria-label="simple table">              
-                        <TableHead>
-                        <TableRow>
-                            <TableCell align="left">ID</TableCell>
-                            <TableCell align="left">Store Name</TableCell>
-                            <TableCell align="left">Store Number</TableCell>
-                            <TableCell align="left">Store Admin</TableCell>
-                            <TableCell align="left">Store Phone</TableCell>
-                            <TableCell align="left">Store Floor</TableCell>
-                            <TableCell align="left">Store Currency</TableCell>
-                            <TableCell align="left">Store Description</TableCell>
-                            <TableCell align="center">Edit</TableCell>
-                            <TableCell align="center">Delete</TableCell>
-                        </TableRow>
-                        </TableHead>
-                        <TableBody>
-                        {/* Categorie ITEM */}
+   React.useEffect(() => {
+      console.log(stores)
+   }, [stores])
 
-                        {stores.map((store,index) => <StoreItem key={index} store={store} />)}
+   return (
+      <div className="list-wrapper">
+            {  
+         loading ? <Spinner /> : (
+               <>
+               <TableContainer component={Paper}>
+                  <Table className={classes.table} aria-label="simple table">              
+                     <TableHead>
+                     <TableRow>
+                           <TableCell align="left">ID</TableCell>
+                           <TableCell align="left">Mag. Ady</TableCell>
+                           <TableCell align="left">Mag. Belgisi</TableCell>
+                           <TableCell align="left">Mag. Admin</TableCell>  
+                           <TableCell align="left">Mag. Gaty</TableCell>
+                           <TableCell align="left">Mag. El telefony</TableCell>
+                           <TableCell align="left">Mag. Pul birligi</TableCell>
+                           <TableCell align="left">Haryt sany</TableCell>
+                           <TableCell align="left">Mag. Maglumaty</TableCell>
+                           <TableCell align="center">Üýtgetmek</TableCell>
+                           <TableCell align="center">Pozmak</TableCell>
+                     </TableRow>
+                     </TableHead>
+                     <TableBody>
+                     {/* Categorie ITEM */}
 
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-                </>
-            )
-        }
-        </div>
-    )
+                     {stores.map((store,index) => <StoreItem key={index} store={store} />)}
+
+                     </TableBody>
+                  </Table>
+               </TableContainer>
+               </>
+         )
+      }
+      </div>
+   )
 }
 
 

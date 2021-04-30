@@ -71,9 +71,7 @@ const SubCategorieItem = ({deleteSubCategorie,subcategorie :{
 
     useEffect(() => {
       if(subcategorie_image){
-        if(subcategorie_image){
-          setImage(`${apiPath()}/${subcategorie_image}`)
-        }
+         setImage(`${apiPath()}/${subcategorie_image}`)
       }
     }, [subcategorie_image])
 
@@ -118,51 +116,65 @@ const SubCategorieItem = ({deleteSubCategorie,subcategorie :{
                 </Button>
               </Link>
             </TableCell>
-            {/* Delete */}
-            <TableCell align="center">
-                <Button
-                onClick={handleOpen}
-                color="secondary"
-                href="#delete"
-                >
-                <DeleteOutlineIcon />
-                </Button>
-                <div key={subcategorie_id}>
-                      <Modal
-                        open={open}
-                        onClose={(e) => handleClose(e)}
-                        aria-labelledby="simple-modal-title"
-                        aria-describedby="simple-modal-description"
-                        BackdropComponent={Backdrop}
-                        BackdropProps={{
-                          timeout: 500,
-                        }}
-                      >
-                      <Fade in={open}
-                      >
-                        <div className={classes.paper}>
-                          <h3 id="transition-modal-title">Hakykatdanam shu <span style={{color : 'blue'}}>{subcategorie_name_tm}</span> kategoriyany pozmak isleyanizmi?</h3>
-                          <p id="transition-modal-description">
-                            Kategoriya pozulandan son yzyna gaydyp gelmeyar
-                          </p>
-                          <div className={classes.btnGroup}>
-                            <Button onClick={handleClose}>
-                              Cancel
-                            </Button>
-                            <Button variant="contained" color="secondary"
-                              onClick={() => {
-                                deleteSubCategorie(subcategorie_id);
-                              }}
-                            >
-                              Delete
-                            </Button>
-                          </div>
-                        </div>
-                      </Fade>
-                    </Modal>
-                </div>
-            </TableCell>
-
+             {
+               products &&
+               products.length === 0 ?
+               <>
+                  {/* Delete */}
+               <TableCell align="center">
+                  <Button
+                  onClick={handleOpen}
+                  color="secondary"
+                  href="#delete"
+                  >
+                  <DeleteOutlineIcon />
+                  </Button>
+                  <div key={subcategorie_id}>
+                        <Modal
+                           open={open}
+                           onClose={(e) => handleClose(e)}
+                           aria-labelledby="simple-modal-title"
+                           aria-describedby="simple-modal-description"
+                           BackdropComponent={Backdrop}
+                           BackdropProps={{
+                           timeout: 500,
+                           }}
+                        >
+                        <Fade in={open}
+                        >
+                           <div className={classes.paper}>
+                           <h3 id="transition-modal-title">Hakykatdanam shu <span style={{color : 'blue'}}>{subcategorie_name_tm}</span> kategoriyany pozmak isleyanizmi?</h3>
+                           <p id="transition-modal-description">
+                              Subkategoriya pozulandan son yzyna gaydyp gelmeyar
+                           </p>
+                           <div className={classes.btnGroup}>
+                              <Button onClick={handleClose}>
+                                 Cancel
+                              </Button>
+                              <Button variant="contained" color="secondary"
+                                 onClick={() => {
+                                 deleteSubCategorie(subcategorie_id);
+                                 }}
+                              >
+                                 Delete
+                              </Button>
+                           </div>
+                           </div>
+                        </Fade>
+                     </Modal>
+                  </div>
+               </TableCell>
+               </> :<TableCell align="center">
+                  <Button
+                  onClick={handleOpen}
+                  color="secondary"
+                         href="#delete"
+                         disabled
+                  >
+                  <DeleteOutlineIcon />
+                      </Button>
+                  </TableCell>
+            }
         </TableRow>  
         </>
     )

@@ -11,14 +11,10 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import TableRow from '@material-ui/core/TableRow';
-import axios from 'axios';
 import Chip from '@material-ui/core/Chip';
 
 // 
 import { deleteStore } from '../../actions/storesAction';
-import Spinner from '../layouts/Spinner';
-
-
 
 
 const useStyles = makeStyles({
@@ -57,14 +53,15 @@ const useStyles = makeStyles({
 
 
 const StoreItem = ({deleteStore,store :{
-    store_id,
-    store_name,
-    store_number,
-    store_phone,
-    store_description,
-    store_floor,
-    store_currency,
-    store_admins
+   store_id,
+   store_name,
+   store_number,
+   store_phone,
+   store_description,
+   store_floor,
+   store_currency,
+   store_admins,
+   products
 }}) => {
 
   const classes = useStyles();
@@ -98,6 +95,7 @@ const StoreItem = ({deleteStore,store :{
           <TableCell align="left">{store_phone && store_phone}</TableCell>
           <TableCell align="left">{store_floor && store_floor}</TableCell>
           <TableCell align="left">{store_currency && store_currency}</TableCell>
+          <TableCell align="left">{products && products.length}</TableCell>
           <TableCell align="left">{store_description && store_description}</TableCell>
           {/* Edit */}
           <TableCell align="center">
@@ -110,7 +108,11 @@ const StoreItem = ({deleteStore,store :{
             </Link>
           </TableCell>
           {/* Delete */}
-          <TableCell align="center">
+           {
+            store_admins &&
+            products &&
+            products.length === 0 ?
+            <TableCell align="center">
               <Button
               onClick={handleOpen}
               color="secondary"
@@ -131,27 +133,34 @@ const StoreItem = ({deleteStore,store :{
                     <Fade in={open}
                     >
                       <div className={classes.paper}>
-                        <h3 id="transition-modal-title">Hakykatdanam shu <span style={{color : 'blue'}}>{store_name}</span> story pozmak isleyanizmi?</h3>
-                        <p id="transition-modal-description">
-                          Store pozulandan son yzyna gaydyp gelmeyar
-                        </p>
+                        <h3 id="transition-modal-title">Hakykatdanam pozmak isleýäňizmi?</h3>
                         <div className={classes.btnGroup}>
                           <Button onClick={handleClose}>
-                            Cancel
+                            Goýbolsun et
                           </Button>
                           <Button variant="contained" color="secondary"
                             onClick={() => {
                               deleteStore(store_id);
                             }}
                           >
-                            Delete
+                            Poz
                           </Button>
                         </div>
                       </div>
                     </Fade>
                   </Modal>
               </div>
-          </TableCell>
+                 </TableCell> :
+                  <TableCell align="center">
+                     <Button
+                        onClick={handleOpen}
+                       color="secondary"
+                       disabled
+                     >
+                     <DeleteOutlineIcon />
+                     </Button>
+               </TableCell>
+         }
 
       </TableRow>  
       </>

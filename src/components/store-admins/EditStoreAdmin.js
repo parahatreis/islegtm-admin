@@ -12,7 +12,8 @@ import axios from 'axios'
 // 
 import { editStoreAdmin, getCurrentStoreAdmin } from '../../actions/storeAdminsAction';
 import Spinner from '../layouts/Spinner'
-
+import validator from 'validator'
+import { setAlert } from '../../actions/alertsAction'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -43,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   
 
 
-const EditStoreAdmin = ({editStoreAdmin,getCurrentStoreAdmin, store_admins : {current_store_admin ,loading}, match}) => {
+const EditStoreAdmin = ({setAlert,editStoreAdmin,getCurrentStoreAdmin, store_admins : {current_store_admin ,loading}, match}) => {
     
     const [formData,setFormData] = useState({
         store_admin_name : '',
@@ -78,18 +79,43 @@ const EditStoreAdmin = ({editStoreAdmin,getCurrentStoreAdmin, store_admins : {cu
     }, [getCurrentStoreAdmin,match.params.id])
 
     useEffect(() => {
-        if(current_store_admin){
+       if (current_store_admin) {
+          const storeId = current_store_admin.store.store_id;
             setFormData({
                 ...current_store_admin,
-                storeId : current_store_admin.store.store_id
+                storeId
             });
         }
     }, [current_store_admin])
 
 
     const onSubmit = (e) => {
-        e.preventDefault();
-        editStoreAdmin(formData);
+       e.preventDefault();
+       const validated = validateInputs();
+
+       if (validated) {
+          editStoreAdmin(formData);
+       }
+    }
+
+    const validateInputs = () => {
+       if (validator.isEmpty(formData.store_admin_name)) {
+          setAlert('Magazin Admin ady giriziň!', 'error');
+          return false
+       }
+       if (validator.isEmpty(String(formData.store_admin_phone))) {
+          setAlert('Magazin Admin telefon nomeri giriziň!', 'error');
+          return false
+       }
+       if (validator.isEmpty(formData.store_admin_username)) {
+          setAlert('Magazin Admin ulanyjy ady(username) giriziň!', 'error');
+          return false
+       }
+       if (validator.isEmpty(formData.storeId)) {
+          setAlert('Magazin saýlaň!', 'error');
+          return false
+       }
+       return true
     }
 
     return (
@@ -102,73 +128,75 @@ const EditStoreAdmin = ({editStoreAdmin,getCurrentStoreAdmin, store_admins : {cu
                 <div className="form-block"> 
                     <form className={classes.root} noValidate autoComplete="off" onSubmit={(e) => onSubmit(e)}>
                         {/* Store Admin Name */}
-                        <TextField 
+                    <TextField 
+                        className={classes.input}
+                        id="outlined-basic" 
+                        label="Magazin Admin ady" 
+                        variant="outlined"
+                        value={formData.store_admin_name}
+                        required
+                        name="store_admin_name"
+                        onChange={(e) => onChange(e)}
+                        /><br />
+                    {/* Store Admin Username */}
+                    <TextField 
+                        className={classes.input}
+                        id="outlined-basic" 
+                        label="Magazin Admin ulanyjy ady(username)" 
+                        variant="outlined"
+                        value={formData.store_admin_username}
+                        required
+                        name="store_admin_username"
+                        onChange={(e) => onChange(e)}
+                        /><br />
+                    {/* Store Admin Phone Number */}
+                    <TextField 
+                        className={classes.input}
+                        id="outlined-basic" 
+                        label="Magazin Admin telefon belgisi" 
+                        variant="outlined"
+                        value={formData.store_admin_phone}
+                        required
+                         name="store_admin_phone"
+                         type="number"
+                        onChange={(e) => onChange(e)}
+                /><br />
+                {/* Store Admin Password */}
+                    <TextField 
+                        className={classes.input}
+                        id="outlined-basic" 
+                        label="Magazin Admin parol" 
+                        variant="outlined"
+                        value={formData.store_admin_password}
+                        required
+                        name="store_admin_password"
+                        onChange={(e) => onChange(e)}
+                        /><br />
+                    {/* Store */}
+                    <InputLabel children={`Magazin saýla`} />
+                        <TextField
                             className={classes.input}
-                            id="outlined-basic" 
-                            label="Store Admin Name" 
-                            variant="outlined"
-                            value={formData.store_admin_name}
-                            required
-                            name="store_admin_name"
+                            id="outlined-select-currency"
+                            select
+                            label="Magazin"
+                            value={formData.storeId}
                             onChange={(e) => onChange(e)}
-                            /><br />
-                        {/* Store Admin Username */}
-                        <TextField 
-                            className={classes.input}
-                            id="outlined-basic" 
-                            label="Store Admin Username" 
                             variant="outlined"
-                            value={formData.store_admin_username}
-                            required
-                            name="store_admin_username"
-                            onChange={(e) => onChange(e)}
-                            /><br />
-                        {/* Store Admin Phone Number */}
-                        <TextField 
-                            className={classes.input}
-                            id="outlined-basic" 
-                            label="Store Admin Phone Number" 
-                            variant="outlined"
-                            value={formData.store_admin_phone}
-                            required
-                            name="store_admin_phone"
-                            onChange={(e) => onChange(e)}
-                            /><br />
-                        {/* Store Admin Password */}
-                        <InputLabel children={`Select Store`} />
-                            <TextField
-                                className={classes.input}
-                                id="outlined-select-currency"
-                                select
-                                label="Store"
-                                value={formData.storeId}
-                                onChange={(e) => onChange(e)}
-                                variant="outlined"
-                                name="storeId"
-                            >
-                                {
-                                    stores && stores.length > 0 ?
-                                    stores.map((option,index) => (
-                                        <MenuItem key={index} value={option.store_id}>
-                                        {option.store_name} - No {option.store_number}
-                                        </MenuItem>
-                                    )) : 'Başga store ýok'
-                                }
-                            </TextField>
-                        {/* Store Admin Password */}
-                        <TextField 
-                            className={classes.input}
-                            id="outlined-basic" 
-                            label="Store Admin Password" 
-                            variant="outlined"
-                            value={formData.store_admin_password}
-                            required
-                            name="store_admin_password"
-                            onChange={(e) => onChange(e)}
-                            /><br />
+                           name="storeId"
+                           required
+                        >
+                            {
+                                stores && stores.length > 0 ?
+                                stores.map((option,index) => (
+                                    <MenuItem key={index} value={option.store_id}>
+                                    {option.store_name} - No {option.store_number}
+                                    </MenuItem>
+                                )) : 'Başga store ýok'
+                            }
+                        </TextField>
                             
                         <Button variant="contained" color="primary" type='submit'>
-                            Update Store
+                            Ýatda sakla
                         </Button>
                     </form>
                 </div>
@@ -181,6 +209,7 @@ const EditStoreAdmin = ({editStoreAdmin,getCurrentStoreAdmin, store_admins : {cu
 EditStoreAdmin.propTypes = {
     editStoreAdmin: PropTypes.func.isRequired,
     getCurrentStoreAdmin: PropTypes.func.isRequired,
+    setAlert: PropTypes.func.isRequired,
     store_admins : PropTypes.object.isRequired,
 }
 
@@ -190,6 +219,7 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
     editStoreAdmin,
-    getCurrentStoreAdmin
+    getCurrentStoreAdmin,
+    setAlert
   })(EditStoreAdmin);
     

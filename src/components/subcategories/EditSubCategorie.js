@@ -16,6 +16,8 @@ import { getCurrentSubCategorie, editSubCategorie } from '../../actions/subcateg
 import Placeholder from '../../img/BG.svg';
 import Spinner from '../layouts/Spinner';
 import apiPath from '../../utils/apiPath'
+import validator from 'validator'
+import { setAlert } from '../../actions/alertsAction'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -42,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const EditSubCategorie = ({getCurrentSubCategorie,match,subcategories : {current_subcategorie,loading}, editSubCategorie}) => {
+const EditSubCategorie = ({getCurrentSubCategorie,match,subcategories : {current_subcategorie,loading}, editSubCategorie, setAlert}) => {
     
     const [formData,setFormData] = useState({
         subcategorie_name_tm : '',
@@ -51,7 +53,7 @@ const EditSubCategorie = ({getCurrentSubCategorie,match,subcategories : {current
         categorie_id : '',
         size_type_id : '',
     })
-    const [imgUri,setImg] = useState({img : Placeholder})
+    const [image, setImage] = useState(Placeholder);
     const [buffer,setBuffer] = useState(null)
     const [categories,setCategories] = useState(null);
     const [sizeTypes, setSizeTypes] = useState(null);
@@ -98,11 +100,7 @@ const EditSubCategorie = ({getCurrentSubCategorie,match,subcategories : {current
                 size_type_id : sizeTypeId
             });
             if(current_subcategorie.subcategorie_image){
-                let img  = apiPath(current_subcategorie.subcategorie_image);
-                setImg({img})
-            }
-            else{
-                setImg({img : Placeholder})
+               setImage(`${apiPath()}/${current_subcategorie.subcategorie_image}`)
             }
         }
     }, [current_subcategorie])
@@ -133,7 +131,7 @@ const EditSubCategorie = ({getCurrentSubCategorie,match,subcategories : {current
             reader.addEventListener("load", function () {
                 // convert image file to base64 string
                 if(reader.readyState === 2){
-                    setImg({img : reader.result})
+                    setImage(reader.result)
                 }
             }, false);
 
@@ -148,14 +146,30 @@ const EditSubCategorie = ({getCurrentSubCategorie,match,subcategories : {current
 
     const onSubmit = (e) => {
         e.preventDefault();
-        const fileData = new FormData(); 
-     
-        // Update the formData object 
-        fileData.append( 
-            "image", 
-            buffer, 
-        ); 
-        editSubCategorie(formData,fileData);
+        const fileData = new FormData();
+
+        const validated = validateInputs();
+
+        if (validated) {
+           // Update the formData object 
+           fileData.append(
+              "image",
+              buffer,
+           );
+           editSubCategorie(formData, fileData);
+        }
+    }
+
+    const validateInputs = () => {
+       if (validator.isEmpty(formData.subcategorie_name_tm) || validator.isEmpty(formData.subcategorie_name_ru) || validator.isEmpty(formData.subcategorie_name_en)) {
+          setAlert('Subkategoriýa ady girizin!', 'error');
+          return false
+       }
+       if (validator.isEmpty(formData.categorie_id)) {
+          setAlert('Kategoriýa ady saýlaň!', 'error');
+          return false
+       }
+       return true
     }
 
     return (
@@ -163,55 +177,55 @@ const EditSubCategorie = ({getCurrentSubCategorie,match,subcategories : {current
             {loading ? <Spinner /> : 
                 <section className="add-product-section container">
                 <Typography variant="h4" component="h2">
-                   Edit {formData.subcategorie_name} SubCategorie
+                   Subkategoriýa üýtgetmek - {formData.subcategorie_name && formData.subcategorie_name}
                 </Typography>
                 <div className="form-block"> 
                     <form className={classes.root} noValidate autoComplete="off" onSubmit={(e) => onSubmit(e)}>
                         {/* SubCategorie Name (TURKMENÇE) */}
-                    <TextField 
-                        className={classes.input}
-                        id="outlined-basic" 
-                        label="SubCategorie Name (TURKMENÇE)" 
-                        variant="outlined"
-                        value={formData.subcategorie_name_tm}
-                        required
-                        name="subcategorie_name_tm"
-                        onChange={(e) => onChange(e)}
-                        /><br />
-                    {/* SubCategorie Name (РУССКИЙ) */}
-                    <TextField 
-                        className={classes.input}
-                        id="outlined-basic" 
-                        label="SubCategorie Name (РУССКИЙ)" 
-                        variant="outlined"
-                        value={formData.subcategorie_name_ru}
-                        required
-                        name="subcategorie_name_ru"
-                        onChange={(e) => onChange(e)}
-                        /><br />
-                    {/* SubCategorie Name (ENGLISH) */}
-                    <TextField 
-                        className={classes.input}
-                        id="outlined-basic" 
-                        label="SubCategorie Name (ENGLISH)" 
-                        variant="outlined"
-                        value={formData.subcategorie_name_en}
-                        required
-                        name="subcategorie_name_en"
-                        onChange={(e) => onChange(e)}
-                        /><br />
-                    {/* Categorie Name */}
-                    <TextField
-                        className={classes.input}
-                        id="outlined-select-currency"
-                        select
-                        label="Categorie Name"
-                        value={formData.categorie_id}
-                        onChange={(e) => onChange(e)}
-                        variant="outlined"
-                        name="categorie_id"
-                        required
-                    >
+                        <TextField 
+                           className={classes.input}
+                           id="outlined-basic" 
+                           label="Subkategoriýa ady (TURKMENÇE)" 
+                           variant="outlined"
+                           value={formData.subcategorie_name_tm}
+                           required
+                           name="subcategorie_name_tm"
+                           onChange={(e) => onChange(e)}
+                           /><br />
+                        {/* SubCategorie Name (РУССКИЙ) */}
+                        <TextField 
+                           className={classes.input}
+                           id="outlined-basic" 
+                           label = "Название подкатегории (РУССКИЙ)" 
+                           variant="outlined"
+                           value={formData.subcategorie_name_ru}
+                           required
+                           name="subcategorie_name_ru"
+                           onChange={(e) => onChange(e)}
+                           /><br />
+                        {/* SubCategorie Name (ENGLISH) */}
+                        <TextField 
+                           className={classes.input}
+                           id="outlined-basic" 
+                           label="SubCategorie Name (ENGLISH)" 
+                           variant="outlined"
+                           value={formData.subcategorie_name_en}
+                           required
+                           name="subcategorie_name_en"
+                           onChange={(e) => onChange(e)}
+                           /><br />
+                        {/* Categorie Name */}
+                        <TextField
+                           className={classes.input}
+                           id="outlined-select-currency"
+                           select
+                           label="Kategoriýa ady"
+                           value={formData.categorie_id}
+                           onChange={(e) => onChange(e)}
+                           variant="outlined"
+                           name="categorie_id"
+                           required
+                        >
                         {
                             categories && 
                             categories.map((option,index) => (
@@ -229,7 +243,7 @@ const EditSubCategorie = ({getCurrentSubCategorie,match,subcategories : {current
                     {/* Has Size  */}
                     <FormControlLabel
                         control={<Checkbox color="primary" value={hasSize} checked={hasSize} onChange={(e) => changeHasSizeType()} name="hasSize" />}
-                        label="Beden olcegi barmy"
+                        label="Beden ölçegi barmy"
                     />
                     {/* Size Type */}
                     {
@@ -238,7 +252,7 @@ const EditSubCategorie = ({getCurrentSubCategorie,match,subcategories : {current
                             className={classes.input}
                             id="outlined-select-currency"
                             select
-                            label="Size Type"
+                           label = "Ölçeg görnüşi"
                             value={formData.size_type_id}
                             onChange={(e) => onChange(e)}
                             variant="outlined"
@@ -255,11 +269,11 @@ const EditSubCategorie = ({getCurrentSubCategorie,match,subcategories : {current
                     <div className={classes.grid}>
                         <Avatar 
                             className={classes.image}
-                            src={imgUri.img}
+                            src={image}
                             variant="square" 
                             />
                         <div style={{paddingLeft : '10px', width : '100%'}}>
-                            <InputLabel children={`Categorie Image`} />
+                            <InputLabel children={`Subkategoriýa suraty`} />
                             <br />
                             <TextField className={classes.inputNumber} id="outlined-basic" type="file" variant="outlined" 
                                 onChange={(e) => onFileUpload(e)}
@@ -267,7 +281,7 @@ const EditSubCategorie = ({getCurrentSubCategorie,match,subcategories : {current
                         </div>
                     </div>
                     <Button variant="contained" color="primary" type='submit'>
-                        Update SubCategorie
+                        Ýatda sakla
                     </Button>
                     </form>
                 </div>
@@ -280,6 +294,7 @@ const EditSubCategorie = ({getCurrentSubCategorie,match,subcategories : {current
 EditSubCategorie.propTypes = {
     getCurrentSubCategorie: PropTypes.func.isRequired,
     editSubCategorie : PropTypes.func.isRequired,
+    setAlert: PropTypes.func.isRequired,
     subcategories : PropTypes.object.isRequired,
 }
 
@@ -288,7 +303,8 @@ const mapStateToProps = state => ({
  })
 
 export default connect(mapStateToProps, {
-    getCurrentSubCategorie,
-    editSubCategorie
+   getCurrentSubCategorie,
+   editSubCategorie,
+   setAlert
   })(EditSubCategorie);
     

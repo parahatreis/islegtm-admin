@@ -106,20 +106,17 @@ const SizeItem = ({deleteSize,size :{
                     <Fade in={open}
                     >
                       <div className={classes.paper}>
-                        <h3 id="transition-modal-title">Hakykatdanam shu <span style={{color : 'blue'}}>{size_type}</span> story pozmak isleyanizmi?</h3>
-                        <p id="transition-modal-description">
-                          Store pozulandan son yzyna gaydyp gelmeyar
-                        </p>
+                        <h3 id="transition-modal-title">Hakykatdanam pozmak isleýäňizmi?</h3>
                         <div className={classes.btnGroup}>
                           <Button onClick={handleClose}>
-                            Cancel
+                            Goýbolsun et
                           </Button>
                           <Button variant="contained" color="secondary"
                             onClick={() => {
                               deleteSize(size_type_id);
                             }}
                           >
-                            Delete
+                            Pozmak  
                           </Button>
                         </div>
                       </div>

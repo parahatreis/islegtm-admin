@@ -35,9 +35,9 @@ const SizeList = ({sizes : {sizes ,loading}}) => {
                         <TableHead>
                         <TableRow>
                             <TableCell align="left">ID</TableCell>
-                            <TableCell align="left">Size Type</TableCell>
-                            <TableCell align="left">Size Names</TableCell>
-                            <TableCell align="center">Delete</TableCell>
+                            <TableCell align="left">Ölçeg Görnüşi</TableCell>
+                            <TableCell align="left">Ölçeg Ady</TableCell>
+                            <TableCell align="center">Pozmak</TableCell>
                         </TableRow>
                         </TableHead>
                         <TableBody>

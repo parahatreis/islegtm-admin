@@ -33,10 +33,10 @@ const App = () => {
   }, []);
 
   return (
-    <Provider store={store} >
-        <Alerts />
-        <Routing />
-    </Provider>
+   <Provider store={store} >
+      <Alerts />
+      <Routing />
+   </Provider>
   )
 }
 
