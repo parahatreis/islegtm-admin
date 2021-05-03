@@ -23,12 +23,12 @@ const StoreAdmins = ({store_admins, getStoreAdmins}) => {
         <section className="container products-section">
          <header>
             <Typography variant="h4" component="h2">
-            Store Admins
+            Magazin Adminleri
             </Typography>
             <Link to="/store-admins/add-store-admin">
                <Button className="btn" variant="contained" color="primary">
                   <AddIcon />
-                  Add Store
+                  Magazin Admin Goş
                </Button>
             </Link>
          </header>

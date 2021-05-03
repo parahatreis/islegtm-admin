@@ -24,12 +24,12 @@ const SubCategories = ({subcategories, getSubCategories}) => {
         <section className="container products-section">
          <header>
             <Typography variant="h4" component="h2">
-            SubCategories
+            Subkategoriýalar
             </Typography>
             <Link to="/subcategories/add-subcategorie">
                <Button className="btn" variant="contained" color="primary">
                   <AddIcon />
-                  Add subcategorie
+                  Subkategoriýa goş
                </Button>
             </Link>
          </header>

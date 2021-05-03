@@ -20,7 +20,7 @@ const Orders = ({orders, getOrders}) => {
         <section className="container products-section">
          <header>
             <Typography variant="h4" component="h2">
-               Orders
+               Sargytlar
             </Typography>
          </header>
          <div className="products-wrapper">

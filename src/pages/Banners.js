@@ -23,12 +23,12 @@ const Banners = ({banners, getBanners}) => {
         <section className="container products-section">
          <header>
             <Typography variant="h4" component="h2">
-               Banners
+               Bannerler
             </Typography>
             <Link to="/banners/add-banner">
                <Button className="btn" variant="contained" color="primary">
                   <AddIcon />
-                  Add Banner
+                  Banner Goş
                </Button>
             </Link>
          </header>

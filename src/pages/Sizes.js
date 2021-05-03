@@ -23,12 +23,12 @@ const Sizes = ({sizes, getSizes}) => {
         <section className="container products-section">
          <header>
             <Typography variant="h4" component="h2">
-               Sizes
+               Ölçegler
             </Typography>
             <Link to="/sizes/add-size">
                <Button className="btn" variant="contained" color="primary">
                   <AddIcon />
-                  Add Size Type
+                  Ölçeg birligi goş
                </Button>
             </Link>
          </header>

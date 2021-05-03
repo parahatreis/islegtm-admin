@@ -23,12 +23,12 @@ const Brands = ({brands, getBrands}) => {
         <section className="container products-section">
          <header>
             <Typography variant="h4" component="h2">
-            Brands
+            Brendler
             </Typography>
             <Link to="/brands/add-brand">
                <Button className="btn" variant="contained" color="primary">
                   <AddIcon />
-                  Add Brand
+                  Brend goş
                </Button>
             </Link>
          </header>

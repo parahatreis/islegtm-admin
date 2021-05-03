@@ -23,12 +23,12 @@ const Stores = ({stores, getStores}) => {
         <section className="container products-section">
          <header>
             <Typography variant="h4" component="h2">
-            Stores
+            Magazinler
             </Typography>
             <Link to="/stores/add-store">
                <Button className="btn" variant="contained" color="primary">
                   <AddIcon />
-                  Add Store
+                  Magazin goş
                </Button>
             </Link>
          </header>

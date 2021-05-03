@@ -20,7 +20,7 @@ const HomeSubcategories = ({home, getHomeSubs}) => {
         <section className="container products-section">
          <header>
             <Typography variant="h4" component="h2">
-               Home SubCategories
+               Baş sahypa Subkategoriýalary
             </Typography>
          </header>
          <div className="products-wrapper">

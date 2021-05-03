@@ -23,12 +23,12 @@ const Categories = ({categories , getCategories}) => {
         <section className="container products-section">
          <header>
             <Typography variant="h4" component="h2">
-               Categories
+               Kategoriýalar
             </Typography>
             <Link to="/categories/add-categorie">
                <Button className="btn" variant="contained" color="primary">
                   <AddIcon />
-                  Add categorie
+                  Kategoriýa goş
                </Button>
             </Link>
          </header>
