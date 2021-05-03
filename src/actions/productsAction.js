@@ -165,8 +165,8 @@ export const changeStatus = (id,status) => async dispatch => {
       }
    };
    
-   if(status) obj.product_status = 'true'
-   if(!status) obj.product_status = 'false'
+   if(status) obj.product_status = 1
+   if(!status) obj.product_status = 0
 
    const body = JSON.stringify(obj);
 
