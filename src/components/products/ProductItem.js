@@ -13,6 +13,7 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import TableRow from '@material-ui/core/TableRow';
+import Chip from '@material-ui/core/Chip';
 // 
 import { deleteProduct, changeStatus } from '../../actions/productsAction';
 import Placeholder from '../../img/BG.svg';
@@ -65,7 +66,8 @@ const ProductItem = ({product :
         brand,
         subcategorie,
         store,
-        product_images
+        product_images,
+        stocks
     },
     deleteProduct,changeStatus
 }) => {
@@ -130,7 +132,26 @@ const ProductItem = ({product :
             {/* Subcategorie */}
             <TableCell align="left">{subcategorie && subcategorie.subcategorie_name_tm}</TableCell>
             {/* Store No */}
-            <TableCell align="left">{store && store.store_name}</TableCell>
+             <TableCell align="left">{store && store.store_name}</TableCell>
+             {/* Stok No */}
+             <TableCell align="left">{
+                stocks &&
+                stocks.map((stock,index) => (
+                   <>
+                      <div style={{display : 'flex'}}>
+                         <Chip
+                            key={index}
+                            label={`Ölçeg ${stock.sizeName && stock.sizeName.size_name}`} variant='outlined'
+                         />
+                         <Chip
+                            key={index}
+                            label={stock.stock_quantity && stock.stock_quantity}
+                         />
+                      </div>
+                      <br />
+                   </>
+                ))
+            }</TableCell>
             {/* Status */}
             <TableCell align="left">
                 <FormControlLabel

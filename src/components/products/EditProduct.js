@@ -11,7 +11,9 @@ import axios from 'axios'
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete'
 import PropTypes from 'prop-types'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 // 
 import Placeholder from '../../img/BG.svg'
 import { editProduct, getCurrentProduct } from '../../actions/productsAction';
@@ -60,7 +62,14 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
     const [stores,setStore] = useState(null);
     const [subcategories,setSubcategories] = useState(null);
     const [buffers,setBuffers] = useState([]);
-    const [currency, setCurrency] = useState('tmt');
+   const [currency, setCurrency] = useState('tmt');
+   const [hasSize, setHasSize] = useState(false);
+   const [sizeTypes, setSizeTypes] = useState(null);
+   const [chosenSizeType, setSizeType] = useState('');
+   const [stockWithoutSizes, setStockWithoutSizes] = useState({
+      stock_quantity: ''
+   })
+   const [stocks, setStock] = useState([])
     const [productImages,setProductImages] = useState([])
     const [formData,setFormData] = useState({
         product_id : '',
@@ -109,15 +118,90 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
         }
     }, [current_product]);
 
-    useEffect(() => {
-        if(current_product){
-            if(current_product.product_images){
-                setProductImages(current_product.product_images)
+   useEffect(() => {
+      if (current_product) {
+         if(current_product.product_images){
+               setProductImages(current_product.product_images)
+         }
+         if (current_product.stocks) {
+            if (current_product.stocks[0].sizeType) {
+               if (sizeTypes) {
+                  setHasSize(true);
+                  const id = current_product.stocks[0].sizeType.size_type_id;
+                  setSizeType(id);
+                  setSizeType(id);
+                  setStock([]);
+                  let newStocks = [];
+                  const size_type = sizeTypes.filter((type) => type.size_type_id === id);
+                  const size_names = size_type[0].size_names;
+                  let a = current_product.stocks.length - 1;
+                  // console.log(a)
+                  current_product.stocks.forEach((stock,index) => {
+                     size_names.forEach((name) => {
+                        // console.log(index)
+                        if (stock.sizeName.size_name_id === name.size_name_id) {
+                           newStocks = newStocks.filter((st) => st.size_name_id !== name.size_name_id)
+                            return newStocks = [
+                               ...newStocks,
+                               {
+                                  size_name: name.size_name,
+                                  size_name_id: name.size_name_id,
+                                  size_type_id: id,
+                                  stock_quantity: stock.stock_quantity
+                               }
+                            ]
+                         }
+                        if (index !== a) {
+                           return newStocks = [
+                              ...newStocks,
+                              {
+                                 size_name: name.size_name,
+                                 size_name_id: name.size_name_id,
+                                 size_type_id: id,
+                                 stock_quantity: ''
+                              }
+                           ]
+                        }
+                     });
+                  })
+                  setStock(newStocks)
+               }
             }
-        }
-    },[current_product])
+            else {
+               console.log(false)
+            }
+         }
+      }
+   }, [current_product, sizeTypes])
 
+   // useEffect(() => {
+   //    if (current_product && stocks.length > 0) {
+   //       current_product.stocks.forEach(stock => {
+   //          const findStock = stocks.map((val) => {
+   //             if (val.size_name_id === stock.sizeName.size_name_id) {
+   //                return {
+   //                   ...val,
+   //                   stock_quantity: stock.stock_quantity
+   //                }
+   //             }
+   //             return val;
+   //          });
+   //       });
+   
+   //    }
+   // }, [current_product])
 
+   // GET ALL SizeTypes
+   useEffect(() => {
+      axios.get(`/v1/size_types`)
+         .then((res) => {
+            if (res.data) {
+               setSizeTypes(res.data);
+            }
+         })
+         .catch((err) => console.error('SizeTypes: ', err))
+   }, []);
+   
     // Get all subcategories
     useEffect(() => {
         axios.get(`/v1/subcategories`)
@@ -162,7 +246,53 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
             })
             .catch((err) => console.error('Stores : ',err))
 
-    }, [])
+    }, []);
+   
+   const changeHasSizeType = () => {
+      if (hasSize === false) {
+         setHasSize(true);
+         setStockWithoutSizes({
+            stock_quantity: ''
+         })
+      } else {
+         setHasSize(false);
+         setStock([])
+         setSizeType('')
+         setFormData({
+            ...formData,
+            size_type_id: ''
+         })
+      }
+   };
+
+   const handleSelectSizeType = (id) => {
+      setSizeType(id);
+      setStock([])
+      const size_type = sizeTypes.filter((type) => type.size_type_id === id);
+      const size_names = size_type[0].size_names;
+      const newStocks = size_names.map((name) => {
+         return {
+            size_name: name.size_name,
+            size_name_id: name.size_name_id,
+            size_type_id: id,
+            stock_quantity: ''
+         }
+      });
+      setStock(newStocks)
+   }
+
+   const handleSetStock = (id, qnt) => {
+      let newStock = stocks.map((stock) => {
+         if (stock.size_name_id === id) {
+            return {
+               ...stock,
+               stock_quantity: qnt
+            }
+         };
+         return stock
+      });
+      setStock(newStock)
+   }
 
     const onFileUpload = (e,id) => {
         const newfile = e.target.files[0] 
@@ -419,7 +549,72 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
                         rowsMax={10}
                         />
                     <br />
-                    <p>Suratlardan biri çalyşylan ýagdaýynda ähli öňki suratlar pozulýandyr!</p>
+                    {/* Stock */}
+               {
+                  !hasSize &&
+                  <div style={{ width: '100%',display : 'flex'}}>
+                     {/* Stok sany */}
+                     <TextField 
+                        style={{width : '40%'}} 
+                        id="outlined-basic" 
+                        label={`Stock sany`} 
+                        variant="outlined"
+                        name="stock"
+                        type='number'
+                        value={stockWithoutSizes.stock_quantity}
+                        onChange={(e) => {
+                           const qnt = e.target.value
+                           setStockWithoutSizes({
+                              stock_quantity : qnt
+                           })
+                        }}
+                     /><br />
+                  </div>
+               }
+               {/* Has Size  */}
+               <FormControlLabel
+                  control={<Checkbox color="primary" value={hasSize} checked={hasSize} onChange={(e) => changeHasSizeType()} name="hasSize" />}
+                  label="Beden ölçegi barmy"
+               />
+               {
+                  hasSize &&
+                  <TextField
+                        className={classes.input}
+                        id="outlined-select-currency"
+                        select
+                        label="Ölçeg görnüşi"
+                        value={chosenSizeType}
+                        onChange={(e) => handleSelectSizeType(e.target.value)}
+                        variant="outlined"
+                        name="size_type_id"
+                  >
+                        {sizeTypes.map((option) => (
+                           <MenuItem key={option.value} value={option.size_type_id}>
+                           {option.size_type}
+                           </MenuItem>
+                        ))}
+                  </TextField>
+               }
+               <br />
+               {
+                  stocks &&
+                  stocks.map((stock) => (
+                     <div style={{ width: '100%',display : 'flex'}}>
+                        {/* Stok sany */}
+                        <TextField 
+                           style={{width : '40%'}} 
+                           id="outlined-basic" 
+                           label={`Stock sany - ${stock.size_name}`} 
+                           variant="outlined"
+                           name="sotck"
+                           type='number'
+                           value={stock.stock_quantity}
+                           onChange={(e) => handleSetStock(stock.size_name_id, e.target.value)}
+                        /><br />
+                     </div>
+                  ))
+                      }
+                     <p>Suratlardan biri çalyşylan ýagdaýynda ähli öňki suratlar pozulýandyr!</p>
                     <div className={classes.grid}>
                         {
                             productImages &&

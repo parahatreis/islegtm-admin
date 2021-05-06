@@ -44,7 +44,8 @@ const ProductList = ({products : {products, loading, count_products}, setPageNum
     getProducts(selected * 10, null);
     // scroll top
     window.scrollTo(0, 0);
- }
+   }
+   console.log(products)
 
 
   return (
@@ -66,6 +67,7 @@ const ProductList = ({products : {products, loading, count_products}, setPageNum
                         <TableCell align="left">Brend</TableCell>
                         <TableCell align="left">Subkategoriýa</TableCell>
                         <TableCell align="left">Magazin No</TableCell>
+                        <TableCell align="left">Stok sany</TableCell>
                         <TableCell align="left">Status</TableCell>
                         <TableCell align="center">Edit</TableCell>
                         <TableCell align="center">Delete</TableCell>
