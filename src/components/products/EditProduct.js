@@ -124,72 +124,63 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
                setProductImages(current_product.product_images)
          }
          if (current_product.stocks) {
-            if (current_product.stocks[0].sizeType) {
-               if (sizeTypes) {
-                  setHasSize(true);
-                  const id = current_product.stocks[0].sizeType.size_type_id;
-                  setSizeType(id);
-                  setSizeType(id);
-                  setStock([]);
-                  let newStocks = [];
-                  const size_type = sizeTypes.filter((type) => type.size_type_id === id);
-                  const size_names = size_type[0].size_names;
-                  let a = current_product.stocks.length - 1;
-                  // console.log(a)
-                  current_product.stocks.forEach((stock,index) => {
-                     size_names.forEach((name) => {
-                        // console.log(index)
-                        if (stock.sizeName.size_name_id === name.size_name_id) {
-                           newStocks = newStocks.filter((st) => st.size_name_id !== name.size_name_id)
-                            return newStocks = [
-                               ...newStocks,
-                               {
-                                  size_name: name.size_name,
-                                  size_name_id: name.size_name_id,
-                                  size_type_id: id,
-                                  stock_quantity: stock.stock_quantity
-                               }
-                            ]
-                         }
-                        if (index !== a) {
+            if (current_product.stocks.length > 0) {
+               if (current_product.stocks[0].sizeType !== undefined) {
+                  if (sizeTypes) {
+                     setHasSize(true);
+                     const id = current_product.stocks[0].sizeType.size_type_id;
+                     setSizeType(id);
+                     setSizeType(id);
+                     setStock([]);
+                     let newStocks = [];
+                     const size_type = sizeTypes.filter((type) => type.size_type_id === id);
+                     const size_names = size_type[0].size_names;
+                     let a = current_product.stocks.length - 1;
+                     let i = 0;
+
+                     let k = 0;
+                     console.log(size_names)
+                     size_names.forEach((stock) => {
+                        console.log('i', i)
+                        console.log('k', k);
+
+                        if (current_product.stocks[i].sizeName.size_name_id === size_names[k].size_name_id) {
+                           // newStocks = newStocks.filter((st) => st.size_name_id !== name.size_name_id)
+                           if (i < a) i = i + 1;
+                           if (k < size_names.length - 1) k = k + 1;
                            return newStocks = [
                               ...newStocks,
                               {
-                                 size_name: name.size_name,
-                                 size_name_id: name.size_name_id,
+                                 size_name: size_names[k === size_names.length ? k - 1 : k].size_name,
+                                 size_name_id: size_names[k === size_names.length - 1 ? k - 1 : k].size_name_id,
+                                 size_type_id: id,
+                                 stock_quantity: current_product.stocks[i === a ? i - 1 : i].stock_quantity
+                              }
+                           ]
+                        } else {
+                           if (k < size_names.length - 1) k = k + 1;
+
+                           return newStocks = [
+                              ...newStocks,
+                              {
+                                 size_name: size_names[k === size_names.length ? k - 1 : k].size_name,
+                                 size_name_id: size_names[k === size_names.length ? k - 1 : k].size_name_id,
                                  size_type_id: id,
                                  stock_quantity: ''
                               }
                            ]
                         }
-                     });
-                  })
-                  setStock(newStocks)
+                     })
+                     console.log(newStocks)
+                     setStock(newStocks)
+                  }
+               } else {
+                  console.log(false)
                }
-            }
-            else {
-               console.log(false)
             }
          }
       }
    }, [current_product, sizeTypes])
-
-   // useEffect(() => {
-   //    if (current_product && stocks.length > 0) {
-   //       current_product.stocks.forEach(stock => {
-   //          const findStock = stocks.map((val) => {
-   //             if (val.size_name_id === stock.sizeName.size_name_id) {
-   //                return {
-   //                   ...val,
-   //                   stock_quantity: stock.stock_quantity
-   //                }
-   //             }
-   //             return val;
-   //          });
-   //       });
-   
-   //    }
-   // }, [current_product])
 
    // GET ALL SizeTypes
    useEffect(() => {
@@ -348,7 +339,23 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
 
     const onSubmit = (e) => {
         e.preventDefault();
-        
+
+        let formDataStocks = [];
+
+        if (hasSize) {
+           if (chosenSizeType === '') {
+              return setAlert('Haryt ölçeg saýlaň!', 'error');
+           }
+           const notEmptyStocks = stocks.filter((stock) => stock.stock_quantity !== '');
+           if (notEmptyStocks.length === 0) return setAlert('Haryt ölçeg stogy saýlaň!', 'error');
+           formDataStocks = notEmptyStocks;
+        } else {
+           if (stockWithoutSizes.stock_quantity === '') {
+              return setAlert('Haryt stok giriziň!', 'error');
+           }
+           formDataStocks.push(stockWithoutSizes);
+       }
+
         const validated = validateInputs();
 
         if(validated){
@@ -361,9 +368,11 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
                         obj.buffer, 
                     ); 
                 })
+               formData.stocks = formDataStocks;
                 editProduct(formData,fileData);
             }
-            else{
+            else {
+               formData.stocks = formDataStocks;
                 editProduct(formData,null);
             }
         }  
