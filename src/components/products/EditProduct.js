@@ -77,7 +77,9 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
         product_name_ru : '',
         product_name_en : '',
         price_tmt : '',
-        price_usd : '',
+       price_usd: '',
+        old_price_tmt: '',
+         old_price_usd: '',
         subcategorie_id : '',
         brand_id : '',
         store_id : '',
@@ -312,26 +314,29 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
     const onSubmit = (e) => {
         e.preventDefault();
 
-        let formDataStocks = [];
-
-        if (hasSize) {
-           if (chosenSizeType === '') {
-              return setAlert('Haryt ölçeg saýlaň!', 'error');
-           }
-           const notEmptyStocks = stocks.filter((stock) => stock.stock_quantity !== '');
-           if (notEmptyStocks.length === 0) return setAlert('Haryt ölçeg stogy saýlaň!', 'error');
-           formDataStocks = notEmptyStocks;
-        } else {
-           if (stockWithoutSizes.stock_quantity === '') {
-              return setAlert('Haryt stok giriziň!', 'error');
-           }
-           formDataStocks.push(stockWithoutSizes);
-       }
+        
 
         const validated = validateInputs();
 
-        if(validated){
-            if(buffers.length > 0){
+       if (validated) {
+            let formDataStocks = [];
+
+            if (hasSize) {
+               if (chosenSizeType === '') {
+                  return setAlert('Haryt ölçeg saýlaň!', 'error');
+               }
+               const notEmptyStocks = stocks.filter((stock) => stock.stock_quantity !== '');
+               if (notEmptyStocks.length === 0) return setAlert('Haryt ölçeg stogy saýlaň!', 'error');
+               formDataStocks = notEmptyStocks;
+            } else {
+               if (stockWithoutSizes.stock_quantity === '') {
+                  return setAlert('Haryt stok giriziň!', 'error');
+               }
+               formDataStocks.push(stockWithoutSizes);
+            }
+          
+           if (buffers.length > 0) {
+               
                 const fileData = new FormData(); 
                 // Update the formData object
                 buffers.forEach((obj) => {
@@ -352,19 +357,23 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
     }
 
     const validateInputs = () => {
-        if(validator.isEmpty(formData.product_name_tm) || validator.isEmpty(formData.product_name_ru) || validator.isEmpty(formData.product_name_en)){
-            setAlert('Haryt ady giriziň!', 'error');
-            return false
-        }
-        if(validator.isEmpty(String(formData.price_tmt)) || validator.isEmpty(String(formData.price_usd)) ){
-            setAlert('Harydyn bahasyny giriziň!', 'error');
-            return false
-        }
-        if(validator.isEmpty(formData.subcategorie_id)){
-            setAlert('Subkategoriýa saýlaň!', 'error');
-            return false
-        }
-        return true
+       if (validator.isEmpty(formData.product_code)) {
+          setAlert('Haryt kody giriziň!', 'error');
+          return false
+       }
+       if (validator.isEmpty(formData.product_name_tm) || validator.isEmpty(formData.product_name_ru) || validator.isEmpty(formData.product_name_en)) {
+          setAlert('Haryt ady giriziň!', 'error');
+          return false
+       }
+       if (validator.isEmpty(formData.price_tmt) && validator.isEmpty(formData.price_usd)) {
+          setAlert('Harydyn bahasyny giriziň!', 'error');
+          return false
+       }
+       if (validator.isEmpty(formData.subcategorie_id)) {
+          setAlert('Subkategoriýa saýlaň!', 'error');
+          return false
+       }
+       return true
     }
 
 
@@ -439,33 +448,57 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
                     {
                         currency === 'tmt' ? 
                         <Fragment>
-                            {/* Price(TMT) */}
-                            <TextField 
-                                className={classes.inputNumber} 
-                                id="outlined-basic" 
-                                label="Bahasy(TMT)" 
-                                type="number" 
-                                name="price_tmt"
-                                variant="outlined" 
-                                value={formData.price_tmt}
-                                onChange={(e) => onChange(e)}
-                            />
+                              {/* Price(TMT) */}
+                              <TextField 
+                                 className={classes.inputNumber} 
+                                 id="outlined-basic" 
+                                 label="Bahasy(TMT)" 
+                                 type="number" 
+                                 name="price_tmt"
+                                 variant="outlined" 
+                                 value={formData.price_tmt}
+                                 onChange={(e) => onChange(e)}
+                              />
+                              {'  '}
+                              {/* Price(TMT) */}
+                              <TextField 
+                                 className={classes.inputNumber} 
+                                 id="outlined-basic" 
+                                 label="Öňki Bahasy(TMT)" 
+                                 type="number" 
+                                 name="old_price_tmt"
+                                 variant="outlined" 
+                                 value={formData.old_price_tmt}
+                                 onChange={(e) => onChange(e)}
+                              />
                         </Fragment>
                         :
                         <Fragment>
-                            {/* Price(USD) */}
-                            <TextField 
-                                className={classes.inputNumber} 
-                                id="outlined-basic" 
-                                label="Bahasy(USD)" 
-                                type="number" 
-                                variant="outlined"
-                                name="price_usd"
-                                onChange={(e) => onChange(e)}
-                                value={formData.price_usd}
-                            />
+                              {/* Price(USD) */}
+                              <TextField 
+                                 className={classes.inputNumber} 
+                                 id="outlined-basic" 
+                                 label="Bahasy(USD)" 
+                                 type="number" 
+                                 variant="outlined"
+                                 name="price_usd"
+                                 onChange={(e) => onChange(e)}
+                                 value={formData.price_usd}
+                              />
+                              {'  '}
+
+                              <TextField 
+                                 className={classes.inputNumber} 
+                                 id="outlined-basic" 
+                                 label="Öňki Bahasy(USD)" 
+                                 type="number" 
+                                 variant="outlined"
+                                 name="old_price_usd"
+                                 onChange={(e) => onChange(e)}
+                                 value={formData.old_price_usd}
+                              />
                         </Fragment>
-                    }
+                     }
                     {/* Brand */}
                     <TextField
                         className={classes.input}

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {Link} from 'react-router-dom';
@@ -11,10 +11,8 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import TableRow from '@material-ui/core/TableRow';
-import axios from 'axios'
 // 
 import { deleteStoreAdmin } from '../../actions/storeAdminsAction';
-import Spinner from '../layouts/Spinner'
 
 
 

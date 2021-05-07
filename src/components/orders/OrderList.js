@@ -37,8 +37,10 @@ const OrderList = ({orders : {orders ,loading}}) => {
                             <TableCell align="left">ID</TableCell>
                             <TableCell align="left">User</TableCell>
                             <TableCell align="left"> Address </TableCell>
-                            <TableCell align="center">Status</TableCell>
-                            <TableCell align="center">Total</TableCell>
+                               <TableCell align="left">Total</TableCell>
+                            <TableCell align="left">Status</TableCell>
+                            <TableCell align="left">Status üýtget</TableCell>
+                            <TableCell align="left">Harytlar</TableCell>
                         </TableRow>
                         </TableHead>
                         <TableBody>

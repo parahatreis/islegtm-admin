@@ -1,11 +1,13 @@
 import {
     GET_ORDERS,
-    SET_LOADING_ORDERS,
+   SET_LOADING_ORDERS,
+    GET_CURRENT_ORDER
   } from '../actions/types';
   
   
   const initialState = {
      orders: [],
+     current_order : null,
      loading : false
   }
   
@@ -23,6 +25,12 @@ import {
              ...state,
              orders: payload,
              loading : false
+          }
+       case GET_CURRENT_ORDER:
+          return {
+             ...state,
+             current_order: payload,
+             loading: false
           }
        default:
           return state;

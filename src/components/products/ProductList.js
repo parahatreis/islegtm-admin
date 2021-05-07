@@ -45,8 +45,6 @@ const ProductList = ({products : {products, loading, count_products}, setPageNum
     // scroll top
     window.scrollTo(0, 0);
    }
-   console.log(products)
-
 
   return (
     <>

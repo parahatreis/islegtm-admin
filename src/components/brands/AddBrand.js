@@ -101,7 +101,7 @@ const AddBrand = ({createBrand ,setAlert }) => {
 
     const onFileUpload = (e) => {
         const file = e.target.files[0] 
-        if(file.size < 1800000){
+        if(file.size < 2000000){
 
             const reader = new FileReader();
             reader.addEventListener("load", function () {

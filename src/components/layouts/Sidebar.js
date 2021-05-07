@@ -38,9 +38,9 @@ const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
+      display: 'flex',
   },
-  appBar: {
+   appBar: {
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
@@ -64,13 +64,16 @@ const useStyles = makeStyles((theme) => ({
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
-    whiteSpace: 'nowrap',
+     whiteSpace: 'nowrap',
+     backgroundColor: 'red',
+
   },
   drawerOpen: {
     width: drawerWidth,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
+       duration: theme.transitions.duration.enteringScreen,
+      
     }),
   },
   drawerClose: {
@@ -84,7 +87,7 @@ const useStyles = makeStyles((theme) => ({
       width: theme.spacing(9) + 1,
     },
   },
-  toolbar: {
+   toolbar: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',

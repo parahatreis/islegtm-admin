@@ -68,7 +68,8 @@ const ProductItem = ({product :
         store,
         product_images,
         stocks,
-        product_code
+      product_code,
+        preview_image
     },
     deleteProduct,changeStatus
 }) => {
@@ -82,12 +83,12 @@ const ProductItem = ({product :
     const [status,setStatus] = useState(false);
 
     useEffect(() => {
-      if(product_images){
-        if(product_images[0]){
-          setImage(`${apiPath()}/${product_images[0]}`)
+      if (preview_image) {
+        if (preview_image[0]) {
+          setImage(`${apiPath()}/${preview_image}`)
         }
       }
-    }, [product_images])
+    }, [preview_image])
 
     const changeProductStatus = () => {
       setStatus(!status);

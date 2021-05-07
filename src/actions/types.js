@@ -74,7 +74,9 @@ export const SET_LOADING_SIZES = 'SET_LOADING_SIZES';
 export const GET_CURRENT_SIZE = 'GET_CURRENT_SIZE';
 // orders
 export const GET_ORDERS = 'GET_SIZES';
+export const GET_CURRENT_ORDER = 'GET_CURRENT_ORDER';
 export const SET_LOADING_ORDERS = 'SET_LOADING_SIZES';
 // orders
 export const SET_ALERT = 'SET_ALERT';
 export const REMOVE_ALERT = 'REMOVE_ALERT';
+    
