@@ -10,7 +10,6 @@ import {
    UPDATE_PRODUCT,
    DELETE_PRODUCT,
    // SET_PRODUCT_IMAGES,
-   CHANGE_PRODUCT_STATUS
 } from './types';
 
 

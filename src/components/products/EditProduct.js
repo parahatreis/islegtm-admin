@@ -23,7 +23,6 @@ import { setAlert } from '../../actions/alertsAction'
 import apiPath from '../../utils/apiPath'
 
 
-
 const useStyles = makeStyles((theme) => ({
     root: {
         '& > *': {
@@ -73,6 +72,7 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
     const [productImages,setProductImages] = useState([])
     const [formData,setFormData] = useState({
         product_id : '',
+        product_code : '',
         product_name_tm : '',
         product_name_ru : '',
         product_name_en : '',
@@ -81,7 +81,9 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
         subcategorie_id : '',
         brand_id : '',
         store_id : '',
-        description : ''
+        description_tm : '',
+        description_en : '',
+        description_ru : ''
     });
 
 
@@ -125,57 +127,27 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
          }
          if (current_product.stocks) {
             if (current_product.stocks.length > 0) {
-               if (current_product.stocks[0].sizeType !== undefined) {
+               if (current_product.stocks[0].sizeType) {
                   if (sizeTypes) {
-                     setHasSize(true);
-                     const id = current_product.stocks[0].sizeType.size_type_id;
-                     setSizeType(id);
-                     setSizeType(id);
-                     setStock([]);
-                     let newStocks = [];
-                     const size_type = sizeTypes.filter((type) => type.size_type_id === id);
-                     const size_names = size_type[0].size_names;
-                     let a = current_product.stocks.length - 1;
-                     let i = 0;
-
-                     let k = 0;
-                     console.log(size_names)
-                     size_names.forEach((stock) => {
-                        console.log('i', i)
-                        console.log('k', k);
-
-                        if (current_product.stocks[i].sizeName.size_name_id === size_names[k].size_name_id) {
-                           // newStocks = newStocks.filter((st) => st.size_name_id !== name.size_name_id)
-                           if (i < a) i = i + 1;
-                           if (k < size_names.length - 1) k = k + 1;
-                           return newStocks = [
-                              ...newStocks,
-                              {
-                                 size_name: size_names[k === size_names.length ? k - 1 : k].size_name,
-                                 size_name_id: size_names[k === size_names.length - 1 ? k - 1 : k].size_name_id,
-                                 size_type_id: id,
-                                 stock_quantity: current_product.stocks[i === a ? i - 1 : i].stock_quantity
-                              }
-                           ]
-                        } else {
-                           if (k < size_names.length - 1) k = k + 1;
-
-                           return newStocks = [
-                              ...newStocks,
-                              {
-                                 size_name: size_names[k === size_names.length ? k - 1 : k].size_name,
-                                 size_name_id: size_names[k === size_names.length ? k - 1 : k].size_name_id,
-                                 size_type_id: id,
-                                 stock_quantity: ''
-                              }
-                           ]
-                        }
-                     })
-                     console.log(newStocks)
-                     setStock(newStocks)
+                    setHasSize(true);
+                    const id = current_product.stocks[0].sizeType.size_type_id;
+                    setSizeType(id);
+                    const newArr = current_product.stocks.map((stock) => {
+                    return {
+                        size_name: stock.sizeName.size_name,
+                        size_name_id: stock.sizeName.size_name_id,
+                        size_type_id: id,
+                        stock_quantity: stock.stock_quantity
+                    }   
+                    })
+                    setStock(newArr)
                   }
-               } else {
-                  console.log(false)
+               }
+               else {
+                    setHasSize(false);
+                    setStockWithoutSizes({
+                        stock_quantity: current_product.stocks[0].stock_quantity
+                    })
                }
             }
          }
@@ -370,6 +342,7 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
                 })
                formData.stocks = formDataStocks;
                 editProduct(formData,fileData);
+                return 
             }
             else {
                formData.stocks = formDataStocks;
@@ -406,6 +379,16 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
             <br />
             <div className="form-block"> 
                 <form className={classes.root} noValidate autoComplete="off" onSubmit={(e) => onSubmit(e)}>
+                    {/* Product Code */}
+                    <TextField 
+                        className={classes.input} 
+                        id="outlined-basic" 
+                        label="Haryt ady Kody" 
+                        variant="outlined"
+                        name="product_code"
+                        value={formData.product_code}
+                        onChange={(e) => onChange(e)}
+                    /><br />
                     {/* Product Name (TURKMENÇE) */}
                     <TextField 
                         className={classes.input} 
@@ -548,15 +531,43 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
                         className={classes.input}
                         placeholder="MultiLine with rows: 2 and rowsMax: 4"
                         id="outlined-select-currency"
-                        label="Haryt maglumatlary"
-                        name="description"
+                        label="Haryt maglumaty"
+                        name="description_tm"
                         variant="outlined"
-                        value={formData.description}
+                        value={formData.description_tm}
                         onChange={(e) => onChange(e)}
                         multiline
                         rows={2}
                         rowsMax={10}
-                        />
+                    />
+                    {/* Description */}
+                    <TextField
+                        className={classes.input}
+                        placeholder="MultiLine with rows: 2 and rowsMax: 4"
+                        id="outlined-select-currency"
+                        label="Описание продукта"
+                        name="description_ru"
+                        variant="outlined"
+                        value={formData.description_ru}
+                        onChange={(e) => onChange(e)}
+                        multiline
+                        rows={2}
+                        rowsMax={10}
+                    />
+                    {/* Description */}
+                    <TextField
+                        className={classes.input}
+                        placeholder="MultiLine with rows: 2 and rowsMax: 4"
+                        id="outlined-select-currency"
+                        label="Product description"
+                        name="description_en"
+                        variant="outlined"
+                        value={formData.description_en}
+                        onChange={(e) => onChange(e)}
+                        multiline
+                        rows={2}
+                        rowsMax={10}
+                    />
                     <br />
                     {/* Stock */}
                {
@@ -568,7 +579,7 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
                         id="outlined-basic" 
                         label={`Stock sany`} 
                         variant="outlined"
-                        name="stock"
+                        name="stock_quantity"
                         type='number'
                         value={stockWithoutSizes.stock_quantity}
                         onChange={(e) => {

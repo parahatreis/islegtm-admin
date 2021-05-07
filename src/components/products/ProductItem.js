@@ -67,7 +67,8 @@ const ProductItem = ({product :
         subcategorie,
         store,
         product_images,
-        stocks
+        stocks,
+        product_code
     },
     deleteProduct,changeStatus
 }) => {
@@ -106,12 +107,13 @@ const ProductItem = ({product :
         setOpen(false);
     };
 
+
     return (
         <> 
             {/* Product-Item */}
         <TableRow key="ID" data-row={product_id}>
             <TableCell component="th" scope="row">
-                184214
+                {product_code && product_code}
             </TableCell>
             {/* Product Image */}
             <TableCell align="left">
@@ -139,10 +141,13 @@ const ProductItem = ({product :
                 stocks.map((stock,index) => (
                    <>
                       <div style={{display : 'flex'}}>
-                         <Chip
-                            key={index}
-                            label={`Ölçeg ${stock.sizeName && stock.sizeName.size_name}`} variant='outlined'
-                         />
+                         {
+                           stock.sizeName &&
+                           <Chip
+                              key={index}
+                              label={`Ölçeg ${stock.sizeName && stock.sizeName.size_name}`} variant='outlined'
+                            />
+                         }
                          <Chip
                             key={index}
                             label={stock.stock_quantity && stock.stock_quantity}

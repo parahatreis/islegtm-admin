@@ -68,6 +68,7 @@ const AddProduct = ({ createProduct , setAlert}) => {
    })
    const [stocks, setStock] = useState([])
    const [formData,setFormData] = useState({
+      product_code : '',
       product_name_tm : '',
       product_name_ru : '',
       product_name_en : '',
@@ -76,7 +77,9 @@ const AddProduct = ({ createProduct , setAlert}) => {
       subcategorie_id : '',
       brand_id : '',
       store_id : '',
-      description : ''
+      description_tm : '',
+      description_en : '',
+      description_ru : ''
    });
 
    const onChange = (e) => {
@@ -307,8 +310,19 @@ const AddProduct = ({ createProduct , setAlert}) => {
          <Typography variant="h4" component="h2">
             Haryt goşuň
          </Typography>
+         <br />
          <div className="form-block"> 
             <form className={classes.root} noValidate autoComplete="off" onSubmit={(e) => onSubmit(e)}>
+               {/* Product Code */}
+               <TextField 
+                  className={classes.input} 
+                  id="outlined-basic" 
+                  label="Haryt ady Kody" 
+                  variant="outlined"
+                  name="product_code"
+                  value={formData.product_code}
+                  onChange={(e) => onChange(e)}
+               /><br />
                {/* Product Name (TURKMENÇE) */}
                <TextField 
                   className={classes.input} 
@@ -456,10 +470,38 @@ const AddProduct = ({ createProduct , setAlert}) => {
                   className={classes.input}
                   placeholder="MultiLine with rows: 2 and rowsMax: 4"
                   id="outlined-select-currency"
-                  label="Haryt maglumatlary"
-                  name="description"
+                  label="Haryt maglumaty"
+                  name="description_tm"
                   variant="outlined"
-                  value={formData.description}
+                  value={formData.description_tm}
+                  onChange={(e) => onChange(e)}
+                  multiline
+                  rows={2}
+                  rowsMax={10}
+               />
+               {/* Description */}
+               <TextField
+                  className={classes.input}
+                  placeholder="MultiLine with rows: 2 and rowsMax: 4"
+                  id="outlined-select-currency"
+                  label="Описание продукта"
+                  name="description_ru"
+                  variant="outlined"
+                  value={formData.description_ru}
+                  onChange={(e) => onChange(e)}
+                  multiline
+                  rows={2}
+                  rowsMax={10}
+               />
+               {/* Description */}
+               <TextField
+                  className={classes.input}
+                  placeholder="MultiLine with rows: 2 and rowsMax: 4"
+                  id="outlined-select-currency"
+                  label="Product description"
+                  name="description_en"
+                  variant="outlined"
+                  value={formData.description_en}
                   onChange={(e) => onChange(e)}
                   multiline
                   rows={2}
