@@ -146,38 +146,6 @@ export const editProduct = (obj,image) => async dispatch => {
       console.error('UPDATE PRODUCTS --',error)
    }
  }
-
-
-
-//  Change Product Status
-export const changeStatus = (id,status) => async dispatch => {
-
-   let obj = {
-      product_status : ''
-   }
-
-   dispatch({ type: SET_LOADING_PRODUCTS });
-
-   const config = {
-      headers: {
-         'Content-Type': 'application/json'  
-      }
-   };
-   
-   if(status) obj.product_status = 1
-   if(!status) obj.product_status = 0
-
-   const body = JSON.stringify(obj);
-
-   try {
-      await axios.patch(`/v1/products/status/${id}`,body,config);
-
-      return window.location.href = '/products' 
-
-   } catch (error) {
-      console.error(error)
-   }
- }
  
 
 

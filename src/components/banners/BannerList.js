@@ -48,17 +48,15 @@ const BannerList = ({banners : {banners ,loading}}) => {
                             <TableCell align="center">Üýtgetmek</TableCell>
                             <TableCell align="center">Pozmak</TableCell>
                         </TableRow>
-                        </TableHead>
-                        <TableBody>
-                        {/* Banner ITEM */}
-
-                        {
-                            dataBanners ? 
-                            banners.map((banner,index) => <BannerItem key={index} banner={banner} />) : 
-                            'Loading'
+                         </TableHead>
+                         {
+                            dataBanners && 
+                               (
+                                 <TableBody>
+                                     {dataBanners.map((banner,index) => <BannerItem key={index} banner={banner} />)}
+                                 </TableBody>
+                            )
                         }
-
-                        </TableBody>
                     </Table>
                 </TableContainer>
                 </>

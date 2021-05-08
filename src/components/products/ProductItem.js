@@ -14,8 +14,9 @@ import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import TableRow from '@material-ui/core/TableRow';
 import Chip from '@material-ui/core/Chip';
+import axios from 'axios'
 // 
-import { deleteProduct, changeStatus } from '../../actions/productsAction';
+import { deleteProduct } from '../../actions/productsAction';
 import Placeholder from '../../img/BG.svg';
 import apiPath from '../../utils/apiPath'
 
@@ -71,7 +72,7 @@ const ProductItem = ({product :
       product_code,
         preview_image
     },
-    deleteProduct,changeStatus
+    deleteProduct
 }) => {
 
 
@@ -90,10 +91,28 @@ const ProductItem = ({product :
       }
     }, [preview_image])
 
-    const changeProductStatus = () => {
-      setStatus(!status);
-      changeStatus(product_id,!product_status)
-    };
+   const changeProductStatus = (e) => {
+      const st = e.target.checked;
+      handleChangeStatus(product_id, st)
+   };
+   
+   const handleChangeStatus = (id,val) => {
+
+      const config = {
+         headers: {
+            'Content-Type': 'application/json'
+         }
+      };
+      const body = JSON.stringify({
+         product_status: val ? 1 : 0
+      });
+
+      axios.patch(`/v1/products/status/${id}`, body, config)
+         .then((res) => {
+            setStatus(val)
+         })
+         .catch((err) => console.error('Orders: ', err))
+   }
 
     useEffect(() => {
       setStatus(product_status);
@@ -110,9 +129,7 @@ const ProductItem = ({product :
 
 
     return (
-        <> 
-            {/* Product-Item */}
-        <TableRow key="ID" data-row={product_id}>
+        <TableRow data-row={product_id}>
             <TableCell component="th" scope="row">
                 {product_code && product_code}
             </TableCell>
@@ -150,7 +167,7 @@ const ProductItem = ({product :
                             />
                          }
                          <Chip
-                            key={index}
+                            key={index+10}
                             label={stock.stock_quantity && stock.stock_quantity}
                          />
                       </div>
@@ -162,7 +179,7 @@ const ProductItem = ({product :
             <TableCell align="left">
                 <FormControlLabel
                     value="status"
-                    control={<Switch checked={status && status} color="primary" onChange={(e) => changeProductStatus()} />
+                    control={<Switch checked={status && status} color="primary" onChange={(e) => changeProductStatus(e)} />
                   }
                 />
             </TableCell>
@@ -183,12 +200,8 @@ const ProductItem = ({product :
                 href="#delete"
                 >
                 <DeleteOutlineIcon />
-                </Button>
-                </TableCell>
-
-        </TableRow>
-               
-          <div>
+             </Button>
+             <div>
           {/* MODAL FOR DELETE */}
             <Modal
               open={open}
@@ -223,17 +236,21 @@ const ProductItem = ({product :
                 </div>
               </Fade>
             </Modal>
-        </div>  
-        </>
+        </div> 
+          </TableCell>
+          
+          
+
+        </TableRow>
+               
+           
     )
 }
 
 ProductItem.propTypes = {
   deleteProduct: PropTypes.func.isRequired,
-  changeStatus: PropTypes.func.isRequired,
 }
 
 export default connect(null, {
   deleteProduct,
-  changeStatus
 })(ProductItem);

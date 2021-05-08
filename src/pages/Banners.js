@@ -42,7 +42,7 @@ const Banners = ({banners, getBanners}) => {
 }
 
 Banners.propTypes = {
-    banner: PropTypes.object.isRequired,
+    banners: PropTypes.object.isRequired,
     getBanners: PropTypes.func.isRequired,
  }
  const mapStateToProps = state => ({

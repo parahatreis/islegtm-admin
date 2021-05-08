@@ -71,12 +71,12 @@ const ProductList = ({products : {products, loading, count_products}, setPageNum
                         <TableCell align="center">Delete</TableCell>
                       </TableRow>
                     </TableHead>
-                    <TableBody>
                       {
-                        products.map((product,index) => <ProductItem key={index} product={product} />)
+                        <TableBody>
+                              {products.map((product,index) => <ProductItem key={index} product={product} />)}
+                        </TableBody>
                       }
                 
-                    </TableBody>
                   </Table>
                 </TableContainer>
                 </>

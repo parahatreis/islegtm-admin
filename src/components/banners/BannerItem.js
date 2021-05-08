@@ -166,7 +166,7 @@ const BannerItem = ({deleteBanner,banner :{
 
 BannerItem.propTypes = {
   deleteBanner: PropTypes.func.isRequired,
-  banner : PropTypes.object.isRequired,
+  banner : PropTypes.object,
 }
 
 export default connect(null, {

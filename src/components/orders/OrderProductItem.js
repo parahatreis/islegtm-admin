@@ -52,8 +52,6 @@ const OrderProductItem = ({ order_product }) => {
 
 
   return (
-      <> 
-          {/* Store-Item */}
       <TableRow key="num">
            {/* product_id */}
           <TableCell align="left">{product.product_code && product.product_code}</TableCell>
@@ -82,7 +80,6 @@ const OrderProductItem = ({ order_product }) => {
            <TableCell align="left" style={{fontWeight : 'bold'}}>{quantity}</TableCell>
            <TableCell align="left">{quantity && quantity * sold_price}</TableCell>
       </TableRow>  
-      </>
   )
 }
 

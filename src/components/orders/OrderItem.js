@@ -6,9 +6,9 @@ import TableRow from '@material-ui/core/TableRow';
 import Chip from '@material-ui/core/Chip';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import axios from 'axios'
 // 
-import { deleteSize } from '../../actions/sizesAction';
 
 
 const statusNames = [
@@ -43,19 +43,40 @@ const OrderItem = ({order :{
    const [currentStatus, setCurrentStatus] = useState('');
 
    const handleChangeStatus = (val) => {
-      setCurrentStatus(val)
+
+      const config = {
+         headers: {
+            'Content-Type': 'application/json'
+         }
+      };
+      const body = JSON.stringify({
+         order_status : val
+      });
+
+      axios.post(`/v1/orders/status/${order_id}`,body,config)
+         .then((res) => {
+            if (res.data) {
+               setCurrentStatus(val);
+               changeStatusState(val)
+            }
+         })
+         .catch((err) => console.error('Orders: ', err))
    }
    
 
    useEffect(() => {
       if (order_status) {
-         if (order_status === 'waiting') setStatus({ status_name: order_status, status_color: 'orange' });
-         if (order_status === 'processing') setStatus({ status_name: order_status, status_color: 'blue' });
-         if (order_status === 'delivered') setStatus({ status_name: order_status, status_color: 'green' });
-         if (order_status === 'rejected') setStatus({ status_name: order_status, status_color: 'red' });
+         changeStatusState(order_status)
          setCurrentStatus(order_status)
       }
    }, [order_status])
+
+   const changeStatusState = (val) => {
+      if (val === 'waiting') setStatus({ status_name: val, status_color: 'orange' });
+      if (val === 'processing') setStatus({ status_name: val, status_color: 'blue' });
+      if (val === 'delivered') setStatus({ status_name: val, status_color: 'green' });
+      if (val === 'rejected') setStatus({ status_name: val, status_color: 'red' });
+   }
 
 
   return (
