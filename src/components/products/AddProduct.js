@@ -300,7 +300,7 @@ const AddProduct = ({ createProduct , setAlert}) => {
          setAlert('Haryt ady giriziň!', 'error');
          return false
       }
-      if(validator.isEmpty(formData.price_tmt) && validator.isEmpty(formData.price_usd) ){
+      if (validator.isEmpty(String(formData.price_tmt)) && validator.isEmpty(String(formData.price_usd))) {
          setAlert('Harydyn bahasyny giriziň!', 'error');
          return false
       }
@@ -324,7 +324,7 @@ const AddProduct = ({ createProduct , setAlert}) => {
                <TextField 
                   className={classes.input} 
                   id="outlined-basic" 
-                  label="Haryt ady Kody" 
+                  label="Haryt Kody" 
                   variant="outlined"
                   name="product_code"
                   value={formData.product_code}

@@ -15,6 +15,7 @@ import Fade from '@material-ui/core/Fade';
 import TableRow from '@material-ui/core/TableRow';
 import Chip from '@material-ui/core/Chip';
 import axios from 'axios'
+import {Link} from 'react-router-dom';
 // 
 import { deleteProduct } from '../../actions/productsAction';
 import Placeholder from '../../img/BG.svg';
@@ -185,12 +186,13 @@ const ProductItem = ({product :
             </TableCell>
                 {/* Edit */}
                 <TableCell align="left">
-                <Button 
-                color="primary"
-                href={`/products/edit-product/${product_id}`}
-                >
-                <EditIcon />
-                </Button>
+                <Link to={`/products/edit-product/${product_id}`}>
+                  <Button 
+                    color="primary"
+                  >
+                  <EditIcon />
+                  </Button>
+                </Link>
                 </TableCell>
                 {/* Delete */}
                 <TableCell align="left">
