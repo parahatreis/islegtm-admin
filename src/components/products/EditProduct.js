@@ -139,7 +139,8 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
                         size_name: stock.sizeName.size_name,
                         size_name_id: stock.sizeName.size_name_id,
                         size_type_id: id,
-                        stock_quantity: stock.stock_quantity
+                        stock_quantity: stock.stock_quantity,
+                        stock_id : stock.stock_id
                     }   
                     })
                     setStock(newArr)
@@ -148,7 +149,8 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
                else {
                     setHasSize(false);
                     setStockWithoutSizes({
-                        stock_quantity: current_product.stocks[0].stock_quantity
+                        stock_quantity: current_product.stocks[0].stock_quantity,
+                        stock_id : current_product.stocks[0].stock_id
                     })
                }
             }
@@ -240,7 +242,8 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
             size_name: name.size_name,
             size_name_id: name.size_name_id,
             size_type_id: id,
-            stock_quantity: ''
+            stock_quantity: '',
+            stock_id : name.stock_id
          }
       });
       setStock(newStocks)
@@ -251,7 +254,8 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
          if (stock.size_name_id === id) {
             return {
                ...stock,
-               stock_quantity: qnt
+               stock_quantity: qnt,
+               stock_id : stock.stock_id
             }
          };
          return stock
@@ -345,6 +349,7 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
                         obj.buffer, 
                     ); 
                 })
+
                formData.stocks = formDataStocks;
                 editProduct(formData,fileData);
                 return 
@@ -618,7 +623,8 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
                         onChange={(e) => {
                            const qnt = e.target.value
                            setStockWithoutSizes({
-                              stock_quantity : qnt
+                              stock_quantity : qnt,
+                              stock_id : stockWithoutSizes.stock_id
                            })
                         }}
                      /><br />
