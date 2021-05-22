@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {Link} from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
 import TableCell from '@material-ui/core/TableCell';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
@@ -16,7 +16,8 @@ import Chip from '@material-ui/core/Chip';
 // 
 import { deletBrand } from '../../actions/brandsActions';
 import Placeholder from '../../img/BG.svg';
-import apiPath from '../../utils/apiPath'
+import apiPath from '../../utils/apiPath';
+import { setAlert } from '../../actions/alertsAction'
 
 
 const useStyles = makeStyles({
@@ -54,7 +55,7 @@ const useStyles = makeStyles({
 
 
 
-const BrandItem = ({deletBrand,brand :{
+const BrandItem = ({deletBrand,setAlert,brand :{
     brand_id,
     brand_name,
     brand_image,
@@ -66,6 +67,7 @@ const BrandItem = ({deletBrand,brand :{
 
     const [open, setOpen] = useState(false);
     const [image, setImage] = useState(Placeholder);
+    const history = useHistory()
 
     useEffect(() => {
       if(brand_image){
@@ -149,7 +151,14 @@ const BrandItem = ({deletBrand,brand :{
                             </Button>
                             <Button variant="contained" color="secondary"
                               onClick={() => {
-                                deletBrand(brand_id);
+                                deletBrand(brand_id).then((res) => {
+                                    if(res === 200){
+                                        return history.push('/brands')
+                                    }
+                                    else{
+                                        return setAlert('Error!', 'error');
+                                    }
+                                });
                               }}
                             >
                               Poz
@@ -168,11 +177,13 @@ const BrandItem = ({deletBrand,brand :{
 
 BrandItem.propTypes = {
     deletBrand: PropTypes.func.isRequired,
-  brand : PropTypes.object.isRequired,
+    setAlert: PropTypes.func,
+    brand : PropTypes.object.isRequired,
 }
 
 export default connect(null, {
     deletBrand,
+    setAlert
 })(BrandItem);
 
 

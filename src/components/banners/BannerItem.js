@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {Link} from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
 import TableCell from '@material-ui/core/TableCell';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
@@ -15,7 +15,8 @@ import TableRow from '@material-ui/core/TableRow';
 // 
 import { deleteBanner } from '../../actions/bannersAction';
 import Placeholder from '../../img/BG.svg';
-import apiPath from '../../utils/apiPath'
+import apiPath from '../../utils/apiPath';
+import { setAlert } from '../../actions/alertsAction'
 
 
 
@@ -54,7 +55,7 @@ const useStyles = makeStyles({
 
 
 
-const BannerItem = ({deleteBanner,banner :{
+const BannerItem = ({deleteBanner,setAlert,banner :{
     banner_id,
     banner_name,
     banner_url,
@@ -63,9 +64,10 @@ const BannerItem = ({deleteBanner,banner :{
 
 
     const classes = useStyles();
-
     const [open, setOpen] = useState(false);
     const [image,setImage] = useState(Placeholder);
+    const history = useHistory()
+
 
     useEffect(() => {
       if(banner_image){
@@ -147,7 +149,14 @@ const BannerItem = ({deleteBanner,banner :{
                             </Button>
                             <Button variant="contained" color="secondary"
                               onClick={() => {
-                                deleteBanner(banner_id);
+                                deleteBanner(banner_id).then((res) => {
+                                    if(res === 200){
+                                        return history.push('/banners')
+                                    }
+                                    else{
+                                        return setAlert('Error!', 'error');
+                                    }
+                                });
                               }}
                             >
                               Poz
@@ -166,11 +175,13 @@ const BannerItem = ({deleteBanner,banner :{
 
 BannerItem.propTypes = {
   deleteBanner: PropTypes.func.isRequired,
+  setAlert: PropTypes.func,
   banner : PropTypes.object,
 }
 
 export default connect(null, {
   deleteBanner,
+  setAlert
 })(BannerItem);
 
 

@@ -77,9 +77,8 @@ const HomeSubsList = ({home : {home_subcategories ,loading}}) => {
                         </TableHead>
                         <TableBody>
                         {
-                            data ? 
-                            data.map((obj,index) => <HomeSubsItem key={index} obj={obj} index={index} subcats={subcategories} />) : 
-                            'Loading'
+                            data &&
+                            data.map((obj,index) => <HomeSubsItem key={index} obj={obj} index={index} subcats={subcategories} />)
                         }
                         </TableBody>
                     </Table>

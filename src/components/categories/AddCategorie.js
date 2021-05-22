@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import { InputLabel } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
+import {useHistory} from 'react-router-dom'
 // 
 import { createCategorie } from '../../actions/categoriesAction';
 import Placeholder from '../../img/BG.svg';
@@ -47,6 +48,7 @@ const AddCategorie = ({ createCategorie, setAlert }) => {
     const [imgUri,setImg] = useState({img : Placeholder})
     const [buffer,setBuffer] = useState(null)
     const classes = useStyles();
+    const history = useHistory()
 
     const onChange = (e) => setFormData({...formData, [e.target.name] : e.target.value})
     
@@ -86,7 +88,15 @@ const AddCategorie = ({ createCategorie, setAlert }) => {
                     "image", 
                     buffer, 
                 );
-                createCategorie(formData,fileData);
+                createCategorie(formData,fileData).then((res) => {
+                    if(res === 200){
+                        return history.push('/categories')
+                    }
+                    else{
+                        return setAlert('Error!', 'error');
+                    }
+                });
+                
             }
             else{
                 setAlert('Kategoriýa suraty ýükläň!', 'error');

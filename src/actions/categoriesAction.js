@@ -58,11 +58,12 @@ export const createCategorie = (obj,image) => async dispatch => {
          await axios.post(`/v1/categories/image/${newObj.categorie_id}`,image);
       }
 
-      return window.location.href = '/categories'
+      return 200;
 
    }
    catch (error) {
-      console.error(error)
+      console.error(error);
+      return 500;
    }
  }
  
@@ -81,10 +82,11 @@ export const deleteCategorie = (id) => async dispatch => {
             payload: id
       });
 
-      return window.location.href = '/categories'
+      return 200;
 
    } catch (error) {
-      console.error(error)
+      console.error(error);
+      return 500
    }
  }
 
@@ -130,10 +132,11 @@ export const editCategorie = (obj,image = null) => async dispatch => {
          await axios.post(`/v1/categories/image/${obj.categorie_id}`,image);
       }
 
-      return window.location.href = '/categories'
+      return 200;
 
    }
    catch (error) {
-      console.error(error)
+      console.error(error);
+      return 500
    }
  }

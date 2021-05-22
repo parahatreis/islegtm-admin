@@ -63,11 +63,12 @@ export const createBrand = (obj,image) => async dispatch => {
          await axios.post(`/v1/brands/image/${newObj.brand_id}`,image);
       }
 
-      return window.location.href = '/brands'
+      return 200;
 
    }
    catch (error) {
       console.error(error)
+      return 500;
    }
  }
  
@@ -85,9 +86,12 @@ export const deletBrand = (id) => async dispatch => {
              type: DELETE_BRAND,
              payload: id
          });
+
+         return 200;
  
     } catch (error) {
        console.error(error)
+         return 500;
     }
  }
 
@@ -131,10 +135,12 @@ export const editBrand = (obj,image = null) => async dispatch => {
          await axios.post(`/v1/brands/image/${obj.brand_id}`,image);
       }
 
-      return window.location.href = '/brands'
+      return 200;
+
 
    }
    catch (error) {
       console.error(error)
+      return 500;
    }
  }

@@ -7,11 +7,13 @@ import Typography from '@material-ui/core/Typography';
 import { InputLabel } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
+import {useHistory} from 'react-router-dom'
 // 
 import { editCategorie,getCurrentCategorie } from '../../actions/categoriesAction';
 import Spinner from '../layouts/Spinner'
 import Placeholder from '../../img/BG.svg';
-import apiPath from '../../utils/apiPath'
+import apiPath from '../../utils/apiPath';
+import { setAlert } from '../../actions/alertsAction'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -37,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
       },
 }));
 
-const EditCategorie = ({editCategorie, getCurrentCategorie, match, categories :  {current_categorie, loading} }) => {
+const EditCategorie = ({editCategorie, getCurrentCategorie, match, categories :  {current_categorie, loading}, setAlert }) => {
     
     const [formData,setFormData] = useState({
         categorie_name_tm : '',
@@ -46,6 +48,7 @@ const EditCategorie = ({editCategorie, getCurrentCategorie, match, categories : 
     })
     const [buffer,setBuffer] = useState(null)
     const [image,setImage] = useState(Placeholder);
+    const history = useHistory()
 
     const classes = useStyles();
     
@@ -92,7 +95,14 @@ const EditCategorie = ({editCategorie, getCurrentCategorie, match, categories : 
             "image", 
             buffer, 
         ); 
-        editCategorie(formData,fileData);
+        editCategorie(formData,fileData).then((res) => {
+            if(res === 200){
+                return history.push('/categories')
+            }
+            else{
+                return setAlert('Error!', 'error');
+            }
+        });
     }
 
     return (
@@ -168,6 +178,7 @@ const EditCategorie = ({editCategorie, getCurrentCategorie, match, categories : 
 
 EditCategorie.propTypes = {
     editCategorie: PropTypes.func.isRequired,
+    setAlert: PropTypes.func,
     getCurrentCategorie: PropTypes.func.isRequired,
     categories : PropTypes.object.isRequired,
 }
@@ -178,6 +189,7 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
     editCategorie,
-    getCurrentCategorie
+    getCurrentCategorie,
+    setAlert
 })(EditCategorie);
     

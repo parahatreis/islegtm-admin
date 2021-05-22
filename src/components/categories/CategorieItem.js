@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {Link} from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
 import TableCell from '@material-ui/core/TableCell';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
@@ -14,6 +14,7 @@ import Fade from '@material-ui/core/Fade';
 import TableRow from '@material-ui/core/TableRow';
 // 
 import { deleteCategorie } from '../../actions/categoriesAction';
+import { setAlert } from '../../actions/alertsAction'
 import Placeholder from '../../img/BG.svg';
 import apiPath from '../../utils/apiPath'
 
@@ -58,7 +59,8 @@ const CategorieItem = ({deleteCategorie,categorie :{
     categorie_id,
     categorie_image,
     categorie_name_tm,
-    subcategories
+    subcategories,
+    setAlert
 }}) => {
 
 
@@ -66,6 +68,7 @@ const CategorieItem = ({deleteCategorie,categorie :{
 
     const [open, setOpen] = useState(false);
     const [image, setImage] = useState(Placeholder);
+    const history = useHistory()
 
     useEffect(() => {
       if(categorie_image){
@@ -145,7 +148,14 @@ const CategorieItem = ({deleteCategorie,categorie :{
                               </Button>
                               <Button variant="contained" color="secondary"
                                 onClick={() => {
-                                  deleteCategorie(categorie_id);
+                                  deleteCategorie(categorie_id).then((res) => {
+                                    if(res === 200){
+                                      return history.push('/categories')
+                                    }
+                                    else{
+                                      return setAlert('Error!', 'error');
+                                    }
+                                  });
                                 }}
                               >
                                 Delete
@@ -175,11 +185,13 @@ const CategorieItem = ({deleteCategorie,categorie :{
 
 CategorieItem.propTypes = {
   deleteCategorie: PropTypes.func.isRequired,
+  setAlert: PropTypes.func,
   categorie : PropTypes.object.isRequired,
 }
 
 export default connect(null, {
   deleteCategorie,
+  setAlert
 })(CategorieItem);
 
 

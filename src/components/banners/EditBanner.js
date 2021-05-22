@@ -7,7 +7,8 @@ import Typography from '@material-ui/core/Typography';
 import { InputLabel } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
-import validator from 'validator'
+import validator from 'validator';
+import {useHistory} from 'react-router-dom'
 // 
 import { editBanner, getCurrentBanner } from '../../actions/bannersAction';
 import Placeholder from '../../img/BG.svg';
@@ -55,6 +56,7 @@ const EditBanner = ({editBanner, getCurrentBanner,match,setAlert,
     const [image,setImage] = useState(Placeholder);
     const [buffer,setBuffer] = useState(null)
     const classes = useStyles();
+    const history = useHistory()
 
     const onChange = (e) => setFormData({...formData, [e.target.name] : e.target.value});
 
@@ -107,7 +109,14 @@ const EditBanner = ({editBanner, getCurrentBanner,match,setAlert,
                 "image", 
                 buffer, 
             );
-            editBanner(formData,fileData);
+            editBanner(formData,fileData).then((res) => {
+                if(res === 200){
+                    return history.push('/banners')
+                }
+                else{
+                    return setAlert('Error!', 'error');
+                }
+            });
         }
     }
 

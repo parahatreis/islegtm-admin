@@ -17,11 +17,12 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
+import {useHistory} from 'react-router-dom';
+import validator from 'validator';
 // 
 import { editBrand, getCurrentBrand } from '../../actions/brandsActions';
 import Placeholder from '../../img/BG.svg';
 import Spinner from '../layouts/Spinner';
-import validator from 'validator';
 import apiPath from '../../utils/apiPath'
 import { setAlert } from '../../actions/alertsAction';
 
@@ -71,6 +72,7 @@ const EditBrand = ({
     const [buffer,setBuffer] = useState(null)
     const [subcategories,setSubCategories] = useState(null);
     const classes = useStyles();
+    const history = useHistory();
 
 
 
@@ -170,7 +172,14 @@ const EditBrand = ({
                 "image", 
                 buffer, 
             );
-            editBrand(formData,fileData);
+            editBrand(formData,fileData).then((res) => {
+                if(res === 200){
+                    return history.push('/brands')
+                }
+                else{
+                    return setAlert('Error!', 'error');
+                }
+            });
         }   
     }
 

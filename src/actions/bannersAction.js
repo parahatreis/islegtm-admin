@@ -55,13 +55,13 @@ export const createBanner = (obj,image) => async dispatch => {
          await axios.post(`/v1/banners/image/${newObj.banner_id}`,image);
       }
 
-      return window.location.href = '/banners'
+      return 200;
 
    }
    catch (error) {
       const errors = error.response.data.msg;
       dispatch(setAlert(errors, 'error'))
-      console.error(error)
+      return 500
    }
  }
  
@@ -79,9 +79,12 @@ export const deleteBanner = (id) => async dispatch => {
              type: DELETE_BANNER,
              payload: id
          });
+
+         return 200
  
     } catch (error) {
-       console.error(error)
+       console.error(error);
+       return 500
     }
  }
 
@@ -123,10 +126,11 @@ export const editBanner = (obj,image = null) => async dispatch => {
          await axios.post(`/v1/banners/image/${obj.banner_id}`,image);
       }
 
-      return window.location.href = '/banners'
+      return 200
 
    }
    catch (error) {
       console.error(error)
+      return 500
    }
  }
