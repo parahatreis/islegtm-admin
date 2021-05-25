@@ -13,6 +13,7 @@ import TableRow from '@material-ui/core/TableRow';
 import MenuItem from '@material-ui/core/MenuItem';
 // 
 import { addHomeSubcategorie, deleteHomeSubcat, editHomeSubcategorie } from '../../actions/homeSubcategoriesAction';
+import { setAlert } from '../../actions/alertsAction'
 
 
 
@@ -60,18 +61,19 @@ const HomeSubsItem = ({
     subcategorie
   },
   subcats,
-  index,
+  order,
   addHomeSubcategorie,
   deleteHomeSubcat,
-  editHomeSubcategorie
+  editHomeSubcategorie,
+  setAlert
 }) => {
+
 
 
     const classes = useStyles();
     const [open, setOpen] = useState(false);
     const [subcategories,setSubCategories] = useState(null);
     const [selectedSubcategorie,setSelectedSubcat] = useState('');
-
 
 
     useEffect(() => {
@@ -115,10 +117,9 @@ const HomeSubsItem = ({
 
 
     return (
-        <> 
         <TableRow>
             {/* Index */}
-            <TableCell align="left">{ index + 1 }</TableCell>
+            <TableCell align="left">{ order + 1 }</TableCell>
             {/* subcategorie_name */}
             <TableCell>
               <TextField
@@ -132,12 +133,12 @@ const HomeSubsItem = ({
                   name="subcategorie"
               >
                   {
-                      subcategories && subcategories.length > 0 ?
+                      subcategories &&
                       subcategories.map((option,index) => (
                           <MenuItem key={index} value={option.subcategorie_id}>
-                          {option.subcategorie_name_tm}
+                            {option.subcategorie_name_tm}
                           </MenuItem>
-                      )) : 'Başga subkategoriýa ýok'
+                      ))
                   }
               </TextField>
             </TableCell>
@@ -172,7 +173,7 @@ const HomeSubsItem = ({
                             </Button>
                             <Button variant="contained" color="secondary"
                               onClick={() => {
-                                deleteHome(home_subcategorie_id);
+                                deleteHome(home_subcategorie_id)
                               }}
                             >
                               Poz
@@ -184,8 +185,7 @@ const HomeSubsItem = ({
                 </div>
             </TableCell>
 
-        </TableRow>  
-        </>
+        </TableRow>
     )
 }
 
@@ -193,13 +193,15 @@ HomeSubsItem.propTypes = {
   addHomeSubcategorie: PropTypes.func.isRequired,
   deleteHomeSubcat: PropTypes.func.isRequired,
   editHomeSubcategorie: PropTypes.func.isRequired,
+  setAlert: PropTypes.func,
   obj : PropTypes.object.isRequired,
 }
 
 export default connect(null, {
   addHomeSubcategorie,
   deleteHomeSubcat,
-  editHomeSubcategorie
+  editHomeSubcategorie,
+  setAlert
 })(HomeSubsItem);
 
 

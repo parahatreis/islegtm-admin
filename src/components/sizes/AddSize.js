@@ -9,6 +9,7 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { InputLabel } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import {useHistory} from 'react-router-dom'
 // 
 import { createSize } from '../../actions/sizesAction';
 import validator from 'validator'
@@ -55,6 +56,8 @@ const AddSize = ({createSize, setAlert}) => {
       }]
    )
    const classes = useStyles();
+   const history = useHistory();
+   const [loacalLoading, setLocalLoading] = useState(false)
 
    const onChange = (e) => setFormData({...formData, [e.target.name] : e.target.value});
 
@@ -92,10 +95,19 @@ const AddSize = ({createSize, setAlert}) => {
 
       if (validated) {
          formData.size_names = sizeNames.filter(name => name.size_name !== '');
-         createSize(formData);
-      }
 
-      
+         setLocalLoading(true)
+         createSize(formData).then((res) => {
+            if(res === 200){
+               setLocalLoading(false)
+                return history.push('/sizes');
+            }
+            else{
+               setLocalLoading(false)
+                return setAlert('Error!', 'error');
+            }
+        });
+      }
    }
 
    const validateInputs = () => {
@@ -162,8 +174,11 @@ const AddSize = ({createSize, setAlert}) => {
                      <AddCircleOutlineIcon />
                   </Button>
                   <br />
-                  <Button variant="contained" color="primary" type='submit'>
-                     Ölçeg Görnüşi döret
+                  <Button variant="contained" disabled={loacalLoading} color="primary" type='submit'>
+                     {
+                        loacalLoading ? 
+                        'Ýüklenýär...' :  'Ölçeg Görnüşi döret' 
+                     }
                   </Button>
                </form>
          </div>

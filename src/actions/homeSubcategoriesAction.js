@@ -2,9 +2,9 @@ import axios from 'axios';
 import {
     GET_HOME_SUBCATEGORIES,
     SET_LOADING_HOME_SUBCATEGORIES,
-   //  CREATE_HOME_SUBCATEGORIES,
-   //  DELETE_HOME_SUBCATEGORIES,
-   //  UPDATE_HOME_SUBCATEGORIE
+    CREATE_HOME_SUBCATEGORIES,
+    DELETE_HOME_SUBCATEGORIES,
+    UPDATE_HOME_SUBCATEGORIE
 } from './types';
 
 
@@ -46,11 +46,16 @@ export const addHomeSubcategorie = (id) => async dispatch => {
    const body = JSON.stringify(obj);
 
    try {
-      await axios.post('/v1/home_subcategories',body,config);
-      window.location.href = '/home-subcategories'
+      const res = await axios.post('/v1/home_subcategories',body,config);
+
+
+      dispatch({ type: CREATE_HOME_SUBCATEGORIES, payload : res.data });
+      
+      return 200;
    }
    catch (error) {
       console.error(error)
+      return 500;
    }
 
 }
@@ -63,10 +68,12 @@ export const addHomeSubcategorie = (id) => async dispatch => {
 
    try {
       await axios.delete(`/v1/home_subcategories/${id}`);
-      window.location.href = '/home-subcategories'
+      dispatch({ type: DELETE_HOME_SUBCATEGORIES, payload : id });
+      return 200;
 
    } catch (error) {
-      console.error(error)
+      console.error(error);
+      return 500;
    }
 }
 
@@ -86,11 +93,15 @@ export const editHomeSubcategorie = (id,home_id) => async dispatch => {
    const body = JSON.stringify(obj);
 
    try {
-      await axios.patch(`/v1/home_subcategories/${home_id}`,body,config);
-      window.location.href = '/home-subcategories'
+      const res = await axios.patch(`/v1/home_subcategories/${home_id}`,body,config);
+
+      dispatch({ type: UPDATE_HOME_SUBCATEGORIE, payload : res.data });
+
+      return 200;
    }
    catch (error) {
-      console.error(error)
+      console.error(error);
+      return 500;
    }
 
 }

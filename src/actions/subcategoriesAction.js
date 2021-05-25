@@ -66,11 +66,12 @@ export const createSubCategorie = (obj,image) => async dispatch => {
          await axios.post(`/v1/subcategories/image/${newObj.subcategorie_id}`,image);
       }
 
-      return window.location.href = '/subcategories'
+      return 200
 
    }
    catch (error) {
       console.error(error)
+      return 500
    }
  }
  
@@ -88,9 +89,12 @@ export const deleteSubCategorie = (id) => async dispatch => {
              type: DELETE_SUBCATEGORIE,
              payload: id
          });
+
+         return 200
  
     } catch (error) {
-       console.error(error)
+       console.error(error);
+      return 500
     }
  }
 
@@ -134,10 +138,11 @@ export const editSubCategorie = (obj,image = null) => async dispatch => {
       if(hasImage){
          await axios.post(`/v1/subcategories/image/${newObj.subcategorie_id}`,image);
       }
-      return window.location.href = '/subcategories'
+      return 200
 
    }
    catch (error) {
-      console.error(error)
+      console.error(error);
+      return 500
    }
  }

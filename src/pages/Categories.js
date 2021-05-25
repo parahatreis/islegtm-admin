@@ -14,9 +14,7 @@ import { getCategories } from '../actions/categoriesAction';
 const Categories = ({categories , getCategories}) => {
 
     useEffect(() => {
-     
-        getCategories()
-  
+      getCategories()
      }, [getCategories])
 
     return (

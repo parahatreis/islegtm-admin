@@ -10,6 +10,8 @@ import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import TableRow from '@material-ui/core/TableRow';
 import Chip from '@material-ui/core/Chip';
+import {useHistory} from 'react-router-dom';
+import { setAlert } from '../../actions/alertsAction'
 // 
 import { deleteSize } from '../../actions/sizesAction';
 
@@ -51,14 +53,16 @@ const useStyles = makeStyles({
 
 
 
-const SizeItem = ({deleteSize,size :{
+const SizeItem = ({deleteSize,setAlert,size :{
     size_type,
     size_type_id,
     size_names,
 }}) => {
 
   const classes = useStyles();
-  const [open, setOpen] = useState(false);  
+  const [open, setOpen] = useState(false);
+  const history = useHistory()
+
 
 
   const handleOpen = (e) => {
@@ -113,7 +117,14 @@ const SizeItem = ({deleteSize,size :{
                           </Button>
                           <Button variant="contained" color="secondary"
                             onClick={() => {
-                              deleteSize(size_type_id);
+                              deleteSize(size_type_id).then((res) => {
+                                if(res === 200){
+                                  return history.push('/sizes')
+                                }
+                                else{
+                                  return setAlert('Error!', 'error');
+                                }
+                              });
                             }}
                           >
                             Pozmak  
@@ -132,11 +143,13 @@ const SizeItem = ({deleteSize,size :{
 
 SizeItem.propTypes = {
   deleteSize: PropTypes.func.isRequired,
+  setAlert: PropTypes.func,
   size : PropTypes.object.isRequired,
 }
 
 export default connect(null, {
   deleteSize,
+  setAlert
 })(SizeItem);
 
 

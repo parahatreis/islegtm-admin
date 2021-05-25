@@ -34,15 +34,15 @@ const HomeSubsList = ({home : {home_subcategories ,loading}}) => {
 
     useEffect(() => {
         setData(home_subcategories);
+        setDisable(false)
     }, [home_subcategories]);
-
 
     const addHomeSubcat = () => {
         setDisable(true)
         return setData([
             ...data,
             {
-                home_subcategorie_id : 'last'
+                home_subcategorie_id : Math.floor(Math.random() * 5000)
             }
         ])
     }
@@ -78,7 +78,7 @@ const HomeSubsList = ({home : {home_subcategories ,loading}}) => {
                         <TableBody>
                         {
                             data &&
-                            data.map((obj,index) => <HomeSubsItem key={index} obj={obj} index={index} subcats={subcategories} />)
+                            data.map((obj,index) => <HomeSubsItem key={index} obj={obj} order={index} subcats={subcategories} />)
                         }
                         </TableBody>
                     </Table>

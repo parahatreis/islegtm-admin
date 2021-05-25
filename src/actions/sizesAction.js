@@ -40,10 +40,12 @@ export const createSize = (obj) => async dispatch => {
     try {
        await axios.post('/v1/size_types', body, config);
 
-       return window.location.href = '/sizes'
+       return 200
+
     }
     catch (error) {
-       console.error(error)
+       console.error(error);
+       return 500
     }
   }
 
@@ -55,10 +57,11 @@ export const deleteSize = (id) => async dispatch => {
     try {
          await axios.delete(`/v1/size_types/${id}`);
 
-         return window.location.href = '/sizes'
+         return 200
  
     } catch (error) {
-       console.error(error)
+       console.error(error);
+       return 500
     }
  }
 

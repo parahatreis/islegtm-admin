@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {Link} from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
 import TableCell from '@material-ui/core/TableCell';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
@@ -15,7 +15,8 @@ import TableRow from '@material-ui/core/TableRow';
 // 
 import { deleteSubCategorie } from '../../actions/subcategoriesAction';
 import Placeholder from '../../img/BG.svg';
-import apiPath from '../../utils/apiPath'
+import apiPath from '../../utils/apiPath';
+import { setAlert } from '../../actions/alertsAction'
 
 
 
@@ -60,7 +61,8 @@ const SubCategorieItem = ({deleteSubCategorie,subcategorie :{
     subcategorie_name_tm,
     sizeType,
     categorie,
-    products
+    products,
+    setAlert
 }}) => {
 
 
@@ -68,6 +70,7 @@ const SubCategorieItem = ({deleteSubCategorie,subcategorie :{
 
     const [open, setOpen] = useState(false);
     const [image, setImage] = useState(Placeholder);
+    const history = useHistory()
 
     useEffect(() => {
       if(subcategorie_image){
@@ -153,7 +156,14 @@ const SubCategorieItem = ({deleteSubCategorie,subcategorie :{
                               </Button>
                               <Button variant="contained" color="secondary"
                                  onClick={() => {
-                                 deleteSubCategorie(subcategorie_id);
+                                 deleteSubCategorie(subcategorie_id).then((res) => {
+                                  if(res === 200){
+                                    return history.push('/categories')
+                                  }
+                                  else{
+                                    return setAlert('Error!', 'error');
+                                  }
+                                });
                                  }}
                               >
                                  Delete
@@ -182,11 +192,13 @@ const SubCategorieItem = ({deleteSubCategorie,subcategorie :{
 
 SubCategorieItem.propTypes = {
   deleteSubCategorie: PropTypes.func.isRequired,
+  setAlert: PropTypes.func,
   subcategorie : PropTypes.object.isRequired,
 }
 
 export default connect(null, {
   deleteSubCategorie,
+  setAlert
 })(SubCategorieItem);
 
 

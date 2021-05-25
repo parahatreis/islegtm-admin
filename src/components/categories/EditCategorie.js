@@ -49,7 +49,7 @@ const EditCategorie = ({editCategorie, getCurrentCategorie, match, categories : 
     const [buffer,setBuffer] = useState(null)
     const [image,setImage] = useState(Placeholder);
     const history = useHistory()
-
+    const [loacalLoading, setLocalLoading] = useState(false)
     const classes = useStyles();
     
 
@@ -95,11 +95,14 @@ const EditCategorie = ({editCategorie, getCurrentCategorie, match, categories : 
             "image", 
             buffer, 
         ); 
+        setLocalLoading(true)
         editCategorie(formData,fileData).then((res) => {
             if(res === 200){
+                setLocalLoading(false)
                 return history.push('/categories')
             }
             else{
+                setLocalLoading(false)
                 return setAlert('Error!', 'error');
             }
         });
@@ -164,8 +167,11 @@ const EditCategorie = ({editCategorie, getCurrentCategorie, match, categories : 
                                     /><br />
                                 </div>
                             </div>
-                            <Button variant="contained" color="primary" type='submit'>
-                                Ýatda sakla
+                            <Button variant="contained" disabled={loacalLoading} color="primary" type='submit'>
+                                {
+                                    loacalLoading ? 
+                                    'Ýüklenýär...' :  'Ýatda sakla' 
+                                }
                             </Button>
                         </form>
                     </div>

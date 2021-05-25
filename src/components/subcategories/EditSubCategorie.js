@@ -10,7 +10,8 @@ import Avatar from '@material-ui/core/Avatar';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import axios from 'axios'
+import axios from 'axios';
+import {useHistory} from 'react-router-dom'
 // 
 import { getCurrentSubCategorie, editSubCategorie } from '../../actions/subcategoriesAction';
 import Placeholder from '../../img/BG.svg';
@@ -59,6 +60,9 @@ const EditSubCategorie = ({getCurrentSubCategorie,match,subcategories : {current
     const [sizeTypes, setSizeTypes] = useState(null);
     const [hasSize, setHasSize] = useState(false)
     const classes = useStyles();
+   const [loacalLoading, setLocalLoading] = useState(false);
+   const history = useHistory();
+
 
 
     // GET ALL SizeTypes
@@ -156,7 +160,17 @@ const EditSubCategorie = ({getCurrentSubCategorie,match,subcategories : {current
               "image",
               buffer,
            );
-           editSubCategorie(formData, fileData);
+           setLocalLoading(true)
+           editSubCategorie(formData, fileData).then((res) => {
+                if(res === 200){
+                setLocalLoading(false)
+                    return history.push('/categories');
+                }
+                else{
+                setLocalLoading(false)
+                    return setAlert('Error!', 'error');
+                }
+            });
         }
     }
 
@@ -280,8 +294,11 @@ const EditSubCategorie = ({getCurrentSubCategorie,match,subcategories : {current
                             /><br />
                         </div>
                     </div>
-                    <Button variant="contained" color="primary" type='submit'>
-                        Ýatda sakla
+                    <Button variant="contained" disabled={loacalLoading} color="primary" type='submit'>
+                        {
+                            loacalLoading ? 
+                            'Ýüklenýär...' :  'Ýatda sakla' 
+                        }
                     </Button>
                     </form>
                 </div>
