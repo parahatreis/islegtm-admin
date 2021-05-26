@@ -164,7 +164,7 @@ const EditSubCategorie = ({getCurrentSubCategorie,match,subcategories : {current
            editSubCategorie(formData, fileData).then((res) => {
                 if(res === 200){
                 setLocalLoading(false)
-                    return history.push('/categories');
+                    return history.push('/subcategories');
                 }
                 else{
                 setLocalLoading(false)

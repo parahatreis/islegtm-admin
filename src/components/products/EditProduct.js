@@ -14,6 +14,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import {useHistory} from 'react-router-dom'
 // 
 import Placeholder from '../../img/BG.svg'
 import { editProduct, getCurrentProduct } from '../../actions/productsAction';
@@ -87,6 +88,8 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
         description_en : '',
         description_ru : ''
     });
+    const history = useHistory();
+   const [loacalLoading, setLocalLoading] = useState(false)
 
 
     const onChange = (e) => setFormData({...formData, [e.target.name] : e.target.value});
@@ -351,12 +354,33 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
                 })
 
                formData.stocks = formDataStocks;
-                editProduct(formData,fileData);
-                return 
+               
+                setLocalLoading(true)
+                editProduct(formData,fileData).then((res) => {
+                    if(res === 200){
+                        setLocalLoading(false)
+                        return history.push('/products');
+                    }
+                    else{
+                        setLocalLoading(false)
+                        return setAlert('Error!', 'error');
+                    }
+                });
             }
             else {
                formData.stocks = formDataStocks;
-                editProduct(formData,null);
+
+               setLocalLoading(true)
+                editProduct(formData,null).then((res) => {
+                    if(res === 200){
+                        setLocalLoading(false)
+                        return history.push('/products');
+                    }
+                    else{
+                        setLocalLoading(false)
+                        return setAlert('Error!', 'error');
+                    }
+                });
             }
         }  
     }
@@ -726,8 +750,11 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
                         <AddCircleOutlineIcon />
                     </Button>
                     <br />
-                    <Button variant="contained" color="primary" type='submit'>
-                        Ýatda sakla
+                    <Button variant="contained" disabled={loacalLoading} color="primary" type='submit'>
+                        {
+                            loacalLoading ? 
+                            'Ýüklenýär...' :  'Ýatda sakla' 
+                        }
                     </Button>
                 </form>
             </div>

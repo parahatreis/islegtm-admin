@@ -73,6 +73,7 @@ const EditBrand = ({
     const [subcategories,setSubCategories] = useState(null);
     const classes = useStyles();
     const history = useHistory();
+   const [loacalLoading, setLocalLoading] = useState(false)
 
 
 
@@ -172,11 +173,14 @@ const EditBrand = ({
                 "image", 
                 buffer, 
             );
+            setLocalLoading(true)
             editBrand(formData,fileData).then((res) => {
                 if(res === 200){
+                    setLocalLoading(false)
                     return history.push('/brands')
                 }
                 else{
+                    setLocalLoading(false)
                     return setAlert('Error!', 'error');
                 }
             });
@@ -281,8 +285,11 @@ const EditBrand = ({
                             /><br />
                         </div>
                     </div>
-                    <Button variant="contained" color="primary" type='submit'>
-                        Ýatda sakla
+                    <Button variant="contained" disabled={loacalLoading} color="primary" type='submit'>
+                        {
+                            loacalLoading ? 
+                            'Ýüklenýär...' :  'Ýatda sakla' 
+                        }
                     </Button>
                 </form>
             </div>

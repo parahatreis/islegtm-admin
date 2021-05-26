@@ -39,9 +39,7 @@ const OrderProductItem = ({ order_product }) => {
 
    const [image, setImage] = useState(Placeholder);
     const classes = useStyles();
-   
-   console.log(order_product);
-
+    
    useEffect(() => {
       if (product.preview_image) {
          if (product.preview_image) {

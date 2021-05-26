@@ -158,7 +158,7 @@ const SubCategorieItem = ({deleteSubCategorie,subcategorie :{
                                  onClick={() => {
                                  deleteSubCategorie(subcategorie_id).then((res) => {
                                   if(res === 200){
-                                    return history.push('/categories')
+                                    return history.push('/subcategories')
                                   }
                                   else{
                                     return setAlert('Error!', 'error');

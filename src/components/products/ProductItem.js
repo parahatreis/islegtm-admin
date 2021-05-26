@@ -15,11 +15,12 @@ import Fade from '@material-ui/core/Fade';
 import TableRow from '@material-ui/core/TableRow';
 import Chip from '@material-ui/core/Chip';
 import axios from 'axios'
-import {Link} from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
 // 
 import { deleteProduct } from '../../actions/productsAction';
 import Placeholder from '../../img/BG.svg';
 import apiPath from '../../utils/apiPath'
+import { setAlert } from '../../actions/alertsAction'
 
 
 
@@ -73,7 +74,8 @@ const ProductItem = ({product :
       product_code,
         preview_image
     },
-    deleteProduct
+    deleteProduct,
+    setAlert
 }) => {
 
 
@@ -83,6 +85,7 @@ const ProductItem = ({product :
     const nodeRef = useRef(null);
     const [image,setImage] = useState(Placeholder);
     const [status,setStatus] = useState(false);
+    const history = useHistory()
 
     useEffect(() => {
       if (preview_image) {
@@ -229,7 +232,14 @@ const ProductItem = ({product :
                     </Button>
                     <Button variant="contained" color="secondary"
                       onClick={() => {
-                        deleteProduct(product_id);
+                        deleteProduct(product_id).then((res) => {
+                          if(res === 200){
+                            return history.push('/products')
+                          }
+                          else{
+                            return setAlert('Error!', 'error');
+                          }
+                        });
                       }}
                     > 
                       Poz
@@ -250,9 +260,12 @@ const ProductItem = ({product :
 }
 
 ProductItem.propTypes = {
+  product : PropTypes.object.isRequired,
   deleteProduct: PropTypes.func.isRequired,
+  setAlert: PropTypes.func,
 }
 
 export default connect(null, {
   deleteProduct,
+  setAlert
 })(ProductItem);

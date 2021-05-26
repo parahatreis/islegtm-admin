@@ -56,7 +56,8 @@ const EditBanner = ({editBanner, getCurrentBanner,match,setAlert,
     const [image,setImage] = useState(Placeholder);
     const [buffer,setBuffer] = useState(null)
     const classes = useStyles();
-    const history = useHistory()
+    const history = useHistory();
+   const [loacalLoading, setLocalLoading] = useState(false)
 
     const onChange = (e) => setFormData({...formData, [e.target.name] : e.target.value});
 
@@ -109,11 +110,14 @@ const EditBanner = ({editBanner, getCurrentBanner,match,setAlert,
                 "image", 
                 buffer, 
             );
+            setLocalLoading(true)
             editBanner(formData,fileData).then((res) => {
                 if(res === 200){
+                    setLocalLoading(false)
                     return history.push('/banners')
                 }
                 else{
+                    setLocalLoading(false)
                     return setAlert('Error!', 'error');
                 }
             });
@@ -180,8 +184,11 @@ const EditBanner = ({editBanner, getCurrentBanner,match,setAlert,
                                 /><br />
                             </div>
                         </div>
-                        <Button variant="contained" color="primary" type='submit'>
-                            Ýatda sakla
+                        <Button variant="contained" disabled={loacalLoading} color="primary" type='submit'>
+                            {
+                                loacalLoading ? 
+                                'Ýüklenýär...' :  'Ýatda sakla' 
+                            }
                         </Button>
                     </form>
                 </div>

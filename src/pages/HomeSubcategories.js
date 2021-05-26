@@ -11,10 +11,7 @@ import { getHomeSubs } from '../actions/homeSubcategoriesAction';
 const HomeSubcategories = ({home, getHomeSubs}) => {
 
     useEffect(() => {
-     
-      console.log('Load')
       getHomeSubs()
-  
      }, [getHomeSubs])
 
     return (

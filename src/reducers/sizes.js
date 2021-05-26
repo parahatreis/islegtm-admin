@@ -2,6 +2,7 @@ import {
     GET_SIZES,
     SET_LOADING_SIZES,
     GET_CURRENT_SIZE,
+    DELETE_SIZE
   } from '../actions/types';
   
   
@@ -32,6 +33,14 @@ import {
                 current_size: payload,
                 loading : false
              }
+      case DELETE_SIZE:
+         return {
+            ...state,
+            sizes: state.sizes.filter((size) => {
+               return size.size_type_id !== payload
+            }),
+            loading: false
+         };
        default:
           return state;
        }

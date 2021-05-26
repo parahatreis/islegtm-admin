@@ -25,10 +25,6 @@ const StoreList = ({stores : {stores ,loading}}) => {
 
    const classes = useStyles();
 
-   React.useEffect(() => {
-      console.log(stores)
-   }, [stores])
-
    return (
       <div className="list-wrapper">
             {  

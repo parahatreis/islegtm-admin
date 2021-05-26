@@ -64,7 +64,8 @@ const AddBrand = ({createBrand ,setAlert }) => {
     const [buffer,setBuffer] = useState(null)
     const [subcategories,setSubCategories] = useState(null);
     const classes = useStyles();
-    const history = useHistory()
+    const history = useHistory();
+   const [loacalLoading, setLocalLoading] = useState(false)
 
 
     // GET ALL SubCategories
@@ -136,11 +137,14 @@ const AddBrand = ({createBrand ,setAlert }) => {
                     "image", 
                     buffer, 
                 );
+                setLocalLoading(true)
                 createBrand(formData,fileData).then((res) => {
                     if(res === 200){
+                        setLocalLoading(false)
                         return history.push('/brands')
                     }
                     else{
+                        setLocalLoading(false)
                         return setAlert('Error!', 'error');
                     }
                 });
@@ -245,9 +249,12 @@ const AddBrand = ({createBrand ,setAlert }) => {
                             /><br />
                         </div>
                     </div>
-                    <Button variant="contained" color="primary" type='submit'>
-                        Brend döret
-                    </Button>
+                    <Button variant="contained" disabled={loacalLoading} color="primary" type='submit'>
+                     {
+                        loacalLoading ? 
+                        'Ýüklenýär...' :  'Brend döret' 
+                     }
+                  </Button>
                 </form>
             </div>
         </section>

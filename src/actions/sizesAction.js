@@ -3,6 +3,7 @@ import {
     GET_SIZES,
     SET_LOADING_SIZES,
     // GET_CURRENT_SIZE,
+    DELETE_SIZE
 } from './types';
 
 // GET ALL sizes
@@ -56,6 +57,11 @@ export const deleteSize = (id) => async dispatch => {
 
     try {
          await axios.delete(`/v1/size_types/${id}`);
+
+         dispatch({
+            type: DELETE_SIZE,
+            payload : id
+         });
 
          return 200
  

@@ -79,10 +79,11 @@ export const createProduct = (obj,image) => async dispatch => {
          await axios.post(`/v1/products/image/${newObj.product_id}`,image);
       }
 
-      return window.location.href = '/products'
+      return 200;
    }
    catch (error) {
       console.error(error)
+      return 500;
    }
  }
 
@@ -139,11 +140,12 @@ export const editProduct = (obj,image) => async dispatch => {
          await axios.post(`/v1/products/image/${obj.product_id}`,image);
       }
 
-      return window.location.href = '/products'
+      return 200;
 
    }
    catch (error) {
       console.error('UPDATE PRODUCTS --',error)
+      return 500;
    }
  }
  
@@ -218,8 +220,11 @@ export const deleteProduct = (id) => async dispatch => {
             payload: id
         });
 
+      return 200;
+
    } catch (error) {
-      console.error(error)
+      console.error(error);
+      return 500;
    }
 }
 

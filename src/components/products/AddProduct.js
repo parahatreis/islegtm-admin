@@ -14,6 +14,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import {useHistory} from 'react-router-dom'
 // 
 import Placeholder from '../../img/BG.svg'
 import { createProduct } from '../../actions/productsAction';
@@ -83,6 +84,8 @@ const AddProduct = ({ createProduct , setAlert}) => {
       description_en : '',
       description_ru : ''
    });
+   const history = useHistory();
+   const [loacalLoading, setLocalLoading] = useState(false)
 
    const onChange = (e) => {
       setFormData({...formData, [e.target.name] : e.target.value})
@@ -283,7 +286,18 @@ const AddProduct = ({ createProduct , setAlert}) => {
             })
 
             formData.stocks = formDataStocks;
-            createProduct(formData,fileData);
+
+            setLocalLoading(true)
+            createProduct(formData,fileData).then((res) => {
+               if(res === 200){
+                  setLocalLoading(false)
+                   return history.push('/products');
+               }
+               else{
+                  setLocalLoading(false)
+                   return setAlert('Error!', 'error');
+               }
+            });
          }
          else{
             setAlert('Haryt suraty giriziň!', 'error');
@@ -639,9 +653,12 @@ const AddProduct = ({ createProduct , setAlert}) => {
                   <AddCircleOutlineIcon />
                </Button>
                <br />
-               <Button variant="contained" color="primary" type='submit'>
-                  Haryt döret
-               </Button>
+               <Button variant="contained" disabled={loacalLoading} color="primary" type='submit'>
+                     {
+                        loacalLoading ? 
+                        'Ýüklenýär...' :  'Haryt döret' 
+                     }
+                  </Button>
             </form>
          </div>
       </section>

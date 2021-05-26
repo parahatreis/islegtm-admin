@@ -144,7 +144,7 @@ const AddSubCategorie = ({createSubCategorie, setAlert}) => {
             createSubCategorie(formData, fileData).then((res) => {
                if(res === 200){
                   setLocalLoading(false)
-                   return history.push('/categories');
+                   return history.push('/subcategories');
                }
                else{
                   setLocalLoading(false)

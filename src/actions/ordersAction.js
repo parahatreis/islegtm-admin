@@ -13,8 +13,6 @@ export const getOrders = () => async dispatch => {
    try {
       const res = await axios.get('/v1/orders');
 
-      console.log(res.data)
-
       dispatch({
          type: GET_ORDERS,
          payload : res.data
@@ -34,10 +32,7 @@ export const getCurrentOrder = (id) => async dispatch => {
    });
 
    try {
-      console.log('api')
       const res = await axios.get(`/v1/orders/${id}`);
-
-      console.log(res.data)
 
       dispatch({
          type: GET_CURRENT_ORDER,

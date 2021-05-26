@@ -52,7 +52,8 @@ const AddBanner = ({createBanner, setAlert}) => {
     const [imgUri,setImg] = useState({img : Placeholder})
     const [buffer,setBuffer] = useState(null)
     const classes = useStyles();
-    const history = useHistory()
+    const history = useHistory();
+   const [loacalLoading, setLocalLoading] = useState(false)
 
     const onChange = (e) => setFormData({...formData, [e.target.name] : e.target.value});
 
@@ -91,11 +92,14 @@ const AddBanner = ({createBanner, setAlert}) => {
                     "image", 
                     buffer, 
                 );
+                setLocalLoading(true)
                 createBanner(formData,fileData).then((res) => {
                     if(res === 200){
+                        setLocalLoading(false)
                         return history.push('/banners')
                     }
                     else{
+                        setLocalLoading(false)
                         return setAlert('Error!', 'error');
                     }
                 });
@@ -163,9 +167,12 @@ const AddBanner = ({createBanner, setAlert}) => {
                             /><br />
                         </div>
                     </div>
-                    <Button variant="contained" color="primary" type='submit'>
-                        Banner döret
-                    </Button>
+                    <Button variant="contained" disabled={loacalLoading} color="primary" type='submit'>
+                     {
+                        loacalLoading ? 
+                        'Ýüklenýär...' :  'Banner döret' 
+                     }
+                  </Button>
                 </form>
             </div>
         </section>
