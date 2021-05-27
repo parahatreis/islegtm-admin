@@ -654,11 +654,11 @@ const AddProduct = ({ createProduct , setAlert}) => {
                </Button>
                <br />
                <Button variant="contained" disabled={loacalLoading} color="primary" type='submit'>
-                     {
-                        loacalLoading ? 
-                        'Ýüklenýär...' :  'Haryt döret' 
-                     }
-                  </Button>
+                  {
+                     loacalLoading ? 
+                     'Ýüklenýär...' :  'Haryt döret' 
+                  }
+               </Button>
             </form>
          </div>
       </section>

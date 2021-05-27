@@ -69,10 +69,13 @@ const ProductItem = ({product :
         brand,
         subcategorie,
         store,
-        product_images,
+        old_price_tmt,
+        old_price_usd,
         stocks,
-      product_code,
-        preview_image
+        old_price,
+        product_code,
+        preview_image,
+        price
     },
     deleteProduct,
     setAlert
@@ -148,9 +151,42 @@ const ProductItem = ({product :
             {/* Product Name */}
             <TableCell align="left">{product_name_tm}</TableCell>
             {/* Price(TMT) */}
-            <TableCell align="left">{price_tmt && price_tmt}</TableCell>
+            <TableCell align="left">
+              {price_tmt && 
+                <>
+                  <Chip
+                    label={price_tmt +' tmt'} variant='outlined'
+                  />
+                  <br />
+                  <br />
+                  <Chip
+                    label={old_price_tmt +' tmt'}
+                  />
+                </>
+              }
+            </TableCell>
             {/* Price(USD) */}
-            <TableCell align="left">{price_usd && price_usd}</TableCell>
+            <TableCell align="left">
+              
+              {price_usd && 
+                <>
+                  <Chip
+                    label={price_usd+' $'} variant='outlined'
+                  />
+                  <Chip
+                    label={price +' tmt'} variant='outlined'
+                  />
+                  <br />
+                  <br />
+                  <Chip
+                    label={old_price_usd+' $'}
+                  />
+                  <Chip
+                    label={old_price +' tmt'}
+                  />
+                </>
+              }
+            </TableCell>
             {/* Brand */}
             <TableCell align="left">{brand && brand.brand_name}</TableCell>
             {/* Subcategorie */}
@@ -200,9 +236,9 @@ const ProductItem = ({product :
                 {/* Delete */}
                 <TableCell align="left">
                 <Button
-                onClick={handleOpen}
-                color="secondary"
-                href="#delete"
+                  onClick={handleOpen}
+                  color="secondary"
+                  href="#delete"
                 >
                 <DeleteOutlineIcon />
              </Button>
