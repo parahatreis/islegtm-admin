@@ -354,7 +354,7 @@ const EditProduct = ({editProduct, getCurrentProduct,match, products: {current_p
                 })
 
                formData.stocks = formDataStocks;
-               
+
                 setLocalLoading(true)
                 editProduct(formData,fileData).then((res) => {
                     if(res === 200){

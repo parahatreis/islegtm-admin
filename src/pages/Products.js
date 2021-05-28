@@ -15,7 +15,7 @@ import { getProducts } from '../actions/productsAction';
 
 const Products = ({products , getProducts}) => {
 
-   const [open, setOpen] = useState(true);
+   const [open, setOpen] = useState(false);
 
 
    useEffect(() => {

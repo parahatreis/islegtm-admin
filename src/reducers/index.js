@@ -11,6 +11,7 @@ import home from './home';
 import sizes from './sizes';
 import orders from './orders';
 import alerts from './alerts';
+import users from './users';
 
 export default combineReducers({
    admins,
@@ -24,5 +25,6 @@ export default combineReducers({
    home,
    sizes,
    orders,
-   alerts
+   alerts,
+   users
 })

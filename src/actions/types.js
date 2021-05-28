@@ -79,7 +79,9 @@ export const DELETE_SIZE = 'DELETE_SIZE';
 export const GET_ORDERS = 'GET_SIZES';
 export const GET_CURRENT_ORDER = 'GET_CURRENT_ORDER';
 export const SET_LOADING_ORDERS = 'SET_LOADING_SIZES';
-// orders
+// alerts
 export const SET_ALERT = 'SET_ALERT';
 export const REMOVE_ALERT = 'REMOVE_ALERT';
-    
+// alerts
+export const GET_USERS = 'GET_USERS';
+export const SET_LOADING_USERS = 'SET_LOADING_USERS';

@@ -1,11 +1,17 @@
 import React, {useState, useEffect, useRef} from 'react';
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import axios from 'axios'
+import axios from 'axios';
+import {useHistory} from 'react-router-dom';
+// 
+import { setAlert } from '../../actions/alertsAction';
+import { getProducts } from '../../actions/productsAction';
 
 
 const useStyles = makeStyles({
@@ -37,17 +43,16 @@ const useStyles = makeStyles({
     }
   });
 
-const CurrencyChange = ({handleClose, open}) => {
+const CurrencyChange = ({handleClose, open,getProducts,setAlert}) => {
 
     const nodeRef = useRef(null);
     const classes = useStyles();
+    const history = useHistory();
     const [loacalLoading, setLocalLoading] = useState(true);
     const [currency, setCurrency] = useState({
         currency_id : '',
         currency_price : ''
     })
-
-
 
     // Get Currency
     useEffect(() => {
@@ -59,14 +64,41 @@ const CurrencyChange = ({handleClose, open}) => {
                 }
             })
             .catch((err) => console.error('SizeTypes: ', err))
-    }, [])
+    }, []);
+
+    const updateCurrencyPrice = (obj) => {
+
+        setLocalLoading(true);
+
+        const config = {
+           headers: {
+              'Content-Type': 'application/json'
+           }
+        };
+        const body = JSON.stringify(obj);
+  
+        axios.patch(`/v1/currency`, body, config)
+           .then(() => {
+                setLocalLoading(false);
+                getProducts();
+                handleClose()
+                history.push('/products');
+           })
+           .catch((err) => {
+                console.error('Orders: ', err);
+                setLocalLoading(false);
+           })
+     }
 
 
-    const onChange = (e) => setCurrency(e.target.value)
+    const onChange = (e) => setCurrency({
+        ...currency,
+        currency_price : e.target.value
+    })
 
     const onSubmit = (e) => {
         e.preventDefault();
-        console.log(currency)
+        updateCurrencyPrice(currency)
     }
 
     return (
@@ -117,4 +149,13 @@ const CurrencyChange = ({handleClose, open}) => {
     )
 }
 
-export default CurrencyChange
+CurrencyChange.propTypes = {
+    getProducts: PropTypes.isRequired,
+    setAlert: PropTypes.isRequired,
+}
+
+export default connect(null, {
+    getProducts,
+    setAlert
+  })(CurrencyChange);
+

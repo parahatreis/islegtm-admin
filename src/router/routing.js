@@ -42,6 +42,8 @@ import AddSize from '../components/sizes/AddSize';
 // orders
 import Orders from '../pages/Orders';
 import OrderProducts from '../components/orders/OrderProducts';
+// users
+import Users from '../pages/Users';
 
 const publicRoutes = [
    {
@@ -226,6 +228,13 @@ const publicRoutes = [
        component: OrderProducts,
        exact: true
     },
+    // users
+    {
+      key: "users",
+      path: "/users",
+      component: Users,
+      exact: true
+    },
  ];
 
 
@@ -256,7 +265,9 @@ const Routing = () => {
       //sizes
       "/sizes","/sizes/add-size",
       //orders
-      "/orders", "/orders/product-list/:id"
+      "/orders", "/orders/product-list/:id",
+      //users
+      "/users",
    ]
 
    return (

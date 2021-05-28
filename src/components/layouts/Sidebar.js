@@ -299,16 +299,16 @@ export default function MiniDrawer() {
                </List>
             </Link>
             {/* Users */}
-            <List>
-               <ListItem button>
-                  <ListItemIcon>
-                     <GroupIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Ulanyjylar" />
-               </ListItem>
-            </List>
-
-            
+            <Link to="/users">
+               <List>
+                  <ListItem button>
+                     <ListItemIcon>
+                        <GroupIcon />
+                     </ListItemIcon>
+                     <ListItemText primary="Ulanyjylar" className={classes.linkColor} />
+                  </ListItem>
+               </List>
+            </Link>
          </Drawer>
 
 
