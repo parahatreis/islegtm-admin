@@ -39,6 +39,7 @@ const OrderList = ({orders : {orders ,loading}}) => {
                             <TableCell align="left"> Address </TableCell>
                                <TableCell align="left">Total</TableCell>
                             <TableCell align="left">Status</TableCell>
+                            <TableCell align="left">Senesi</TableCell>
                             <TableCell align="left">Status üýtget</TableCell>
                             <TableCell align="left">Harytlar</TableCell>
                         </TableRow>
