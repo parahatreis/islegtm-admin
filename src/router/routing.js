@@ -44,6 +44,8 @@ import Orders from '../pages/Orders';
 import OrderProducts from '../components/orders/OrderProducts';
 // users
 import Users from '../pages/Users';
+// profile
+import Profile from '../pages/Profile';
 
 const publicRoutes = [
    {
@@ -234,6 +236,13 @@ const publicRoutes = [
       path: "/users",
       component: Users,
       exact: true
+   },
+    // profile
+    {
+      key: "profile",
+      path: "/profile",
+      component: Profile,
+      exact: true
     },
  ];
 
@@ -267,7 +276,9 @@ const Routing = () => {
       //orders
       "/orders", "/orders/product-list/:id",
       //users
-      "/users",
+     "/users",
+      //profile
+      "/profile",
    ]
 
    return (

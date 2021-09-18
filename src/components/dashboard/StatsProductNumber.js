@@ -1,24 +1,23 @@
-import React, {useState, useEffect} from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import axios from 'axios'
-import {Link} from 'react-router-dom';
-// 
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import { Link } from "react-router-dom";
+//
 
 const useStyles = makeStyles({
   root: {
     minWidth: 275,
-    marginRight : '10px',
-    color : '#3f51b5'
+    marginRight: "10px",
+    color: "#3f51b5",
   },
   bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
+    display: "inline-block",
+    margin: "0 2px",
+    transform: "scale(0.8)",
   },
   title: {
     fontSize: 14,
@@ -28,42 +27,38 @@ const useStyles = makeStyles({
   },
 });
 
-const SimpleCard = () => {
+const SimpleCard = ({product_count}) => {
+  const classes = useStyles();
 
-    const classes = useStyles();
-
-    const [number,setNumber] = useState(null)
-
-
-    useEffect(() => {
-        axios.get(`/v1/products`)
-            .then((res) => {
-                if (res.data.count) {
-                    setNumber(res.data.count);
-                }
-            })
-            .catch((err) => console.error('SubCategories: ',err))
-    }, [])
-
-    return (
+  return (
     <Card className={classes.root}>
-        <CardContent>
-        <Typography className={classes.title} color="textSecondary" gutterBottom>
-            Haryt sany
+      <CardContent>
+        <Typography
+          className={classes.title}
+          color="textSecondary"
+          gutterBottom
+        >
+          Haryt sany
         </Typography>
         <Typography variant="h5" component="h2">
-            {number && number}
+          {product_count && product_count}
         </Typography>
-        </CardContent>
-        <CardActions>
+      </CardContent>
+      <CardActions>
         <Link to="/products">
-            <Button size="small">
-                Harytlar
-            </Button>
+          <Button
+            size="small"
+            style={{
+              color: "#3f51b5",
+            }}
+          >
+            {" "}
+            Harytlar{" "}
+          </Button>
         </Link>
-        </CardActions>
+      </CardActions>
     </Card>
-    );
+  );
 };
 
 export default SimpleCard;

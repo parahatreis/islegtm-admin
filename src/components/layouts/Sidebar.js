@@ -32,9 +32,7 @@ import FormatShapesIcon from '@material-ui/icons/FormatShapes'
 //Components
 import Dropdown from './Dropdown';
 
-
-
-const drawerWidth = 240;
+const drawerWidth = 220;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -115,10 +113,18 @@ export default function MiniDrawer() {
 
    const handleDrawerOpen = () => {
       setOpen(true);
+      const content = document.querySelector('.inside-main');
+      if (content) {
+         content.style.paddingLeft = '210px';
+      }
    };
 
    const handleDrawerClose = () => {
       setOpen(false);
+      const content = document.querySelector('.inside-main');
+      if (content) {
+         content.style.paddingLeft = '73px';
+      }
    };
 
    return (
@@ -308,6 +314,17 @@ export default function MiniDrawer() {
                      <ListItemText primary="Ulanyjylar" className={classes.linkColor} />
                   </ListItem>
                </List>
+            </Link>
+            {/* Products */}
+            <Link to="/profile">
+               <List>
+                  <ListItem button>
+                     <ListItemIcon>
+                        <ListAltIcon />
+                     </ListItemIcon>
+                     <ListItemText primary="Hasabym" className={classes.linkColor} />
+                  </ListItem>
+                  </List>
             </Link>
          </Drawer>
 
