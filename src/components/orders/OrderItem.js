@@ -61,8 +61,6 @@ const OrderItem = ({order :{
             order_status : val
         });
 
-        console.log(val)
-
         axios.post(`/v1/orders/status/${order_id}`,body,config)
             .then((res) => {
             if (res.data) {

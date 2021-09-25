@@ -87,7 +87,7 @@ export const login = (obj) => async (dispatch) => {
   }
 };
 
-// Login Admin
+// update Admin
 export const updateAdmin = (obj) => async (dispatch) => {
   dispatch({
     type: SET_LOADING_AUTH,

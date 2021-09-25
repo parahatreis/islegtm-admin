@@ -10,6 +10,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth : '400px',
     margin : '1rem',
     position : 'fixed',
+    top: '60px',
     right : '0',
     '& > * + *': {
       marginTop: theme.spacing(2),

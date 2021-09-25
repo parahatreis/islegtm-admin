@@ -23,7 +23,7 @@ export const getProducts = (page = 0, order = null ) => async dispatch => {
    
    dispatch({ type: SET_LOADING_PRODUCTS });
    try {
-        const res = await axios.get(`/v1/products`, {
+        const res = await axios.get(`/v1/products/admin`, {
             params: {
                page,
                limit: 10,

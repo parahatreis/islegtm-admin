@@ -11,9 +11,6 @@ export const getUsers = () => async dispatch => {
 
    try {
       const res = await axios.get('/v1/users');
-
-      console.log(res.data)
-
       dispatch({
          type: GET_USERS,
          payload : res.data

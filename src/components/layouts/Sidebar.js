@@ -29,6 +29,7 @@ import StoreIcon from '@material-ui/icons/Store';
 import AmpStoriesIcon from '@material-ui/icons/AmpStories';
 import HomeWorkIcon from '@material-ui/icons/HomeWork';
 import FormatShapesIcon from '@material-ui/icons/FormatShapes'
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 //Components
 import Dropdown from './Dropdown';
 
@@ -320,7 +321,7 @@ export default function MiniDrawer() {
                <List>
                   <ListItem button>
                      <ListItemIcon>
-                        <ListAltIcon />
+                        <AccountCircleIcon />
                      </ListItemIcon>
                      <ListItemText primary="Hasabym" className={classes.linkColor} />
                   </ListItem>
