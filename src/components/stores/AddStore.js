@@ -46,7 +46,6 @@ const AddStore = ({createStore, setAlert}) => {
       store_number : '',
       store_phone : '',
       store_description : '',
-      store_floor : '',
       store_currency : '',
    })
    const classes = useStyles();
@@ -121,18 +120,6 @@ const AddStore = ({createStore, setAlert}) => {
                      required
                      type = "number"
                      name="store_phone"
-                     onChange={(e) => onChange(e)}
-                     /><br />
-                  {/* Store Floor(etazh) */}
-                  <TextField 
-                     className={classes.input}
-                     id="outlined-basic" 
-                     label="Magazin gaty (etaž)" 
-                     variant="outlined"
-                     type = "number"
-                     value={formData.store_floor}
-                     required
-                     name="store_floor"
                      onChange={(e) => onChange(e)}
                      /><br />
                   {/* Store Currency */}

@@ -93,7 +93,7 @@ export const getCurrentProduct = (id) => async dispatch => {
    dispatch({ type: SET_LOADING_PRODUCTS });
 
    try {
-        const res = await axios.get(`/v1/products/${id}`);
+        const res = await axios.get(`/v1/products/admin/${id}`);
 
         dispatch({
             type: GET_CURRENT_PRODUCT,

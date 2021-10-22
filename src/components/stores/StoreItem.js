@@ -93,7 +93,6 @@ const StoreItem = ({deleteStore,store :{
             }
           </TableCell>
           <TableCell align="left">{store_phone && store_phone}</TableCell>
-          <TableCell align="left">{store_floor && store_floor}</TableCell>
           <TableCell align="left">{store_currency && store_currency}</TableCell>
           <TableCell align="left">{products && products.length}</TableCell>
           <TableCell align="left">{store_description && store_description}</TableCell>

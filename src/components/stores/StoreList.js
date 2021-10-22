@@ -37,8 +37,7 @@ const StoreList = ({stores : {stores ,loading}}) => {
                            <TableCell align="left">ID</TableCell>
                            <TableCell align="left">Mag. Ady</TableCell>
                            <TableCell align="left">Mag. Belgisi</TableCell>
-                           <TableCell align="left">Mag. Admin</TableCell>  
-                           <TableCell align="left">Mag. Gaty</TableCell>
+                           <TableCell align="left">Mag. Admin</TableCell> 
                            <TableCell align="left">Mag. El telefony</TableCell>
                            <TableCell align="left">Mag. Pul birligi</TableCell>
                            <TableCell align="left">Haryt sany</TableCell>
