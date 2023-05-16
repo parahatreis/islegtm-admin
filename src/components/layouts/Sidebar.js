@@ -156,7 +156,7 @@ export default function MiniDrawer() {
                   alignItems="baseline"
                   >
                   <Typography variant="h6" noWrap>
-                     Sowda Merkezi
+                     Multi Brand
                   </Typography>
                   {/* Dropdown */}
                   <Dropdown />

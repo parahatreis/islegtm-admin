@@ -375,7 +375,7 @@ const AddProduct = ({ createProduct , setAlert}) => {
                   onChange={(e) => onChange(e)}
                /><br />
                {/* Currency */}
-               <TextField
+               {/* <TextField
                   className={classes.input}
                   id="outlined-select-currency"
                   select
@@ -391,7 +391,7 @@ const AddProduct = ({ createProduct , setAlert}) => {
                   <MenuItem key={1} value={'usd'}>
                            USD (Dollar)
                   </MenuItem>
-                  </TextField>
+                  </TextField> */}
 
                {
                   currency === 'tmt' ? 

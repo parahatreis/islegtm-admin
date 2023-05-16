@@ -39,14 +39,14 @@ const Products = ({products , getProducts}) => {
                Harytlar
             </Typography>
             <div>
-               <Button
+               {/* <Button
                   onClick={handleOpen}
                   style={{backgroundColor : 'green', marginRight : '10px'}}
                   color="primary"
                   variant="contained"
                   >
                   <MonetizationOnIcon />
-               </Button>
+               </Button> */}
                <Link to="/products/add-product">
                   <Button className="btn" variant="contained" color="primary">
                      <AddIcon />

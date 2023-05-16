@@ -73,7 +73,7 @@ const LoginView = ({login, isAuthenticated, loading}) => {
                         Login
                     </Typography>
                     <Typography variant="h6" style={{color : 'grey', margin : '1rem 0'}} component="h6">
-                        Söwda Merkezi Admin Paneli
+                        Multi Brand | Admin Panel
                     </Typography>
                     {/* Username */}
                     <div className={classes.inputBlock}>
